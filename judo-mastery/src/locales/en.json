@@ -1,6 +1,33 @@
 {
-  "common": {},
-  "auth": {},
+  "common": {
+    "app_name": "Judo Mastery"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "Invalid Email",
+      "invalid-email-message": "Please enter a valid email address.",
+      "user-not-found-title": "User Not Found",
+      "user-not-found-message": "No account found with this email address.",
+      "wrong-password-title": "Incorrect Password",
+      "wrong-password-message": "The password you entered is incorrect.",
+      "invalid-credential-title": "Invalid Credential",
+      "invalid-credential-message": "The provided credential is invalid.",
+      "user-disabled-title": "Account Disabled",
+      "user-disabled-message": "This account has been disabled. Please contact support.",
+      "operation-not-allowed-title": "Operation Not Allowed",
+      "operation-not-allowed-message": "This operation is not permitted.",
+      "too-many-requests-title": "Too Many Attempts",
+      "too-many-requests-message": "You have made too many attempts. Please try again later.",
+      "timeout-title": "Timeout",
+      "timeout-message": "The operation took too long. Please try again.",
+      "unknown-error-title": "Unknown Error",
+      "unknown-error-message": "An unknown error occurred. Please try again."
+    },
+    "sessionExpired": {
+      "title": "Session Expired",
+      "message": "Your session has expired. Please log in again."
+    }
+  },
   "home": {},
   "welcome": {},
   "extra_user_data": {},

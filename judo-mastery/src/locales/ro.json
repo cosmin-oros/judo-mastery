@@ -1,6 +1,33 @@
 {
-  "common": {},
-  "auth": {},
+  "common": {
+    "app_name": "Judo Mastery"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "E-mail invalid",
+      "invalid-email-message": "Vă rugăm să introduceți o adresă de e-mail validă.",
+      "user-not-found-title": "Utilizator inexistent",
+      "user-not-found-message": "Nu există niciun cont cu această adresă de e-mail.",
+      "wrong-password-title": "Parolă incorectă",
+      "wrong-password-message": "Parola introdusă este incorectă.",
+      "invalid-credential-title": "Acreditiv invalid",
+      "invalid-credential-message": "Acreditivul furnizat este invalid.",
+      "user-disabled-title": "Cont dezactivat",
+      "user-disabled-message": "Acest cont a fost dezactivat. Vă rugăm să contactați suportul.",
+      "operation-not-allowed-title": "Operațiune interzisă",
+      "operation-not-allowed-message": "Această operațiune nu este permisă.",
+      "too-many-requests-title": "Prea multe încercări",
+      "too-many-requests-message": "Ați făcut prea multe încercări. Vă rugăm să încercați mai târziu.",
+      "timeout-title": "Expirare timp",
+      "timeout-message": "Operațiunea a durat prea mult. Vă rugăm să încercați din nou.",
+      "unknown-error-title": "Eroare necunoscută",
+      "unknown-error-message": "A apărut o eroare necunoscută. Vă rugăm să încercați din nou."
+    },
+    "sessionExpired": {
+      "title": "Sesiunea a expirat",
+      "message": "Sesiunea dvs. a expirat. Vă rugăm să vă autentificați din nou."
+    }
+  },
   "home": {},
   "welcome": {},
   "extra_user_data": {},
