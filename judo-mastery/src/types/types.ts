@@ -1,3 +1,5 @@
+import { lightTheme } from "../theme/themes";
+
 export type UserType = {
   uid: string;
   email: string | null;
@@ -13,4 +15,10 @@ export type AuthContextType = {
   loginWithEmailAndPassword: (email: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
   getAuthToken: () => Promise<string | null>;
+};
+
+type ThemeType = typeof lightTheme;
+export type ThemeContextType = {
+  theme: ThemeType;
+  toggleTheme: () => void;
 };
