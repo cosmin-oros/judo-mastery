@@ -28,39 +28,44 @@ const CustomInput: React.FC<CustomInputProps> = ({
   }, [error]);
 
   return (
-    <View>
+    <View style={styles.inputWrapper}>
       <Animatable.View ref={shakeAnimation}>
         <TextInput
           style={[
             styles.input,
             {
               backgroundColor: colors.card,
-              borderColor: error ? colors.notification : colors.border,
+              borderColor: error ? "#ff4d4d" : colors.border,
               color: colors.text,
             },
           ]}
           placeholder={placeholder}
-          placeholderTextColor={colors.border}
+          placeholderTextColor="#ccc"
           secureTextEntry={secureTextEntry}
           value={value}
           onChangeText={onChangeText}
         />
       </Animatable.View>
-      {error && <Text style={[styles.errorText, { color: colors.notification }]}>{error}</Text>}
+      {error && <Text style={styles.errorText}>{error}</Text>}
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  inputWrapper: {
+    marginBottom: 20,
+  },
   input: {
-    padding: 15,
-    borderRadius: 8,
+    width: "100%",
+    padding: 16,
+    borderRadius: 10,
     borderWidth: 1,
-    marginBottom: 10,
+    fontSize: 16,
   },
   errorText: {
-    fontSize: 12,
-    marginBottom: 10,
+    fontSize: 14,
+    color: "#ff4d4d",
+    marginTop: 5,
   },
 });
 

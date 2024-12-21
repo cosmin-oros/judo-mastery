@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Image, Text } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { replaceRoute } from "@/src/utils/replaceRoute";
@@ -34,21 +34,25 @@ const LoginScreen: React.FC = () => {
 
   return (
     <View style={styles.container}>
-      <CustomInput
-        value={email}
-        placeholder={t("auth.errors.invalid-email-title")}
-        error={error.email}
-        onChangeText={setEmail}
-      />
-      <CustomInput
-        value={password}
-        placeholder={t("auth.errors.wrong-password-title")}
-        error={error.password}
-        secureTextEntry
-        onChangeText={setPassword}
-      />
+      <Image source={require("../../../assets/images/logo.png")} style={styles.logo} />
+      <Text style={styles.title}>{t("common.login")}</Text>
+      <View style={styles.inputContainer}>
+        <CustomInput
+          value={email}
+          placeholder={t("auth.errors.invalid-email-title")}
+          error={error.email}
+          onChangeText={setEmail}
+        />
+        <CustomInput
+          value={password}
+          placeholder={t("auth.errors.wrong-password-title")}
+          error={error.password}
+          secureTextEntry
+          onChangeText={setPassword}
+        />
+      </View>
       <FormButton label={t("common.login")} onPress={handleLogin} />
-      <FormLink text={t("common.sign-up")} onPress={() => replaceRoute("/signup")} />
+      <FormLink text={t("auth.dont-have-account")} onPress={() => replaceRoute("/signup")} />
     </View>
   );
 };
@@ -56,8 +60,25 @@ const LoginScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    padding: 30,
     justifyContent: "center",
+    alignItems: "center",
+    backgroundColor: "#f9f9f9",
+  },
+  logo: {
+    width: 240,
+    height: 240,
+    marginBottom: 20,
+  },
+  title: {
+    fontSize: 28,
+    fontWeight: "bold",
+    color: "#333",
+    marginBottom: 20,
+  },
+  inputContainer: {
+    width: "100%",
+    marginBottom: 20,
   },
 });
 

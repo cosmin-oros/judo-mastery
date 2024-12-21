@@ -28,7 +28,9 @@
     "sessionExpired": {
       "title": "セッションの有効期限が切れました",
       "message": "セッションの有効期限が切れました。再度ログインしてください。"
-    }
+    },
+    "already-have-account": "すでにアカウントをお持ちですか？",
+    "dont-have-account": "アカウントをお持ちでないですか？"
   },
   "signup": {
     "title": "アカウントを作成する",

@@ -28,7 +28,9 @@
     "sessionExpired": {
       "title": "Sitzung abgelaufen",
       "message": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
-    }
+    },
+    "already-have-account": "Haben Sie schon ein Konto?",
+    "dont-have-account": "Haben Sie noch kein Konto?"
   },
   "signup": {
     "title": "Erstellen Sie Ihr Konto",

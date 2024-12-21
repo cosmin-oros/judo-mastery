@@ -2,8 +2,8 @@ export const colors = {
   black: "#000000",
   white: "#FFFFFF",
   dark: "#121212",
-  primary: "#DAA520", // Goldenrod
-  secondary: "#8B4513", // SaddleBrown
+  primary: "#FFD700",
+  secondary: "#1E90FF", // DodgerBlue
   "slate-50": "#F8FAFC",
   "slate-100": "#F1F5F9",
   "slate-200": "#E2E8F0",

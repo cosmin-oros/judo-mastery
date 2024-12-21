@@ -28,7 +28,9 @@
     "sessionExpired": {
       "title": "Sesión expirada",
       "message": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
-    }
+    },
+    "already-have-account": "¿Ya tienes una cuenta?",
+    "dont-have-account": "¿No tienes una cuenta?"
   },
   "signup": {
     "title": "Crea tu cuenta",
