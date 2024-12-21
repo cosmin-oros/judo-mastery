@@ -51,7 +51,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
         await saveUserDataToFirestore(userData); // Save to Firestore
         setUser(userData); // Set the full user object
-        replaceRoute("/(tabs)/tab1"); // Navigate to a default screen after signup
+        replaceRoute("/language-selection"); 
       } else {
         console.log("Failed to sign up");
       }
@@ -95,7 +95,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         };
 
         setUser(userData); // Set the full user object
-        replaceRoute("/(tabs)/tab1");
+        replaceRoute("/(tabs)/home");
       } else {
         console.error("User data not found");
         setUser(null);

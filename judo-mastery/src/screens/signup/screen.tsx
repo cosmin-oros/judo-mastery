@@ -27,7 +27,6 @@ const SignUpScreen: React.FC = () => {
     if (!errors.email && !errors.password && !errors.confirmPassword) {
       try {
         await signupWithEmailAndPassword(email, password);
-        replaceRoute("/login");
       } catch {
         setError({ ...errors, email: t("auth.errors.user-not-found-message") });
       }
