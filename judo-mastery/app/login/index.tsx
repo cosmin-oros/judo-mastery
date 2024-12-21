@@ -1,4 +1,4 @@
-import LoginScreen from "@/src/screens/auth/screen";
+import LoginScreen from "@/src/screens/login/screen";
 import { Stack } from "expo-router";
 import { SafeAreaView } from "react-native-safe-area-context";
 

@@ -20,6 +20,7 @@ export const lightTheme = {
   dark: false,
   colors: {
     primary: colors.primary,
+    secondary: colors.secondary,
     background: colors["slate-50"],
     card: colors.white,
     text: colors.black,
@@ -38,6 +39,7 @@ export const darkTheme = {
   dark: true,
   colors: {
     primary: colors.primary,
+    secondary: colors.secondary,
     background: colors.dark,
     card: colors["slate-900"],
     text: colors.white,

@@ -3,7 +3,7 @@ import { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { AuthProvider } from "@/src/provider/auth/AuthProvider";
 import { ThemeProvider } from "@react-navigation/native";
-import { lightTheme, darkTheme } from "@/src/themes/colors";
+import { lightTheme, darkTheme } from "../src/theme/themes";
 import i18n from "@/src/i18n";
 import { Appearance } from "react-native";
 

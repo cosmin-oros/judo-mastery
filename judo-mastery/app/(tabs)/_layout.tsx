@@ -1,13 +1,14 @@
 import { Tabs } from "expo-router";
 import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { StyleSheet } from "react-native";
+import { colors } from "@/src/theme/colors";
 
 export default function Layout() {
   return (
     <Tabs
       screenOptions={{
-        // tabBarActiveTintColor: colors.primary,
-        // tabBarInactiveTintColor: colors["gray-400"],
+        tabBarActiveTintColor: colors.primary,
+        tabBarInactiveTintColor: colors["gray-400"],
         tabBarShowLabel: true,
         tabBarLabelStyle: styles.tabBarLabel,
       }}
