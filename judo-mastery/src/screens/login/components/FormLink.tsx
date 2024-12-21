@@ -13,7 +13,7 @@ const FormLink: React.FC<FormLinkProps> = ({ text, onPress }) => {
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text style={[styles.link, { color: colors.secondary }]}>{text}</Text>
+      <Text style={[styles.link, { color: colors.primary }]}>{text}</Text>
     </TouchableOpacity>
   );
 };

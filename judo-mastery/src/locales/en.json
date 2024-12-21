@@ -1,6 +1,8 @@
 {
   "common": {
-    "app_name": "Judo Mastery"
+    "app_name": "Judo Mastery",
+    "sign-up": "Sign Up",
+    "login": "Login"
   },
   "auth": {
     "errors": {
@@ -9,9 +11,9 @@
       "user-not-found-title": "User Not Found",
       "user-not-found-message": "No account found with this email address.",
       "wrong-password-title": "Incorrect Password",
-      "wrong-password-message": "The password you entered is incorrect.",
-      "invalid-credential-title": "Invalid Credential",
-      "invalid-credential-message": "The provided credential is invalid.",
+      "wrong-password-message": "The password you entered is incorrect. Password must be at least 6 characters long.",
+      "invalid-credential-title": "Passwords Do Not Match",
+      "invalid-credential-message": "The confirmation password does not match.",
       "user-disabled-title": "Account Disabled",
       "user-disabled-message": "This account has been disabled. Please contact support.",
       "operation-not-allowed-title": "Operation Not Allowed",
@@ -28,14 +30,19 @@
       "message": "Your session has expired. Please log in again."
     }
   },
-  "home": {},
-  "welcome": {},
-  "extra_user_data": {},
-  "techniques": {},
-  "terminology": {},
-  "dojos": {},
-  "profile": {},
-  "settings": {},
-  "technique_detailed": {},
-  "task": {}
+  "signup": {
+    "title": "Create Your Account",
+    "email-placeholder": "Enter your email",
+    "password-placeholder": "Enter your password",
+    "confirm-password-placeholder": "Confirm your password",
+    "sign-up-button": "Sign Up",
+    "already-have-account": "Already have an account?"
+  },
+  "login": {
+    "title": "Welcome Back",
+    "email-placeholder": "Enter your email",
+    "password-placeholder": "Enter your password",
+    "login-button": "Login",
+    "no-account": "Don't have an account?"
+  }
 }

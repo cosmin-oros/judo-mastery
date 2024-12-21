@@ -13,6 +13,11 @@ export type UserType = {
 export type AuthContextType = {
   user: UserType | null;
   loginWithEmailAndPassword: (email: string, password: string) => Promise<void>;
+  signupWithEmailAndPassword: (
+    email: string,
+    password: string,
+    additionalData?: Partial<UserType>
+  ) => Promise<void>;
   logout: () => Promise<void>;
   getAuthToken: () => Promise<string | null>;
 };
