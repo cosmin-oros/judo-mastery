@@ -1,0 +1,48 @@
+{
+  "common": {
+    "app_name": "Judo Mastery",
+    "sign-up": "Regístrate",
+    "login": "Iniciar sesión"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "Correo electrónico inválido",
+      "invalid-email-message": "Por favor, introduce una dirección de correo válida.",
+      "user-not-found-title": "Usuario no encontrado",
+      "user-not-found-message": "No se encontró ninguna cuenta con esta dirección de correo.",
+      "wrong-password-title": "Contraseña incorrecta",
+      "wrong-password-message": "La contraseña que ingresaste es incorrecta. La contraseña debe tener al menos 6 caracteres.",
+      "invalid-credential-title": "Las contraseñas no coinciden",
+      "invalid-credential-message": "La contraseña de confirmación no coincide.",
+      "user-disabled-title": "Cuenta deshabilitada",
+      "user-disabled-message": "Esta cuenta ha sido deshabilitada. Por favor, contacta con el soporte.",
+      "operation-not-allowed-title": "Operación no permitida",
+      "operation-not-allowed-message": "Esta operación no está permitida.",
+      "too-many-requests-title": "Demasiados intentos",
+      "too-many-requests-message": "Has hecho demasiados intentos. Por favor, inténtalo más tarde.",
+      "timeout-title": "Tiempo agotado",
+      "timeout-message": "La operación tardó demasiado. Por favor, inténtalo de nuevo.",
+      "unknown-error-title": "Error desconocido",
+      "unknown-error-message": "Ocurrió un error desconocido. Por favor, inténtalo de nuevo."
+    },
+    "sessionExpired": {
+      "title": "Sesión expirada",
+      "message": "Tu sesión ha expirado. Por favor, inicia sesión de nuevo."
+    }
+  },
+  "signup": {
+    "title": "Crea tu cuenta",
+    "email-placeholder": "Introduce tu correo electrónico",
+    "password-placeholder": "Introduce tu contraseña",
+    "confirm-password-placeholder": "Confirma tu contraseña",
+    "sign-up-button": "Regístrate",
+    "already-have-account": "¿Ya tienes una cuenta?"
+  },
+  "login": {
+    "title": "Bienvenido de nuevo",
+    "email-placeholder": "Introduce tu correo electrónico",
+    "password-placeholder": "Introduce tu contraseña",
+    "login-button": "Iniciar sesión",
+    "no-account": "¿No tienes una cuenta?"
+  }
+}

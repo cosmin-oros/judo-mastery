@@ -1,0 +1,48 @@
+{
+  "common": {
+    "app_name": "柔道マスタリー",
+    "sign-up": "サインアップ",
+    "login": "ログイン"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "無効なメールアドレス",
+      "invalid-email-message": "有効なメールアドレスを入力してください。",
+      "user-not-found-title": "ユーザーが見つかりません",
+      "user-not-found-message": "このメールアドレスでアカウントが見つかりません。",
+      "wrong-password-title": "間違ったパスワード",
+      "wrong-password-message": "入力したパスワードが間違っています。パスワードは6文字以上である必要があります。",
+      "invalid-credential-title": "パスワードが一致しません",
+      "invalid-credential-message": "確認パスワードが一致しません。",
+      "user-disabled-title": "アカウントが無効化されました",
+      "user-disabled-message": "このアカウントは無効化されています。サポートに連絡してください。",
+      "operation-not-allowed-title": "操作が許可されていません",
+      "operation-not-allowed-message": "この操作は許可されていません。",
+      "too-many-requests-title": "試行回数が多すぎます",
+      "too-many-requests-message": "試行回数が多すぎます。後でもう一度お試しください。",
+      "timeout-title": "タイムアウト",
+      "timeout-message": "操作に時間がかかりすぎました。もう一度お試しください。",
+      "unknown-error-title": "不明なエラー",
+      "unknown-error-message": "不明なエラーが発生しました。もう一度お試しください。"
+    },
+    "sessionExpired": {
+      "title": "セッションの有効期限が切れました",
+      "message": "セッションの有効期限が切れました。再度ログインしてください。"
+    }
+  },
+  "signup": {
+    "title": "アカウントを作成する",
+    "email-placeholder": "メールアドレスを入力",
+    "password-placeholder": "パスワードを入力",
+    "confirm-password-placeholder": "パスワードを確認",
+    "sign-up-button": "サインアップ",
+    "already-have-account": "すでにアカウントをお持ちですか？"
+  },
+  "login": {
+    "title": "お帰りなさい",
+    "email-placeholder": "メールアドレスを入力",
+    "password-placeholder": "パスワードを入力",
+    "login-button": "ログイン",
+    "no-account": "アカウントをお持ちでないですか？"
+  }
+}
