@@ -1,0 +1,50 @@
+{
+  "common": {
+    "app_name": "Judo Mastery",
+    "sign-up": "S'inscrire",
+    "login": "Connexion"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "Email invalide",
+      "invalid-email-message": "Veuillez entrer une adresse e-mail valide.",
+      "user-not-found-title": "Utilisateur introuvable",
+      "user-not-found-message": "Aucun compte trouvé avec cette adresse e-mail.",
+      "wrong-password-title": "Mot de passe incorrect",
+      "wrong-password-message": "Le mot de passe que vous avez entré est incorrect. Le mot de passe doit comporter au moins 6 caractères.",
+      "invalid-credential-title": "Les mots de passe ne correspondent pas",
+      "invalid-credential-message": "Le mot de passe de confirmation ne correspond pas.",
+      "user-disabled-title": "Compte désactivé",
+      "user-disabled-message": "Ce compte a été désactivé. Veuillez contacter le support.",
+      "operation-not-allowed-title": "Opération non autorisée",
+      "operation-not-allowed-message": "Cette opération n'est pas autorisée.",
+      "too-many-requests-title": "Trop de tentatives",
+      "too-many-requests-message": "Vous avez fait trop de tentatives. Veuillez réessayer plus tard.",
+      "timeout-title": "Délai d'expiration",
+      "timeout-message": "L'opération a pris trop de temps. Veuillez réessayer.",
+      "unknown-error-title": "Erreur inconnue",
+      "unknown-error-message": "Une erreur inconnue s'est produite. Veuillez réessayer."
+    },
+    "sessionExpired": {
+      "title": "Session expirée",
+      "message": "Votre session a expiré. Veuillez vous reconnecter."
+    },
+    "already-have-account": "Vous avez déjà un compte?",
+    "dont-have-account": "Vous n'avez pas de compte?"
+  },
+  "signup": {
+    "title": "Créez votre compte",
+    "email-placeholder": "Entrez votre email",
+    "password-placeholder": "Entrez votre mot de passe",
+    "confirm-password-placeholder": "Confirmez votre mot de passe",
+    "sign-up-button": "S'inscrire",
+    "already-have-account": "Vous avez déjà un compte ?"
+  },
+  "login": {
+    "title": "Bon retour",
+    "email-placeholder": "Entrez votre email",
+    "password-placeholder": "Entrez votre mot de passe",
+    "login-button": "Connexion",
+    "no-account": "Vous n'avez pas de compte ?"
+  }
+}

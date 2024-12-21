@@ -1,14 +1,50 @@
 {
-  "common": {},
-  "auth": {},
-  "home": {},
-  "welcome": {},
-  "extra_user_data": {},
-  "techniques": {},
-  "terminology": {},
-  "dojos": {},
-  "profile": {},
-  "settings": {},
-  "technique_detailed": {},
-  "task": {}
+  "common": {
+    "app_name": "Judo Mastery",
+    "sign-up": "Înregistrează-te",
+    "login": "Autentificare"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "Email invalid",
+      "invalid-email-message": "Vă rugăm să introduceți o adresă de email validă.",
+      "user-not-found-title": "Utilizator negăsit",
+      "user-not-found-message": "Nu există niciun cont cu această adresă de email.",
+      "wrong-password-title": "Parolă incorectă",
+      "wrong-password-message": "Parola introdusă este incorectă. Parola trebuie să aibă cel puțin 6 caractere.",
+      "invalid-credential-title": "Parolele nu se potrivesc",
+      "invalid-credential-message": "Parola de confirmare nu se potrivește.",
+      "user-disabled-title": "Cont dezactivat",
+      "user-disabled-message": "Acest cont a fost dezactivat. Vă rugăm să contactați suportul.",
+      "operation-not-allowed-title": "Operațiune nepermisă",
+      "operation-not-allowed-message": "Această operațiune nu este permisă.",
+      "too-many-requests-title": "Prea multe încercări",
+      "too-many-requests-message": "Ați făcut prea multe încercări. Vă rugăm să încercați mai târziu.",
+      "timeout-title": "Timp expirat",
+      "timeout-message": "Operațiunea a durat prea mult. Vă rugăm să încercați din nou.",
+      "unknown-error-title": "Eroare necunoscută",
+      "unknown-error-message": "A apărut o eroare necunoscută. Vă rugăm să încercați din nou."
+    },
+    "sessionExpired": {
+      "title": "Sesiunea a expirat",
+      "message": "Sesiunea dumneavoastră a expirat. Vă rugăm să vă autentificați din nou."
+    },
+    "already-have-account": "Ai deja un cont?",
+    "dont-have-account": "Nu ai un cont?"
+  },
+  "signup": {
+    "title": "Creează-ți contul",
+    "email-placeholder": "Introduceți emailul",
+    "password-placeholder": "Introduceți parola",
+    "confirm-password-placeholder": "Confirmați parola",
+    "sign-up-button": "Înregistrează-te",
+    "already-have-account": "Ai deja un cont?"
+  },
+  "login": {
+    "title": "Bine ai revenit",
+    "email-placeholder": "Introduceți emailul",
+    "password-placeholder": "Introduceți parola",
+    "login-button": "Autentificare",
+    "no-account": "Nu ai un cont?"
+  }
 }

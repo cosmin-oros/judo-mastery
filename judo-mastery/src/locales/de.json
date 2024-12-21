@@ -1,0 +1,50 @@
+{
+  "common": {
+    "app_name": "Judo Mastery",
+    "sign-up": "Registrieren",
+    "login": "Anmelden"
+  },
+  "auth": {
+    "errors": {
+      "invalid-email-title": "Ungültige E-Mail",
+      "invalid-email-message": "Bitte geben Sie eine gültige E-Mail-Adresse ein.",
+      "user-not-found-title": "Benutzer nicht gefunden",
+      "user-not-found-message": "Es wurde kein Konto mit dieser E-Mail-Adresse gefunden.",
+      "wrong-password-title": "Falsches Passwort",
+      "wrong-password-message": "Das eingegebene Passwort ist falsch. Das Passwort muss mindestens 6 Zeichen lang sein.",
+      "invalid-credential-title": "Passwörter stimmen nicht überein",
+      "invalid-credential-message": "Das Bestätigungspasswort stimmt nicht überein.",
+      "user-disabled-title": "Konto deaktiviert",
+      "user-disabled-message": "Dieses Konto wurde deaktiviert. Bitte kontaktieren Sie den Support.",
+      "operation-not-allowed-title": "Operation nicht erlaubt",
+      "operation-not-allowed-message": "Diese Operation ist nicht erlaubt.",
+      "too-many-requests-title": "Zu viele Versuche",
+      "too-many-requests-message": "Sie haben zu viele Versuche unternommen. Bitte versuchen Sie es später erneut.",
+      "timeout-title": "Zeitüberschreitung",
+      "timeout-message": "Die Operation hat zu lange gedauert. Bitte versuchen Sie es erneut.",
+      "unknown-error-title": "Unbekannter Fehler",
+      "unknown-error-message": "Ein unbekannter Fehler ist aufgetreten. Bitte versuchen Sie es erneut."
+    },
+    "sessionExpired": {
+      "title": "Sitzung abgelaufen",
+      "message": "Ihre Sitzung ist abgelaufen. Bitte melden Sie sich erneut an."
+    },
+    "already-have-account": "Haben Sie schon ein Konto?",
+    "dont-have-account": "Haben Sie noch kein Konto?"
+  },
+  "signup": {
+    "title": "Erstellen Sie Ihr Konto",
+    "email-placeholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "password-placeholder": "Geben Sie Ihr Passwort ein",
+    "confirm-password-placeholder": "Bestätigen Sie Ihr Passwort",
+    "sign-up-button": "Registrieren",
+    "already-have-account": "Haben Sie bereits ein Konto?"
+  },
+  "login": {
+    "title": "Willkommen zurück",
+    "email-placeholder": "Geben Sie Ihre E-Mail-Adresse ein",
+    "password-placeholder": "Geben Sie Ihr Passwort ein",
+    "login-button": "Anmelden",
+    "no-account": "Haben Sie kein Konto?"
+  }
+}
