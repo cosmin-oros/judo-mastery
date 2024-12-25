@@ -1,7 +1,7 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { View, StyleSheet, Text, FlatList, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
-import { colors } from "@/src/theme/colors";
+import { useTheme } from "@/src/theme/ThemeProvider";
 
 const languages = [
   { code: "en", name: "English", flag: "🇺🇸" },
@@ -14,17 +14,20 @@ const languages = [
 
 const LanguageSelectionScreen: React.FC = () => {
   const { t, i18n } = useTranslation();
+  const { theme } = useTheme();
   const [selectedLanguage, setSelectedLanguage] = useState<string>(i18n.language);
 
   const handleLanguageSelection = (languageCode: string) => {
     setSelectedLanguage(languageCode);
-    i18n.changeLanguage(languageCode); // Change language globally
-    // ! Navigate to the next screen or save language in storage
+    i18n.changeLanguage(languageCode);
+    // Save language preference if required
   };
 
   return (
-    <View style={styles.container}>
-      <Text style={styles.title}>{t("languageSelection.title")}</Text>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      <Text style={[styles.title, { color: theme.colors.text, fontFamily: theme.fonts.bold.fontFamily, fontWeight: theme.fonts.bold.fontWeight }]}>
+        {t("languageSelection.title")}
+      </Text>
       <FlatList
         data={languages}
         keyExtractor={(item) => item.code}
@@ -32,7 +35,7 @@ const LanguageSelectionScreen: React.FC = () => {
           <TouchableOpacity
             style={[
               styles.card,
-              item.code === selectedLanguage && styles.selectedCard,
+              { backgroundColor: item.code === selectedLanguage ? theme.colors.primary : theme.colors.card },
             ]}
             onPress={() => handleLanguageSelection(item.code)}
           >
@@ -40,7 +43,7 @@ const LanguageSelectionScreen: React.FC = () => {
             <Text
               style={[
                 styles.languageName,
-                item.code === selectedLanguage && styles.selectedText,
+                { color: item.code === selectedLanguage ? theme.colors.background : theme.colors.text },
               ]}
             >
               {item.name}
@@ -57,11 +60,9 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     padding: 20,
-    backgroundColor: "#f9f9f9",
   },
   title: {
-    fontSize: 24,
-    fontWeight: "bold",
+    fontSize: 26,
     textAlign: "center",
     marginBottom: 20,
   },
@@ -73,28 +74,20 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 15,
     marginVertical: 10,
-    backgroundColor: "#ffffff",
-    borderRadius: 10,
+    borderRadius: 18,  
     shadowColor: "#000",
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
-    shadowRadius: 4,
-    elevation: 2,
-  },
-  selectedCard: {
-    backgroundColor: colors.primary
+    shadowRadius: 8,
+    elevation: 3, 
   },
   flag: {
     fontSize: 32,
     marginRight: 15,
   },
   languageName: {
-    fontSize: 18,
+    fontSize: 20,  
     fontWeight: "600",
-    color: "#333",
-  },
-  selectedText: {
-    color: colors.white
   },
 });
 

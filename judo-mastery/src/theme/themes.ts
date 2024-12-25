@@ -21,7 +21,7 @@ export const lightTheme = {
   colors: {
     primary: colors.primary,
     secondary: colors.secondary,
-    background: colors["slate-50"],
+    background: colors.white,
     card: colors.white,
     text: colors.black,
     border: colors["slate-300"],

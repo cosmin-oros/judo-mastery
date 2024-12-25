@@ -27,3 +27,13 @@ export type ThemeContextType = {
   theme: ThemeType;
   toggleTheme: () => void;
 };
+
+export interface FormLinkProps {
+  text: string;
+  onPress: () => void;
+}
+
+export interface FormButtonProps {
+  label: string;
+  onPress: () => void;
+}

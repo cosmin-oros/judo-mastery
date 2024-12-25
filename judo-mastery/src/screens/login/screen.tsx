@@ -6,6 +6,7 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import CustomInput from "./components/CustomInput";
 import FormButton from "./components/FormButton";
 import FormLink from "./components/FormLink";
+import { useTheme } from "@/src/theme/ThemeProvider";
 
 const LoginScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -13,6 +14,7 @@ const LoginScreen: React.FC = () => {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "" });
+  const { theme } = useTheme();
 
   const handleLogin = async () => {
     const errors = { email: "", password: "" };
@@ -33,9 +35,11 @@ const LoginScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Image source={require("../../../assets/images/logo.png")} style={styles.logo} />
-      <Text style={styles.title}>{t("common.login")}</Text>
+      <Text style={[styles.title, { color: theme.colors.text, fontFamily: theme.fonts.bold.fontFamily, fontWeight: theme.fonts.bold.fontWeight }]}>
+        {t("common.login")}
+      </Text>
       <View style={styles.inputContainer}>
         <CustomInput
           value={email}
@@ -63,7 +67,6 @@ const styles = StyleSheet.create({
     padding: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
   },
   logo: {
     width: 240,
@@ -72,8 +75,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#333",
     marginBottom: 20,
   },
   inputContainer: {
@@ -81,5 +82,6 @@ const styles = StyleSheet.create({
     marginBottom: 20,
   },
 });
+
 
 export default LoginScreen;

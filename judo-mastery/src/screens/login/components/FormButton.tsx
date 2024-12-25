@@ -1,21 +1,17 @@
+import { useTheme } from "@/src/theme/ThemeProvider";
+import { FormButtonProps } from "@/src/types/types";
 import React from "react";
 import { TouchableOpacity, Text, StyleSheet } from "react-native";
-import { useTheme } from "@react-navigation/native";
-
-interface FormButtonProps {
-  label: string;
-  onPress: () => void;
-}
 
 const FormButton: React.FC<FormButtonProps> = ({ label, onPress }) => {
-  const { colors } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <TouchableOpacity
-      style={[styles.button, { backgroundColor: colors.primary }]}
+      style={[styles.button, { backgroundColor: theme.colors.primary }]}
       onPress={onPress}
     >
-      <Text style={[styles.buttonText, { color: colors.text }]}>{label}</Text>
+      <Text style={[styles.buttonText, { color: theme.colors.text }]}>{label}</Text>
     </TouchableOpacity>
   );
 };
