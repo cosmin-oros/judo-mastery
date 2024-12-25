@@ -46,5 +46,9 @@
     "password-placeholder": "パスワードを入力",
     "login-button": "ログイン",
     "no-account": "アカウントをお持ちでないですか？"
+  },
+  "language-selection": {
+    "title": "言語を選択",
+    "next-step": "次のステップ"
   }
 }

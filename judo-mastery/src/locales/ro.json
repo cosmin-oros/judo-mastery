@@ -46,5 +46,9 @@
     "password-placeholder": "Introduceți parola",
     "login-button": "Autentificare",
     "no-account": "Nu ai un cont?"
+  },
+  "language-selection": {
+    "title": "Selectează limba",
+    "next-step": "Pasul Următor"
   }
 }

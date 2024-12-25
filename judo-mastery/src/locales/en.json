@@ -46,5 +46,9 @@
     "password-placeholder": "Enter your password",
     "login-button": "Login",
     "no-account": "Don't have an account?"
+  },
+  "language-selection": {
+    "title": "Select Language",
+    "next-step": "Next Step"
   }
 }

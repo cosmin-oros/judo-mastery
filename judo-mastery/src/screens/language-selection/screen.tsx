@@ -23,10 +23,15 @@ const LanguageSelectionScreen: React.FC = () => {
     // Save language preference if required
   };
 
+  const handleNextStep = () => {
+    // Handle going to the next step here
+    console.log("Next step");
+  };
+
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Text style={[styles.title, { color: theme.colors.text, fontFamily: theme.fonts.bold.fontFamily, fontWeight: theme.fonts.bold.fontWeight }]}>
-        {t("languageSelection.title")}
+        {t("language-selection.title")}
       </Text>
       <FlatList
         data={languages}
@@ -35,7 +40,9 @@ const LanguageSelectionScreen: React.FC = () => {
           <TouchableOpacity
             style={[
               styles.card,
-              { backgroundColor: item.code === selectedLanguage ? theme.colors.primary : theme.colors.card },
+              {
+                backgroundColor: item.code === selectedLanguage ? theme.colors.primary : theme.colors.card,
+              },
             ]}
             onPress={() => handleLanguageSelection(item.code)}
           >
@@ -43,7 +50,9 @@ const LanguageSelectionScreen: React.FC = () => {
             <Text
               style={[
                 styles.languageName,
-                { color: item.code === selectedLanguage ? theme.colors.background : theme.colors.text },
+                {
+                  color: item.code === selectedLanguage ? theme.colors.background : theme.colors.text,
+                },
               ]}
             >
               {item.name}
@@ -52,6 +61,14 @@ const LanguageSelectionScreen: React.FC = () => {
         )}
         contentContainerStyle={styles.listContainer}
       />
+      <TouchableOpacity
+        style={[styles.nextButton, { backgroundColor: theme.colors.primary }]}
+        onPress={handleNextStep}
+      >
+        <Text style={[styles.nextButtonText, { color: theme.colors.background, fontFamily: theme.fonts.bold.fontFamily, fontWeight: theme.fonts.bold.fontWeight }]}>
+          {t("language-selection.next-step")}
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 };
@@ -59,35 +76,49 @@ const LanguageSelectionScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    padding: 20,
+    paddingHorizontal: 20,
+    paddingTop: '5%', 
   },
   title: {
     fontSize: 26,
+    fontWeight: "600",
     textAlign: "center",
     marginBottom: 20,
   },
   listContainer: {
-    paddingBottom: 20,
+    marginHorizontal: '1%',
+    paddingBottom: 30, // Increased bottom padding for spacing between list and button
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
-    marginVertical: 10,
-    borderRadius: 18,  
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    marginVertical: 12, // Increased margin between language cards
+    borderRadius: 18,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },
     shadowOpacity: 0.1,
     shadowRadius: 8,
-    elevation: 3, 
+    elevation: 3,
   },
   flag: {
     fontSize: 32,
     marginRight: 15,
   },
   languageName: {
-    fontSize: 20,  
+    fontSize: 20,
     fontWeight: "600",
+  },
+  nextButton: {
+    padding: 15,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+    marginBottom: '5%'
+  },
+  nextButtonText: {
+    fontSize: 18,
   },
 });
 

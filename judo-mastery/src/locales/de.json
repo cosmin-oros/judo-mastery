@@ -46,5 +46,9 @@
     "password-placeholder": "Geben Sie Ihr Passwort ein",
     "login-button": "Anmelden",
     "no-account": "Haben Sie kein Konto?"
+  },
+  "language-selection": {
+    "title": "Sprache auswählen",
+    "next-step": "Nächster Schritt"
   }
 }
