@@ -23,7 +23,13 @@
       "timeout-title": "Timeout",
       "timeout-message": "The operation took too long. Please try again.",
       "unknown-error-title": "Unknown Error",
-      "unknown-error-message": "An unknown error occurred. Please try again."
+      "unknown-error-message": "An unknown error occurred. Please try again.",
+      "emailAlreadyInUseTitle": "Email Already In Use",
+      "emailAlreadyInUseMessage": "The email you entered is already associated with an account. Please try logging in or use a different email.",
+      "weakPasswordTitle": "Weak Password",
+      "weakPasswordMessage": "Your password is too weak. Please choose a stronger password.",
+      "unknownErrorTitle": "Unknown Error",
+      "unknownErrorMessage": "An unknown error occurred. Please try again."
     },
     "sessionExpired": {
       "title": "Session Expired",

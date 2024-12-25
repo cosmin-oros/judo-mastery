@@ -6,12 +6,12 @@
   },
   "auth": {
     "errors": {
-      "invalid-email-title": "Email invalide",
+      "invalid-email-title": "E-mail invalide",
       "invalid-email-message": "Veuillez entrer une adresse e-mail valide.",
-      "user-not-found-title": "Utilisateur introuvable",
-      "user-not-found-message": "Aucun compte trouvé avec cette adresse e-mail.",
+      "user-not-found-title": "Utilisateur non trouvé",
+      "user-not-found-message": "Aucun compte trouvé avec cet e-mail.",
       "wrong-password-title": "Mot de passe incorrect",
-      "wrong-password-message": "Le mot de passe que vous avez entré est incorrect. Le mot de passe doit comporter au moins 6 caractères.",
+      "wrong-password-message": "Le mot de passe que vous avez entré est incorrect. Il doit comporter au moins 6 caractères.",
       "invalid-credential-title": "Les mots de passe ne correspondent pas",
       "invalid-credential-message": "Le mot de passe de confirmation ne correspond pas.",
       "user-disabled-title": "Compte désactivé",
@@ -19,11 +19,17 @@
       "operation-not-allowed-title": "Opération non autorisée",
       "operation-not-allowed-message": "Cette opération n'est pas autorisée.",
       "too-many-requests-title": "Trop de tentatives",
-      "too-many-requests-message": "Vous avez fait trop de tentatives. Veuillez réessayer plus tard.",
-      "timeout-title": "Délai d'expiration",
-      "timeout-message": "L'opération a pris trop de temps. Veuillez réessayer.",
+      "too-many-requests-message": "Vous avez effectué trop de tentatives. Veuillez réessayer plus tard.",
+      "timeout-title": "Délai d'attente dépassé",
+      "timeout-message": "L'opération a duré trop longtemps. Veuillez réessayer.",
       "unknown-error-title": "Erreur inconnue",
-      "unknown-error-message": "Une erreur inconnue s'est produite. Veuillez réessayer."
+      "unknown-error-message": "Une erreur inconnue est survenue. Veuillez réessayer.",
+      "emailAlreadyInUseTitle": "E-mail déjà utilisé",
+      "emailAlreadyInUseMessage": "L'adresse e-mail entrée est déjà associée à un compte. Veuillez essayer de vous connecter ou utilisez un autre e-mail.",
+      "weakPasswordTitle": "Mot de passe faible",
+      "weakPasswordMessage": "Votre mot de passe est trop faible. Veuillez choisir un mot de passe plus fort.",
+      "unknownErrorTitle": "Erreur inconnue",
+      "unknownErrorMessage": "Une erreur inconnue est survenue. Veuillez réessayer."
     },
     "sessionExpired": {
       "title": "Session expirée",
