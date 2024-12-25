@@ -56,5 +56,25 @@
   "language-selection": {
     "title": "言語を選択",
     "next-step": "次のステップ"
+  },
+  "extra-user-data": {
+    "title": "ユーザーデータの追加情報",
+    "experience": "経験",
+    "experiencePlaceholder": "あなたの経験を入力してください",
+    "beltRank": "帯のランク",
+    "white": "白",
+    "blue": "青",
+    "black": "黒",
+    "trainingFrequency": "トレーニング頻度",
+    "trainingFrequencyPlaceholder": "トレーニング頻度を入力してください",
+    "goals": "目標",
+    "goalsPlaceholder": "目標を入力してください",
+    "trainingFocus": "トレーニングの焦点",
+    "throws": "投げ技",
+    "grappling": "グラップリング",
+    "groundwork": "グラウンドワーク",
+    "favoriteTechniques": "お気に入りの技",
+    "favoriteTechniquesPlaceholder": "お気に入りの技を入力してください",
+    "save": "保存"
   }
 }

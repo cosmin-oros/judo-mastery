@@ -56,5 +56,25 @@
   "language-selection": {
     "title": "Select Language",
     "next-step": "Next Step"
+  },
+  "extra-user-data": {
+    "title": "Extra User Data",
+    "experience": "Experience",
+    "experiencePlaceholder": "Enter your experience",
+    "beltRank": "Belt Rank",
+    "white": "White",
+    "blue": "Blue",
+    "black": "Black",
+    "trainingFrequency": "Training Frequency",
+    "trainingFrequencyPlaceholder": "How often do you train?",
+    "goals": "Goals",
+    "goalsPlaceholder": "What are your goals?",
+    "trainingFocus": "Training Focus",
+    "throws": "Throws",
+    "grappling": "Grappling",
+    "groundwork": "Groundwork",
+    "favoriteTechniques": "Favorite Techniques",
+    "favoriteTechniquesPlaceholder": "Your favorite techniques",
+    "save": "Save"
   }
 }

@@ -36,12 +36,12 @@ const CustomInput: React.FC<CustomInputProps> = ({
             styles.input,
             {
               backgroundColor: theme.colors.card,
-              borderColor: error ? colors["red-500"] : theme.colors.border,
+              borderColor: error ? colors["red-500"] : theme.colors.text,
               color: theme.colors.text,
             },
           ]}
           placeholder={placeholder}
-          placeholderTextColor="#ccc"
+          placeholderTextColor={theme.colors.text}
           secureTextEntry={secureTextEntry}
           value={value}
           onChangeText={onChangeText}

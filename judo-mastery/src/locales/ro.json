@@ -56,5 +56,25 @@
   "language-selection": {
     "title": "Selectează limba",
     "next-step": "Pasul Următor"
+  },
+  "extra-user-data": {
+    "title": "Date suplimentare ale utilizatorului",
+    "experience": "Experiență",
+    "experiencePlaceholder": "Introduceti experiența",
+    "beltRank": "Centura",
+    "white": "Albă",
+    "blue": "Albastră",
+    "black": "Neagră",
+    "trainingFrequency": "Frecvența antrenamentelor",
+    "trainingFrequencyPlaceholder": "Introduceti frecvența antrenamentelor",
+    "goals": "Obiective",
+    "goalsPlaceholder": "Introduceti obiectivele",
+    "trainingFocus": "Focalizare pe antrenament",
+    "throws": "Aruncări",
+    "grappling": "Luptă",
+    "groundwork": "Muncă pe sol",
+    "favoriteTechniques": "Tehnici preferate",
+    "favoriteTechniquesPlaceholder": "Introduceti tehnicile preferate",
+    "save": "Salvează"
   }
 }

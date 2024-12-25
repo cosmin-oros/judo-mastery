@@ -56,5 +56,25 @@
   "language-selection": {
     "title": "Sélectionner la langue",
     "next-step": "Étape Suivante"
+  },
+  "extra-user-data": {
+    "title": "Données supplémentaires de l'utilisateur",
+    "experience": "Expérience",
+    "experiencePlaceholder": "Entrez votre expérience",
+    "beltRank": "Niveau de ceinture",
+    "white": "Blanc",
+    "blue": "Bleu",
+    "black": "Noir",
+    "trainingFrequency": "Fréquence d'entraînement",
+    "trainingFrequencyPlaceholder": "Entrez votre fréquence d'entraînement",
+    "goals": "Objectifs",
+    "goalsPlaceholder": "Entrez vos objectifs",
+    "trainingFocus": "Focus d'entraînement",
+    "throws": "Lancers",
+    "grappling": "Lutte",
+    "groundwork": "Travail au sol",
+    "favoriteTechniques": "Techniques préférées",
+    "favoriteTechniquesPlaceholder": "Entrez vos techniques préférées",
+    "save": "Enregistrer"
   }
 }

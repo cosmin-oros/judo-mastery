@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, StyleSheet, Text, FlatList, TouchableOpacity } from "react-native";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
+import { replaceRoute } from "@/src/utils/replaceRoute";
 
 const languages = [
   { code: "en", name: "English", flag: "🇺🇸" },
@@ -20,12 +21,10 @@ const LanguageSelectionScreen: React.FC = () => {
   const handleLanguageSelection = (languageCode: string) => {
     setSelectedLanguage(languageCode);
     i18n.changeLanguage(languageCode);
-    // Save language preference if required
   };
 
   const handleNextStep = () => {
-    // Handle going to the next step here
-    console.log("Next step");
+    replaceRoute('/extra-user-data');
   };
 
   return (

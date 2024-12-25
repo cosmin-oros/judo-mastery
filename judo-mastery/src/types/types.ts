@@ -7,7 +7,18 @@ export type UserType = {
   firstName?: string;
   lastName?: string;
   idToken?: string;
-  // more
+  achievements?: string[]; // Array of achievement IDs (optional)
+  belt?: "white" | "blue" | "black"; // User's belt rank (optional)
+  daily_tasks?: string[]; // Array of task IDs (optional)
+  icon?: number; // Icon identifier (optional)
+  level?: number; // User's level (optional)
+  name?: string; // User's full name
+  statistics?: {
+    tasks_completed: number; // Number of tasks completed (optional)
+    techniques_learned: number; // Number of techniques learned (optional)
+    xp: number; // User's experience points (optional)
+  };
+  // Any other properties that may be needed can be added here as optional
 };
 
 export type AuthContextType = {
