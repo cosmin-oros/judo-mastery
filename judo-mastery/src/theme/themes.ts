@@ -26,6 +26,7 @@ export const lightTheme = {
     text: colors.black,
     border: colors["slate-300"],
     notification: colors["red-500"],
+    placeholder: colors["gray-500"],
   },
   fonts: {
     regular: { fontFamily: "System", fontWeight: "400" } as FontStyle,
@@ -45,6 +46,7 @@ export const darkTheme = {
     text: colors.white,
     border: colors["slate-600"],
     notification: colors["red-500"],
+    placeholder: colors["gray-500"],
   },
   fonts: {
     regular: { fontFamily: "System", fontWeight: "400" } as FontStyle,
