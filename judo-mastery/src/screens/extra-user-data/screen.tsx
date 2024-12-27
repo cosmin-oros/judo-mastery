@@ -8,13 +8,14 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons"; 
+import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { saveUserDataToFirestore } from "@/src/firestoreService/userDataService";
 import { replaceRoute } from "@/src/utils/replaceRoute";
+import { colors } from "@/src/theme/colors";
 
 const ExtraUserDataScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -27,11 +28,27 @@ const ExtraUserDataScreen: React.FC = () => {
   const [goals, setGoals] = useState("");
   const [trainingFocus, setTrainingFocus] = useState("throws");
   const [favoriteTechniques, setFavoriteTechniques] = useState("");
+
+  // Competition Section
+  const [competitionsParticipated, setCompetitionsParticipated] = useState("");
+  const [ippons, setIppons] = useState("");
+  const [wazaAris, setWazaAris] = useState("");
+  const [yukos, setYukos] = useState("");
+  const [goldMedals, setGoldMedals] = useState("");
+  const [silverMedals, setSilverMedals] = useState("");
+  const [bronzeMedals, setBronzeMedals] = useState("");
+
   const [openBeltRank, setOpenBeltRank] = useState(false);
   const [openTrainingFocus, setOpenTrainingFocus] = useState(false);
 
   const validateInputs = () => {
-    if (!experience || !trainingFrequency || !goals || !favoriteTechniques) {
+    if (
+      !experience ||
+      !competitionsParticipated ||
+      !trainingFrequency ||
+      !goals ||
+      !favoriteTechniques
+    ) {
       Alert.alert(
         t("extra-user-data.validationTitle"),
         t("extra-user-data.validationMessage")
@@ -56,6 +73,13 @@ const ExtraUserDataScreen: React.FC = () => {
         goals,
         trainingFocus,
         favoriteTechniques,
+        competitionsParticipated,
+        ippons,
+        wazaAris,
+        yukos,
+        goldMedals,
+        silverMedals,
+        bronzeMedals,
       };
 
       await saveUserDataToFirestore(updatedUserData); // Save to Firestore
@@ -75,6 +99,11 @@ const ExtraUserDataScreen: React.FC = () => {
           {t("extra-user-data.title")}
         </Text>
 
+        {/* Competition Section */}
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+          {t("extra-user-data.competitionSection")}
+        </Text>
+
         {/* Experience */}
         <View style={styles.inputContainer}>
           <MaterialIcons name="school" size={24} color={theme.colors.primary} />
@@ -84,6 +113,97 @@ const ExtraUserDataScreen: React.FC = () => {
             onChangeText={setExperience}
             keyboardType="numeric"
             placeholder={t("extra-user-data.experiencePlaceholder")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Competitions Participated */}
+        <View style={styles.inputContainer}>
+          <AntDesign name="Trophy" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={competitionsParticipated}
+            onChangeText={setCompetitionsParticipated}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.competitionsParticipated")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Ippons */}
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={ippons}
+            onChangeText={setIppons}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.ippons")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Waza-Aris */}
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={wazaAris}
+            onChangeText={setWazaAris}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.wazaAris")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Yukos */}
+        <View style={styles.inputContainer}>
+          <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={yukos}
+            onChangeText={setYukos}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.yukos")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Gold Medals */}
+        <View style={styles.inputContainer}>
+          <Ionicons name="medal-outline" size={24} color={colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={goldMedals}
+            onChangeText={setGoldMedals}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.goldMedals")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Silver Medals */}
+        <View style={styles.inputContainer}>
+          <Ionicons name="medal-outline" size={24} color={colors["gray-700"]} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={silverMedals}
+            onChangeText={setSilverMedals}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.silverMedals")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Bronze Medals */}
+        <View style={styles.inputContainer}>
+          <Ionicons name="medal-outline" size={24} color={colors["amber-500"]} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={bronzeMedals}
+            onChangeText={setBronzeMedals}
+            keyboardType="numeric"
+            placeholder={t("extra-user-data.bronzeMedals")}
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
@@ -209,6 +329,11 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     textAlign: "center",
     marginBottom: 20,
+  },
+  sectionTitle: {
+    fontSize: 22,
+    fontWeight: "500",
+    marginVertical: 10,
   },
   label: {
     fontSize: 18,
