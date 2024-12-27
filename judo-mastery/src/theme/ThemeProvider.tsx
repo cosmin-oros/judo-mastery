@@ -1,7 +1,8 @@
-// ThemeContext.tsx
-import React, { createContext, useContext, useState } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
 import { lightTheme, darkTheme } from "./themes";
 import { ThemeContextType } from "../types/types";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { Appearance } from "react-native";
 
 const ThemeContext = createContext<ThemeContextType | undefined>(undefined);
 
@@ -10,7 +11,27 @@ export const ThemeProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
   const [isDarkMode, setIsDarkMode] = useState(false);
 
-  const toggleTheme = () => setIsDarkMode((prev) => !prev);
+  useEffect(() => {
+    // Load the theme preference from storage or match system preference
+    const loadThemePreference = async () => {
+      const storedPreference = await AsyncStorage.getItem("theme");
+      if (storedPreference !== null) {
+        setIsDarkMode(storedPreference === "dark");
+      } else {
+        const systemPreference = Appearance.getColorScheme();
+        setIsDarkMode(systemPreference === "dark");
+      }
+    };
+    loadThemePreference();
+  }, []);
+
+  const toggleTheme = async () => {
+    setIsDarkMode((prev) => {
+      const newMode = !prev;
+      AsyncStorage.setItem("theme", newMode ? "dark" : "light");
+      return newMode;
+    });
+  };
 
   const theme = isDarkMode ? darkTheme : lightTheme;
 

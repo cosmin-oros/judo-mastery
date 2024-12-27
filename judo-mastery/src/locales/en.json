@@ -23,7 +23,13 @@
       "timeout-title": "Timeout",
       "timeout-message": "The operation took too long. Please try again.",
       "unknown-error-title": "Unknown Error",
-      "unknown-error-message": "An unknown error occurred. Please try again."
+      "unknown-error-message": "An unknown error occurred. Please try again.",
+      "emailAlreadyInUseTitle": "Email Already In Use",
+      "emailAlreadyInUseMessage": "The email you entered is already associated with an account. Please try logging in or use a different email.",
+      "weakPasswordTitle": "Weak Password",
+      "weakPasswordMessage": "Your password is too weak. Please choose a stronger password.",
+      "unknownErrorTitle": "Unknown Error",
+      "unknownErrorMessage": "An unknown error occurred. Please try again."
     },
     "sessionExpired": {
       "title": "Session Expired",
@@ -46,5 +52,46 @@
     "password-placeholder": "Enter your password",
     "login-button": "Login",
     "no-account": "Don't have an account?"
+  },
+  "language-selection": {
+    "title": "Select Language",
+    "next-step": "Next Step"
+  },
+  "extra-user-data": {
+    "title": "Extra User Data",
+    "competitionSection": "Competition Section",
+    "experiencePlaceholder": "Enter your experience",
+    "competitionsParticipated": "Competitions Participated",
+    "ippons": "Ippons",
+    "wazaAris": "Waza-Aris",
+    "yukos": "Yukos",
+    "goldMedals": "Gold Medals",
+    "silverMedals": "Silver Medals",
+    "bronzeMedals": "Bronze Medals",
+    "beltRank": "Belt Rank",
+    "white": "White",
+    "yellow": "Yellow",
+    "orange": "Orange",
+    "green": "Green",
+    "blue": "Blue",
+    "purple": "Purple",
+    "brown": "Brown",
+    "black": "Black",
+    "red-and-white": "Red and White",
+    "red": "Red",
+    "trainingFrequencyPlaceholder": "Enter your training frequency",
+    "goalsPlaceholder": "Enter your goals",
+    "trainingFocus": "Training Focus",
+    "throws": "Throws",
+    "grappling": "Grappling",
+    "groundwork": "Groundwork",
+    "favoriteTechniquesPlaceholder": "Enter your favorite techniques",
+    "validationTitle": "Validation Error",
+    "validationMessage": "Please fill in all the required fields.",
+    "save": "Save",
+    "saveSuccessTitle": "Success",
+    "saveSuccessMessage": "Your profile has been saved successfully.",
+    "saveErrorTitle": "Error",
+    "saveErrorMessage": "There was an error saving your profile."
   }
 }

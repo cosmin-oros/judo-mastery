@@ -6,6 +6,7 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import CustomInput from "../login/components/CustomInput";
 import FormButton from "../login/components/FormButton";
 import FormLink from "../login/components/FormLink";
+import { useTheme } from "@/src/theme/ThemeProvider";
 
 const SignUpScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -14,6 +15,7 @@ const SignUpScreen: React.FC = () => {
   const [password, setPassword] = useState("");
   const [confirmPassword, setConfirmPassword] = useState("");
   const [error, setError] = useState({ email: "", password: "", confirmPassword: "" });
+  const { theme } = useTheme();
 
   const handleSignUp = async () => {
     const errors = { email: "", password: "", confirmPassword: "" };
@@ -27,7 +29,6 @@ const SignUpScreen: React.FC = () => {
     if (!errors.email && !errors.password && !errors.confirmPassword) {
       try {
         await signupWithEmailAndPassword(email, password);
-        replaceRoute("/login");
       } catch {
         setError({ ...errors, email: t("auth.errors.user-not-found-message") });
       }
@@ -35,9 +36,9 @@ const SignUpScreen: React.FC = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Image source={require("../../../assets/images/logo.png")} style={styles.logo} />
-      <Text style={styles.title}>{t("signup.title")}</Text>
+      <Text style={[styles.title, { color: theme.colors.text, fontFamily: theme.fonts.bold.fontFamily, fontWeight: theme.fonts.bold.fontWeight }]}>{t("signup.title")}</Text>
       <View style={styles.inputContainer}>
         <CustomInput
           value={email}
@@ -72,7 +73,6 @@ const styles = StyleSheet.create({
     padding: 30,
     justifyContent: "center",
     alignItems: "center",
-    backgroundColor: "#f9f9f9",
   },
   logo: {
     width: 240,
@@ -81,8 +81,6 @@ const styles = StyleSheet.create({
   },
   title: {
     fontSize: 28,
-    fontWeight: "bold",
-    color: "#333",
     marginBottom: 20,
   },
   inputContainer: {

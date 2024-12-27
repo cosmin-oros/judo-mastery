@@ -1,7 +1,8 @@
+import { colors } from "@/src/theme/colors";
+import { useTheme } from "@/src/theme/ThemeProvider";
 import React, { useRef, useEffect } from "react";
 import { StyleSheet, Text, TextInput, View } from "react-native";
 import * as Animatable from "react-native-animatable";
-import { useTheme } from "@react-navigation/native";
 
 interface CustomInputProps {
   value: string;
@@ -18,7 +19,7 @@ const CustomInput: React.FC<CustomInputProps> = ({
   error,
   onChangeText,
 }) => {
-  const { colors } = useTheme();
+  const { theme } = useTheme();
   const shakeAnimation = useRef(null);
 
   useEffect(() => {
@@ -34,13 +35,13 @@ const CustomInput: React.FC<CustomInputProps> = ({
           style={[
             styles.input,
             {
-              backgroundColor: colors.card,
-              borderColor: error ? "#ff4d4d" : colors.border,
-              color: colors.text,
+              backgroundColor: theme.colors.card,
+              borderColor: error ? colors["red-500"] : theme.colors.text,
+              color: theme.colors.text,
             },
           ]}
           placeholder={placeholder}
-          placeholderTextColor="#ccc"
+          placeholderTextColor={theme.colors.text}
           secureTextEntry={secureTextEntry}
           value={value}
           onChangeText={onChangeText}
@@ -64,7 +65,7 @@ const styles = StyleSheet.create({
   },
   errorText: {
     fontSize: 14,
-    color: "#ff4d4d",
+    color: colors["red-500"],
     marginTop: 5,
   },
 });

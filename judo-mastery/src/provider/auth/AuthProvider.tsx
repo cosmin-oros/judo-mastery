@@ -46,12 +46,23 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
           uid: firebaseUser.uid,
           email: firebaseUser.email || null, // Provide null if email is missing
           idToken,
+          achievements: [], // Default to empty array or use additionalData
+          belt: "white", // Default to 'white' or use additionalData
+          daily_tasks: [], // Default to empty array or use additionalData
+          icon: 1, // Default to 1 or use additionalData
+          level: 1, // Default to level 1 or use additionalData
+          name: "", // Default to empty name or use additionalData
+          statistics: {
+            tasks_completed: 0, // Default to 0 tasks completed
+            techniques_learned: 0, // Default to 0 techniques learned
+            xp: 0, // Default to 0 XP
+          },
           ...additionalData, // Add any extra data passed during signup
         };
 
         await saveUserDataToFirestore(userData); // Save to Firestore
         setUser(userData); // Set the full user object
-        replaceRoute("/(tabs)/tab1"); // Navigate to a default screen after signup
+        replaceRoute("/language-selection");
       } else {
         console.log("Failed to sign up");
       }
@@ -95,7 +106,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
         };
 
         setUser(userData); // Set the full user object
-        replaceRoute("/(tabs)/tab1");
+        replaceRoute("/(tabs)/home");
       } else {
         console.error("User data not found");
         setUser(null);

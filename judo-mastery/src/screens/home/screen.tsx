@@ -1,16 +1,24 @@
-import { View, StyleSheet } from "react-native";
+import React from "react";
+import { View, Button, StyleSheet } from "react-native";
+import { useAuth } from "@/src/provider/auth/AuthProvider";
 
 const HomeScreen: React.FC = () => {
+  const { logout } = useAuth();
 
   return (
-    <View>
-
+    <View style={styles.container}>
+      <Button title="Logout" onPress={logout} />
     </View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
 
+  },
 });
 
 export default HomeScreen;

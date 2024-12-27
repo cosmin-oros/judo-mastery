@@ -1,19 +1,14 @@
 import React from "react";
 import { Text, TouchableOpacity, StyleSheet } from "react-native";
-import { useTheme } from "@react-navigation/native";
-import { colors } from "@/src/theme/colors";
-
-interface FormLinkProps {
-  text: string;
-  onPress: () => void;
-}
+import { useTheme } from "@/src/theme/ThemeProvider";
+import { FormLinkProps } from "@/src/types/types";
 
 const FormLink: React.FC<FormLinkProps> = ({ text, onPress }) => {
-  const { colors } = useTheme();
+  const { theme } = useTheme();
 
   return (
     <TouchableOpacity onPress={onPress}>
-      <Text style={[styles.link, { color: colors.primary }]}>{text}</Text>
+      <Text style={[styles.link, { color: theme.colors.primary }]}>{text}</Text>
     </TouchableOpacity>
   );
 };

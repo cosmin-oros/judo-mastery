@@ -2,16 +2,13 @@ import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
 import * as SplashScreen from "expo-splash-screen";
 import { AuthProvider } from "@/src/provider/auth/AuthProvider";
-import { ThemeProvider } from "@react-navigation/native";
-import { lightTheme, darkTheme } from "../src/theme/themes";
 import i18n from "@/src/i18n";
-import { Appearance } from "react-native";
+import { ThemeProvider } from "@/src/theme/ThemeProvider";
 
 SplashScreen.preventAutoHideAsync();
 
 export default function RootLayout() {
   const [isAppReady, setAppReady] = useState(false);
-  const [isDarkMode, setIsDarkMode] = useState(false);
 
   useEffect(() => {
     const prepareApp = async () => {
@@ -19,20 +16,17 @@ export default function RootLayout() {
         await i18n; // Wait for i18n to load
       } finally {
         setAppReady(true);
-        await SplashScreen.hideAsync();
+        await SplashScreen.hideAsync(); // Ensure this runs after app preparation
       }
     };
-
-    const colorScheme = Appearance.getColorScheme();
-    setIsDarkMode(colorScheme === "dark"); // Set initial theme based on system preference
 
     prepareApp();
   }, []);
 
-  if (!isAppReady) return null;
+  if (!isAppReady) return null; // Show nothing until the app is ready
 
   return (
-    <ThemeProvider value={isDarkMode ? darkTheme : lightTheme}>
+    <ThemeProvider>
       <AuthProvider>
         <Stack screenOptions={{ headerShown: false }} />
       </AuthProvider>
