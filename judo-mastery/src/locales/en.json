@@ -58,9 +58,9 @@
     "next-step": "Next Step"
   },
   "extra-user-data": {
-    "title": "Let's personalize your experience",
-    "competitionSection": "Competition",
-    "experiencePlaceholder": "Enter your experience in years",
+    "title": "Extra User Data",
+    "competitionSection": "Competition Section",
+    "experiencePlaceholder": "Enter your experience",
     "competitionsParticipated": "Competitions Participated",
     "ippons": "Ippons",
     "wazaAris": "Waza-Aris",
@@ -69,10 +69,6 @@
     "silverMedals": "Silver Medals",
     "bronzeMedals": "Bronze Medals",
     "beltRank": "Belt Rank",
-    "trainingFrequencyPlaceholder": "Enter your training frequency",
-    "goalsPlaceholder": "Enter your goals",
-    "trainingFocus": "Training Focus",
-    "favoriteTechniquesPlaceholder": "Enter your favorite techniques",
     "white": "White",
     "yellow": "Yellow",
     "orange": "Orange",
@@ -83,11 +79,19 @@
     "black": "Black",
     "red-and-white": "Red and White",
     "red": "Red",
+    "trainingFrequencyPlaceholder": "Enter your training frequency",
+    "goalsPlaceholder": "Enter your goals",
+    "trainingFocus": "Training Focus",
     "throws": "Throws",
     "grappling": "Grappling",
     "groundwork": "Groundwork",
+    "favoriteTechniquesPlaceholder": "Enter your favorite techniques",
     "validationTitle": "Validation Error",
-    "validationMessage": "Please fill in all the required fields before submitting.",
-    "save": "Save Profile"
+    "validationMessage": "Please fill in all the required fields.",
+    "save": "Save",
+    "saveSuccessTitle": "Success",
+    "saveSuccessMessage": "Your profile has been saved successfully.",
+    "saveErrorTitle": "Error",
+    "saveErrorMessage": "There was an error saving your profile."
   }
 }
