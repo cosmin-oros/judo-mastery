@@ -43,11 +43,16 @@ const ExtraUserDataScreen: React.FC = () => {
 
   const validateInputs = () => {
     if (
-      !experience ||
-      !competitionsParticipated ||
-      !trainingFrequency ||
-      !goals ||
-      !favoriteTechniques
+      experience === undefined || 
+      experience === null ||
+      competitionsParticipated === undefined || 
+      competitionsParticipated === null ||
+      trainingFrequency === undefined || 
+      trainingFrequency === null ||
+      goals === undefined || 
+      goals === null ||
+      favoriteTechniques === undefined || 
+      favoriteTechniques === null
     ) {
       Alert.alert(
         t("extra-user-data.validationTitle"),
@@ -82,8 +87,13 @@ const ExtraUserDataScreen: React.FC = () => {
         bronzeMedals,
       };
 
-      await saveUserDataToFirestore(updatedUserData); // Save to Firestore
-      replaceRoute("/tabs/home");
+      try {
+        await saveUserDataToFirestore(updatedUserData); // Save to Firestore
+        Alert.alert(t("extra-user-data.saveSuccessTitle"), t("extra-user-data.saveSuccessMessage"));
+        replaceRoute("/(tabs)/home");
+      } catch (error) {
+        Alert.alert(t("extra-user-data.saveErrorTitle"), t("extra-user-data.saveErrorMessage"));
+      }
     }
   };
 
