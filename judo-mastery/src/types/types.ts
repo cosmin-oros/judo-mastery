@@ -61,3 +61,7 @@ export interface FormButtonProps {
   label: string;
   onPress: () => void;
 }
+
+export interface TopBarProps {
+  title: string;
+}

@@ -9,7 +9,7 @@ export default function Layout() {
         <Stack.Screen
           name="index"
           options={{
-            header: () => <TopBar title="Judo Mastery"/>,
+            header: () => <TopBar title="Profile"/>,
           }}
         />
       </Stack>

@@ -11,16 +11,27 @@ export default function Layout() {
         tabBarInactiveTintColor: colors["gray-400"],
         tabBarShowLabel: true,
         tabBarLabelStyle: styles.tabBarLabel,
+        headerShown: false, // Disable default top bar
       }}
     >
       <Tabs.Screen
         name="home/index"
         options={{
           title: "Home",
-          tabBarIcon: ({ color }) => <FontAwesome name="home" size={23} color={color} />,
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="home" size={23} color={color} />
+          ),
         }}
       />
-      {/* add more */}
+      <Tabs.Screen
+        name="profile/index"
+        options={{
+          title: "Profile",
+          tabBarIcon: ({ color }) => (
+            <FontAwesome name="user" size={23} color={color} />
+          ),
+        }}
+      />
     </Tabs>
   );
 }
