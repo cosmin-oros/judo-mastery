@@ -93,5 +93,26 @@
     "saveSuccessMessage": "Vos données ont été enregistrées avec succès.",
     "saveErrorTitle": "Erreur lors de l'enregistrement",
     "saveErrorMessage": "Une erreur s'est produite lors de l'enregistrement de vos données."
+  },
+  "profile": {
+    "title": "Profil",
+    "statistics": "Statistiques",
+    "tasks-completed": "Tâches Terminées",
+    "techniques-learned": "Techniques Apprises",
+    "daily-tasks": "Tâches Quotidiennes",
+    "goals": "Objectifs",
+    "belt-rank": "Grade Ceinture",
+    "competitions-participated": "Compétitions Participées",
+    "level": "Niveau",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Médailles",
+      "gold": "Médailles d'Or",
+      "silver": "Médailles d'Argent",
+      "bronze": "Médailles de Bronze"
+    },
+    "ippons": "Ippons",
+    "waza-aris": "Waza-Aris",
+    "yukos": "Yukos"
   }
 }

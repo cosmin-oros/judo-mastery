@@ -93,5 +93,26 @@
     "saveSuccessMessage": "Ihre Daten wurden erfolgreich gespeichert.",
     "saveErrorTitle": "Fehler beim Speichern",
     "saveErrorMessage": "Beim Speichern Ihrer Daten ist ein Fehler aufgetreten."
+  },
+  "profile": {
+    "title": "Profil",
+    "statistics": "Statistiken",
+    "tasks-completed": "Abgeschlossene Aufgaben",
+    "techniques-learned": "Erlernte Techniken",
+    "daily-tasks": "Tägliche Aufgaben",
+    "goals": "Ziele",
+    "belt-rank": "Gürtelgrad",
+    "competitions-participated": "Teilgenommene Wettbewerbe",
+    "level": "Stufe",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Medaillen",
+      "gold": "Goldmedaillen",
+      "silver": "Silbermedaillen",
+      "bronze": "Bronzemedaillen"
+    },
+    "ippons": "Ippons",
+    "waza-aris": "Waza-Aris",
+    "yukos": "Yukos"
   }
 }

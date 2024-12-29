@@ -93,5 +93,26 @@
     "saveSuccessMessage": "Your profile has been saved successfully.",
     "saveErrorTitle": "Error",
     "saveErrorMessage": "There was an error saving your profile."
+  },
+  "profile": {
+    "title": "Profile",
+    "statistics": "Statistics",
+    "tasks-completed": "Tasks Completed",
+    "techniques-learned": "Techniques Learned",
+    "daily-tasks": "Daily Tasks",
+    "goals": "Goals",
+    "belt-rank": "Belt Rank",
+    "competitions-participated": "Competitions Participated",
+    "level": "Level",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Medals",
+      "gold": "Gold Medals",
+      "silver": "Silver Medals",
+      "bronze": "Bronze Medals"
+    },
+    "ippons": "Ippons",
+    "waza-aris": "Waza-Aris",
+    "yukos": "Yukos"
   }
 }

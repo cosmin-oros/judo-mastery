@@ -93,5 +93,26 @@
     "saveSuccessMessage": "Tus datos se han guardado exitosamente.",
     "saveErrorTitle": "Error al guardar",
     "saveErrorMessage": "Hubo un error al guardar tus datos."
+  },
+  "profile": {
+    "title": "Perfil",
+    "statistics": "Estadísticas",
+    "tasks-completed": "Tareas Completadas",
+    "techniques-learned": "Técnicas Aprendidas",
+    "daily-tasks": "Tareas Diarias",
+    "goals": "Objetivos",
+    "belt-rank": "Rango del Cinturón",
+    "competitions-participated": "Competiciones Participadas",
+    "level": "Nivel",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Medallas",
+      "gold": "Medallas de Oro",
+      "silver": "Medallas de Plata",
+      "bronze": "Medallas de Bronce"
+    },
+    "ippons": "Ippons",
+    "waza-aris": "Waza-Aris",
+    "yukos": "Yukos"
   }
 }

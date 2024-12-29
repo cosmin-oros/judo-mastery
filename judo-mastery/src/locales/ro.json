@@ -93,5 +93,26 @@
     "saveSuccessMessage": "Datele tale au fost salvate cu succes.",
     "saveErrorTitle": "Eroare la salvare",
     "saveErrorMessage": "A apărut o eroare la salvarea datelor tale."
+  },
+  "profile": {
+    "title": "Profil",
+    "statistics": "Statistici",
+    "tasks-completed": "Sarcini Finalizate",
+    "techniques-learned": "Tehnici Învățate",
+    "daily-tasks": "Sarcini Zilnice",
+    "goals": "Obiective",
+    "belt-rank": "Grad Centură",
+    "competitions-participated": "Competiții Participante",
+    "level": "Nivel",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Medalii",
+      "gold": "Medalii de Aur",
+      "silver": "Medalii de Argint",
+      "bronze": "Medalii de Bronz"
+    },
+    "ippons": "Ippon-uri",
+    "waza-aris": "Waza-Ari-uri",
+    "yukos": "Yuko-uri"
   }
 }
