@@ -1,6 +1,5 @@
 import React from "react";
 import { Stack } from "expo-router";
-import TopBar from "@/src/screens/profile/components/Topbar";
 
 export default function Layout() {
   return (
@@ -9,7 +8,7 @@ export default function Layout() {
         <Stack.Screen
           name="index"
           options={{
-            header: () => <TopBar title="Judo Mastery"/>,
+            headerShown: false
           }}
         />
       </Stack>

@@ -5,11 +5,23 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
-  ProgressBarAndroid,
 } from "react-native";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
-import TopBar from "@/src/screens/profile/components/Topbar";
+import { useTheme } from "@/src/theme/ThemeProvider";
+import { useTranslation } from "react-i18next";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+
+const BELT_COLORS: Record<string, string> = {
+  white: "#FFFFFF",
+  yellow: "#F7DC6F",
+  orange: "#F39C12",
+  green: "#28B463",
+  blue: "#2980B9",
+  purple: "#8E44AD",
+  brown: "#A0522D",
+  black: "#000000",
+};
 
 interface UserStatistics {
   xp: number;
@@ -35,7 +47,9 @@ interface UserData {
 }
 
 const ProfileScreen: React.FC = () => {
-  const { user } = useAuth(); // Get authenticated user
+  const { user } = useAuth();
+  const { t } = useTranslation();
+  const { theme } = useTheme();
   const [userData, setUserData] = useState<UserData | null>(null);
 
   useEffect(() => {
@@ -54,76 +68,95 @@ const ProfileScreen: React.FC = () => {
   const calculateXPProgress = (): number => {
     if (!userData?.statistics?.xp) return 0;
     const currentXP = userData.statistics.xp || 0;
-    const totalXP = 500; // Example max XP for the current level
-    return currentXP / totalXP;
+    const totalXP = 500; // Example max XP for level
+    return (currentXP / totalXP) * 100;
   };
 
   if (!userData) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.loadingText}>Loading...</Text>
+        <Text style={styles.loadingText}>{t("common.loading")}</Text>
       </SafeAreaView>
     );
   }
 
   return (
-    <SafeAreaView style={{ flex: 1 }}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <View style={styles.profileContainer}>
-          {/* Profile Image and Name */}
-          <View style={styles.profileHeader}>
-            <View style={styles.avatar} />
-            <Text style={styles.username}>
-              {userData.firstName || "First Name"} {userData.lastName || "Last Name"}
-            </Text>
-          </View>
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {/* Topbar */}
+      <View style={[styles.topBar, { backgroundColor: theme.colors.primary }]}>
+        <Text style={styles.topBarTitle}>{t("profile.title")}</Text>
+      </View>
 
-          {/* Level and XP Progress Bar */}
-          <Text style={styles.levelText}>Level {userData.level}</Text>
-          <ProgressBarAndroid
-            styleAttr="Horizontal"
-            indeterminate={false}
-            progress={calculateXPProgress()}
-            color="#6200ea"
-            style={styles.progressBar}
-          />
+      <ScrollView contentContainerStyle={styles.content}>
+        {/* Profile Section */}
+        <View style={[styles.profileSection, { backgroundColor: theme.colors.card }]}>
+          <View style={styles.avatarContainer}>
+            <Ionicons
+              name="person-circle-outline"
+              size={100}
+              color={theme.colors.placeholder}
+              style={styles.avatar}
+            />
+            <View
+              style={[
+                styles.beltWrap,
+                { borderColor: BELT_COLORS[userData.beltRank] || "#ccc" },
+              ]}
+            />
+          </View>
+          <Text style={styles.username}>
+            {userData.firstName || t("profile.default-first-name")}{" "}
+            {userData.lastName || t("profile.default-last-name")}
+          </Text>
+          <Text style={styles.levelText}>{t("profile.level")}: {userData.level}</Text>
+          <View style={styles.progressBarContainer}>
+            <View
+              style={[
+                styles.progressBar,
+                { width: `${calculateXPProgress()}%`, backgroundColor: theme.colors.primary },
+              ]}
+            />
+          </View>
           <Text style={styles.xpText}>
             {userData.statistics.xp} / 500 XP
           </Text>
-
-          {/* Statistics Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Statistics</Text>
-            <Text style={styles.statsText}>
-              Tasks Completed: {userData.statistics.tasks_completed}
-            </Text>
-            <Text style={styles.statsText}>
-              Techniques Learned: {userData.statistics.techniques_learned}
-            </Text>
-          </View>
-
-          {/* Medals Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Medals</Text>
-            <Text style={styles.statsText}>Gold Medals: {userData.goldMedals}</Text>
-            <Text style={styles.statsText}>
-              Silver Medals: {userData.silverMedals}
-            </Text>
-            <Text style={styles.statsText}>
-              Bronze Medals: {userData.bronzeMedals}
-            </Text>
-          </View>
-
-          {/* Daily Tasks Section */}
-          <View style={styles.section}>
-            <Text style={styles.sectionTitle}>Daily Tasks</Text>
-            <Text style={styles.statsText}>Goals: {userData.goals}</Text>
-            <Text style={styles.statsText}>Belt Rank: {userData.beltRank}</Text>
-            <Text style={styles.statsText}>
-              Competitions Participated: {userData.competitionsParticipated}
-            </Text>
-          </View>
         </View>
+
+        {/* Achievements Section */}
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+          {t("profile.achievements")}
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+          <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
+            <Ionicons name="medal-outline" size={30} color="gold" />
+            <Text style={styles.medalCount}>{userData.goldMedals}</Text>
+          </View>
+          <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
+            <Ionicons name="medal-outline" size={30} color="#C0C0C0" />
+            <Text style={styles.medalCount}>{userData.silverMedals}</Text>
+          </View>
+          <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
+            <Ionicons name="medal-outline" size={30} color="#CD7F32" />
+            <Text style={styles.medalCount}>{userData.bronzeMedals}</Text>
+          </View>
+        </ScrollView>
+
+        {/* Statistics Section */}
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+          {t("profile.statistics")}
+        </Text>
+        <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
+          <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
+            <Ionicons name="checkmark-done-outline" size={30} color={theme.colors.primary} />
+            <Text style={styles.statValue}>{userData.statistics.tasks_completed}</Text>
+            <Text style={styles.statLabel}>{t("profile.tasks-completed")}</Text>
+          </View>
+          <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
+            <MaterialIcons name="school" size={30} color={theme.colors.primary} />
+            <Text style={styles.statValue}>{userData.statistics.techniques_learned}</Text>
+            <Text style={styles.statLabel}>{t("profile.techniques-learned")}</Text>
+          </View>
+        </ScrollView>
       </ScrollView>
     </SafeAreaView>
   );
@@ -131,68 +164,114 @@ const ProfileScreen: React.FC = () => {
 
 const styles = StyleSheet.create({
   container: {
-    flexGrow: 1,
+    flex: 1,
+  },
+  topBar: {
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    paddingVertical: 20,
+    alignItems: "center",
+  },
+  topBarTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    color: "#fff",
+  },
+  content: {
     paddingHorizontal: 20,
     paddingBottom: 20,
   },
-  loadingText: {
-    fontSize: 16,
-    textAlign: "center",
-    marginTop: 20,
-  },
-  profileContainer: {
+  profileSection: {
     alignItems: "center",
-    marginTop: 30,
+    padding: 20,
+    borderRadius: 12,
+    marginBottom: 20,
+    elevation: 5,
   },
-  profileHeader: {
-    alignItems: "center",
+  avatarContainer: {
+    position: "relative",
   },
   avatar: {
-    width: 100,
-    height: 100,
-    backgroundColor: "#ccc",
-    borderRadius: 50,
-    marginBottom: 10,
+    zIndex: 1,
+  },
+  beltWrap: {
+    position: "absolute",
+    top: 90,
+    left: 10,
+    right: 10,
+    height: 10,
+    borderWidth: 5,
+    borderRadius: 20,
   },
   username: {
     fontSize: 24,
     fontWeight: "600",
-    marginBottom: 10,
+    marginVertical: 10,
   },
   levelText: {
     fontSize: 18,
     fontWeight: "500",
-    marginBottom: 5,
+  },
+  progressBarContainer: {
+    width: "100%",
+    height: 10,
+    backgroundColor: "#e0e0e0",
+    borderRadius: 5,
+    marginVertical: 10,
+    elevation: 2,
   },
   progressBar: {
-    width: "80%",
-    height: 10,
-    marginBottom: 10,
+    height: "100%",
+    borderRadius: 5,
   },
   xpText: {
-    fontSize: 16,
+    fontSize: 14,
     color: "#777",
-  },
-  section: {
-    marginVertical: 20,
-    width: "100%",
-    padding: 15,
-    backgroundColor: "#f9f9f9",
-    borderRadius: 10,
-    shadowColor: "#000",
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    elevation: 5,
   },
   sectionTitle: {
     fontSize: 20,
     fontWeight: "600",
     marginBottom: 10,
   },
-  statsText: {
+  horizontalScroll: {
+    marginBottom: 20,
+  },
+  medalCard: {
+    width: 100,
+    height: 100,
+    borderRadius: 12,
+    marginRight: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
+  },
+  medalCount: {
+    fontSize: 18,
+    fontWeight: "600",
+    marginTop: 5,
+  },
+  statCard: {
+    width: 120,
+    height: 120,
+    borderRadius: 12,
+    marginRight: 15,
+    alignItems: "center",
+    justifyContent: "center",
+    elevation: 5,
+  },
+  statValue: {
+    fontSize: 22,
+    fontWeight: "600",
+    marginTop: 10,
+  },
+  statLabel: {
+    fontSize: 14,
+    color: "#777",
+  },
+  loadingText: {
     fontSize: 16,
-    color: "#333",
-    marginBottom: 5,
+    textAlign: "center",
+    marginTop: 20,
   },
 });
 
