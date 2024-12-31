@@ -120,5 +120,19 @@
     "loading": "Se încarcă...",
     "no-data": "Nu există date disponibile",
     "achievements": "Realizări"
+  },
+  "settings": {
+    "title": "Setări",
+    "darkMode": "Mod Întunecat",
+    "notifications": "Notificări",
+    "language": "Limbă",
+    "rateApp": "Evaluează Aplicația",
+    "privacyPolicy": "Politica de Confidențialitate",
+    "shareApp": "Distribuie Aplicația",
+    "feedback": "Feedback",
+    "helpCenter": "Centru de Ajutor",
+    "resetAccount": "Resetează Contul",
+    "logout": "Deconectare",
+    "appVersion": "Versiunea Aplicației: {{version}}"
   }
 }

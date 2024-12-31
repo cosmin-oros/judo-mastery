@@ -120,5 +120,19 @@
     "loading": "Cargando...",
     "no-data": "No hay datos disponibles",
     "achievements": "Logros"
+  },
+  "settings": {
+    "title": "Configuración",
+    "darkMode": "Modo Oscuro",
+    "notifications": "Notificaciones",
+    "language": "Idioma",
+    "rateApp": "Calificar la Aplicación",
+    "privacyPolicy": "Política de Privacidad",
+    "shareApp": "Compartir Aplicación",
+    "feedback": "Comentarios",
+    "helpCenter": "Centro de Ayuda",
+    "resetAccount": "Restablecer Cuenta",
+    "logout": "Cerrar Sesión",
+    "appVersion": "Versión de la Aplicación: {{version}}"
   }
 }

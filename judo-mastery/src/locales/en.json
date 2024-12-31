@@ -120,5 +120,19 @@
     "loading": "Loading...",
     "no-data": "No data available",
     "achievements": "Achievements"
+  },
+  "settings": {
+    "title": "Settings",
+    "darkMode": "Dark Mode",
+    "notifications": "Notifications",
+    "language": "Language",
+    "rateApp": "Rate App",
+    "privacyPolicy": "Privacy Policy",
+    "shareApp": "Share App",
+    "feedback": "Feedback",
+    "helpCenter": "Help Center",
+    "resetAccount": "Reset Account",
+    "logout": "Logout",
+    "appVersion": "App Version: {{version}}"
   }
 }

@@ -120,5 +120,19 @@
     "loading": "Laden...",
     "no-data": "Keine Daten verfügbar",
     "achievements": "Erfolge"
+  },
+  "settings": {
+    "title": "Einstellungen",
+    "darkMode": "Dunkelmodus",
+    "notifications": "Benachrichtigungen",
+    "language": "Sprache",
+    "rateApp": "App Bewerten",
+    "privacyPolicy": "Datenschutzrichtlinie",
+    "shareApp": "App Teilen",
+    "feedback": "Feedback",
+    "helpCenter": "Hilfezentrum",
+    "resetAccount": "Konto Zurücksetzen",
+    "logout": "Abmelden",
+    "appVersion": "App-Version: {{version}}"
   }
 }
