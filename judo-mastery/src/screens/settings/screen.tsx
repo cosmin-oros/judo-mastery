@@ -7,9 +7,10 @@ import {
   ScrollView,
   Switch,
 } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, AntDesign, Feather } from "@expo/vector-icons";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
+import { replaceRoute } from "@/src/utils/replaceRoute";
 
 const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -25,23 +26,41 @@ const SettingsScreen: React.FC = () => {
 
   const toggleNotifications = () => {
     setNotificationsEnabled(!notificationsEnabled);
+    // Implement your notification logic
   };
 
   const handleNavigation = (route: string) => {
-    // Replace this with your navigation logic
-    console.log(`Navigate to ${route}`);
+    replaceRoute(route); // Use the provided replaceRoute function
   };
+
+  const navigationOptions: { label: string; icon: keyof typeof Ionicons.glyphMap; route: string }[] =
+    [
+      { label: t("settings.language"), icon: "globe-outline", route: "/language" },
+      { label: t("settings.rateApp"), icon: "star-outline", route: "/rate-app" },
+      { label: t("settings.privacyPolicy"), icon: "document-text-outline", route: "/privacy-policy" },
+      { label: t("settings.shareApp"), icon: "share-outline", route: "/share-app" },
+      { label: t("settings.feedback"), icon: "chatbubble-outline", route: "/feedback" },
+      { label: t("settings.helpCenter"), icon: "help-circle-outline", route: "/help-center" },
+      { label: t("settings.resetAccount"), icon: "refresh-outline", route: "/reset-account" },
+      { label: t("settings.logout"), icon: "log-out-outline", route: "/logout" },
+    ];
 
   return (
     <View style={[styles.screen, { backgroundColor: theme.colors.background }]}>
-      <ScrollView contentContainerStyle={styles.container}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>
+      {/* Back Button and Title */}
+      <View style={[styles.header, { backgroundColor: theme.colors.background }]}>
+        <TouchableOpacity onPress={() => replaceRoute("/(tabs)/home")} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
+        </TouchableOpacity>
+        <Text style={[styles.headerTitle, { color: theme.colors.text }]}>
           {t("settings.title")}
         </Text>
+      </View>
 
+      <ScrollView contentContainerStyle={styles.container}>
         {/* Dark Mode */}
         <View style={styles.optionContainer}>
-          <MaterialIcons name="brightness-6" size={24} color={theme.colors.primary} />
+          <Feather name="moon" size={24} color={theme.colors.primary} />
           <Text style={[styles.optionText, { color: theme.colors.text }]}>
             {t("settings.darkMode")}
           </Text>
@@ -55,7 +74,7 @@ const SettingsScreen: React.FC = () => {
 
         {/* Notifications */}
         <View style={styles.optionContainer}>
-          <MaterialIcons name="notifications" size={24} color={theme.colors.primary} />
+          <Ionicons name="notifications-outline" size={24} color={theme.colors.primary} />
           <Text style={[styles.optionText, { color: theme.colors.text }]}>
             {t("settings.notifications")}
           </Text>
@@ -68,30 +87,17 @@ const SettingsScreen: React.FC = () => {
         </View>
 
         {/* Navigation Options */}
-        {[
-          { label: t("settings.language"), route: "Language" },
-          { label: t("settings.rateApp"), route: "RateApp" },
-          { label: t("settings.privacyPolicy"), route: "PrivacyPolicy" },
-          { label: t("settings.shareApp"), route: "ShareApp" },
-          { label: t("settings.feedback"), route: "Feedback" },
-          { label: t("settings.helpCenter"), route: "HelpCenter" },
-          { label: t("settings.resetAccount"), route: "ResetAccount" },
-          { label: t("settings.logout"), route: "Logout" },
-        ].map((option, index) => (
+        {navigationOptions.map((option, index) => (
           <TouchableOpacity
             key={index}
             style={styles.optionContainer}
             onPress={() => handleNavigation(option.route)}
           >
-            <MaterialIcons
-              name="chevron-right"
-              size={24}
-              color={theme.colors.primary}
-              style={styles.iconRight}
-            />
+            <Ionicons name={option.icon} size={24} color={theme.colors.primary} />
             <Text style={[styles.optionText, { color: theme.colors.text }]}>
               {option.label}
             </Text>
+            <AntDesign name="right" size={18} color={theme.colors.primary} style={styles.iconRight} />
           </TouchableOpacity>
         ))}
 
@@ -108,16 +114,25 @@ const styles = StyleSheet.create({
   screen: {
     flex: 1,
   },
+  header: {
+    flexDirection: "row",
+    alignItems: "center",
+    paddingVertical: 15,
+    paddingHorizontal: 20,
+    backgroundColor: "white",
+    elevation: 2,
+  },
+  backButton: {
+    marginRight: 15,
+  },
+  headerTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+  },
   container: {
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "600",
-    textAlign: "center",
-    marginBottom: 20,
   },
   optionContainer: {
     flexDirection: "row",
