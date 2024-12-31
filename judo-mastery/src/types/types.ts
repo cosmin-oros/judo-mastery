@@ -13,11 +13,11 @@ export type UserType = {
   name?: string; // User's full name or last name (optional)
   idToken?: string; // Firebase ID token (optional)
   achievements?: string[]; // Array of achievement IDs (optional)
-  beltRank: keyof typeof BELT_COLORS; // User's belt rank
+  beltRank?: keyof typeof BELT_COLORS; // User's belt rank
   daily_tasks?: string[]; // Array of task IDs (optional)
   icon?: number; // Icon identifier (optional)
-  level: number; // User's level
-  statistics: UserStatistics; // User's statistics
+  level?: number; // User's level
+  statistics?: UserStatistics; // User's statistics
   // Additional fields specific to the judo athlete
   experience?: string; // User's experience in judo (optional)
   trainingFrequency?: number; // How many times per week they train (optional)
@@ -28,9 +28,9 @@ export type UserType = {
   ippons?: string; // Number of ippons scored (optional)
   wazaAris?: string; // Number of waza-aris scored (optional)
   yukos?: string; // Number of yukos scored (optional)
-  goldMedals: string; // Number of gold medals won
-  silverMedals: string; // Number of silver medals won
-  bronzeMedals: string; // Number of bronze medals won
+  goldMedals?: string; // Number of gold medals won
+  silverMedals?: string; // Number of silver medals won
+  bronzeMedals?: string; // Number of bronze medals won
 };
 
 // Auth Context Type
@@ -84,15 +84,18 @@ export interface TopBarProps {
   title: string; // Top bar title
 }
 
-// Profile Achievements Section Props
 export interface AchievementsSectionProps {
-  goldMedals: string;
-  silverMedals: string;
-  bronzeMedals: string;
+  userData: UserType;
 }
 
-// Profile Statistics Section Props
+export interface ProfileHeaderProps {
+  title: string;
+}
+
+export interface ProfileSectionProps {
+  userData: UserType;
+}
+
 export interface StatisticsSectionProps {
-  tasksCompleted: number;
-  techniquesLearned: number;
+  userData: UserType;
 }

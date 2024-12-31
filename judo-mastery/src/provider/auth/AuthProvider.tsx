@@ -4,6 +4,7 @@ import {
   signOut,
   getIdToken,
   createUserWithEmailAndPassword,
+  User as FirebaseUser,
 } from "firebase/auth";
 import { auth } from "./firebase";
 import { AuthContextType, UserType } from "../../types/types";
@@ -15,97 +16,109 @@ import {
   getUserDataFromFirestore,
   saveUserDataToFirestore,
 } from "@/src/firestoreService/userDataService";
+import { BELT_COLORS } from "@/src/types/types";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const { t } = useTranslation();
 
-  // Function for signing up a new user
+  /**
+   * Sign up a new user with email and password and save their details to Firestore
+   */
   const signupWithEmailAndPassword = async (
     email: string,
     password: string,
-    additionalData: Partial<UserType> = {} // Extra data for the user
+    additionalData: Partial<UserType> = {}
   ) => {
     try {
-      const userCredential = await createUserWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
+      const userCredential = await createUserWithEmailAndPassword(auth, email, password);
 
       if (userCredential) {
         const firebaseUser = userCredential.user;
-        const idToken = await getIdToken(firebaseUser); // Get the ID token
+        const idToken = await getIdToken(firebaseUser);
 
-        // Construct the user data object to match UserType
         const userData: UserType = {
           uid: firebaseUser.uid,
-          email: firebaseUser.email || null, // Provide null if email is missing
+          email: firebaseUser.email || null,
           idToken,
-          achievements: [], // Default to empty array or use additionalData
-          belt: "white", // Default to 'white' or use additionalData
-          daily_tasks: [], // Default to empty array or use additionalData
-          icon: 1, // Default to 1 or use additionalData
-          level: 1, // Default to level 1 or use additionalData
-          name: "", // Default to empty name or use additionalData
+          achievements: [],
+          beltRank: "white",
+          daily_tasks: [],
+          icon: 1,
+          level: 1,
+          name: additionalData.name || "",
           statistics: {
-            tasks_completed: 0, // Default to 0 tasks completed
-            techniques_learned: 0, // Default to 0 techniques learned
-            xp: 0, // Default to 0 XP
+            tasks_completed: 0,
+            techniques_learned: 0,
+            xp: 0,
           },
-          ...additionalData, // Add any extra data passed during signup
+          ...additionalData,
         };
 
-        await saveUserDataToFirestore(userData); // Save to Firestore
-        setUser(userData); // Set the full user object
+        await saveUserDataToFirestore(userData);
+        setUser(userData);
         replaceRoute("/language-selection");
       } else {
-        console.log("Failed to sign up");
+        console.error("Failed to sign up");
       }
     } catch (error: any) {
-      switch (error.code) {
-        case "auth/email-already-in-use":
-          showAlert(
-            t("auth.errors.emailAlreadyInUseTitle"),
-            t("auth.errors.emailAlreadyInUseMessage")
-          );
-          break;
-        case "auth/weak-password":
-          showAlert(
-            t("auth.errors.weakPasswordTitle"),
-            t("auth.errors.weakPasswordMessage")
-          );
-          break;
-        default:
-          showAlert(
-            t("auth.errors.unknownErrorTitle"),
-            t("auth.errors.unknownErrorMessage")
-          );
-          break;
-      }
+      handleError(error, "auth.errors");
       throw error;
     }
   };
 
-  // Function to fetch user data
+  /**
+   * Log in a user with email and password
+   */
+  const loginWithEmailAndPassword = async (email: string, password: string) => {
+    try {
+      const userCredential = await signInWithEmailAndPassword(auth, email, password);
+
+      if (userCredential) {
+        const firebaseUser = userCredential.user;
+        const idToken = await getIdToken(firebaseUser);
+
+        await fetchUserData(firebaseUser.uid, idToken);
+      } else {
+        console.error("Failed to log in");
+      }
+    } catch (error: any) {
+      handleError(error, "auth.errors");
+      throw error;
+    }
+  };
+
+  /**
+   * Log out the current user
+   */
+  const logout = async () => {
+    try {
+      await signOut(auth);
+      setUser(null);
+      replaceRoute("/login");
+    } catch (error) {
+      console.error("Error logging out:", error);
+    }
+  };
+
+  /**
+   * Fetch user data from Firestore and set it in the context
+   */
   const fetchUserData = async (uid: string, idToken: string) => {
     try {
-      const userDataFromFirestore = await getUserDataFromFirestore(uid); // Fetch data from Firestore
+      const userDataFromFirestore = await getUserDataFromFirestore(uid);
 
       if (userDataFromFirestore) {
-        // Construct the user data object to match UserType
         const userData: UserType = {
           ...userDataFromFirestore,
           uid,
-          email: userDataFromFirestore.email || null, // Provide null if email is missing
-          idToken, // Merge the ID token
+          email: userDataFromFirestore.email || null,
+          idToken,
         };
 
-        setUser(userData); // Set the full user object
+        setUser(userData);
         replaceRoute("/(tabs)/home");
       } else {
         console.error("User data not found");
@@ -119,68 +132,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     }
   };
 
-  const loginWithEmailAndPassword = async (email: string, password: string) => {
-    try {
-      const userCredential = await signInWithEmailAndPassword(
-        auth,
-        email,
-        password
-      );
-
-      if (userCredential) {
-        const firebaseUser = userCredential.user;
-        const idToken = await getIdToken(firebaseUser);
-
-        // Fetch user data from Firestore
-        await fetchUserData(firebaseUser.uid, idToken);
-      } else {
-        console.log("Failed to log in");
-      }
-    } catch (error: any) {
-      switch (error.code) {
-        case "auth/invalid-email":
-          showAlert(
-            t("auth.errors.invalidEmailTitle"),
-            t("auth.errors.invalidEmailMessage")
-          );
-          break;
-        case "auth/user-not-found":
-          showAlert(
-            t("auth.errors.userNotFoundTitle"),
-            t("auth.errors.userNotFoundMessage")
-          );
-          break;
-        case "auth/wrong-password":
-          showAlert(
-            t("auth.errors.wrongPasswordTitle"),
-            t("auth.errors.wrongPasswordMessage")
-          );
-          break;
-        default:
-          showAlert(
-            t("auth.errors.unknownErrorTitle"),
-            t("auth.errors.unknownErrorMessage")
-          );
-          break;
-      }
-      throw error;
-    }
-  };
-
-  const logout = async () => {
-    try {
-      await signOut(auth);
-      setUser(null);
-      replaceRoute("/login");
-    } catch (error) {
-      console.error("Error logging out:", error);
-    }
-  };
-
+  /**
+   * Get the ID token of the currently logged-in user
+   */
   const getAuthToken = async (): Promise<string | null> => {
     if (auth.currentUser) {
       try {
-        return await getIdToken(auth.currentUser); // Retrieve token dynamically
+        return await getIdToken(auth.currentUser);
       } catch (error) {
         console.error("Error retrieving ID token:", error);
         await handleSessionExpired();
@@ -192,20 +150,67 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
     return null;
   };
 
+  /**
+   * Handle Firebase authentication state changes
+   */
   useEffect(() => {
     const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
       if (firebaseUser) {
         const idToken = await getIdToken(firebaseUser);
 
-        // Fetch user data from Firestore
         await fetchUserData(firebaseUser.uid, idToken);
       } else {
         setUser(null);
         await handleSessionExpired();
       }
     });
+
     return unsubscribe;
   }, []);
+
+  /**
+   * Handle authentication errors and show alerts
+   */
+  const handleError = (error: any, errorKeyPrefix: string) => {
+    switch (error.code) {
+      case "auth/email-already-in-use":
+        showAlert(
+          t(`${errorKeyPrefix}.emailAlreadyInUseTitle`),
+          t(`${errorKeyPrefix}.emailAlreadyInUseMessage`)
+        );
+        break;
+      case "auth/weak-password":
+        showAlert(
+          t(`${errorKeyPrefix}.weakPasswordTitle`),
+          t(`${errorKeyPrefix}.weakPasswordMessage`)
+        );
+        break;
+      case "auth/invalid-email":
+        showAlert(
+          t(`${errorKeyPrefix}.invalidEmailTitle`),
+          t(`${errorKeyPrefix}.invalidEmailMessage`)
+        );
+        break;
+      case "auth/user-not-found":
+        showAlert(
+          t(`${errorKeyPrefix}.userNotFoundTitle`),
+          t(`${errorKeyPrefix}.userNotFoundMessage`)
+        );
+        break;
+      case "auth/wrong-password":
+        showAlert(
+          t(`${errorKeyPrefix}.wrongPasswordTitle`),
+          t(`${errorKeyPrefix}.wrongPasswordMessage`)
+        );
+        break;
+      default:
+        showAlert(
+          t(`${errorKeyPrefix}.unknownErrorTitle`),
+          t(`${errorKeyPrefix}.unknownErrorMessage`)
+        );
+        break;
+    }
+  };
 
   return (
     <AuthContext.Provider
@@ -222,6 +227,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
   );
 };
 
+/**
+ * Custom hook for accessing the Auth context
+ */
 export const useAuth = () => {
   const context = useContext(AuthContext);
   if (!context) {
