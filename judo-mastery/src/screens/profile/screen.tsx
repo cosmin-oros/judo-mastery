@@ -13,42 +13,13 @@ import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 import { colors } from "@/src/theme/colors";
-
-// Define UserStatistics interface
-interface UserStatistics {
-  xp: number;
-  tasks_completed: number;
-  techniques_learned: number;
-}
-
-// Define UserData interface
-interface UserData {
-  uid: string;
-  firstName?: string;
-  name?: string;
-  level: number;
-  beltRank: keyof typeof BELT_COLORS;
-  goldMedals: string;
-  silverMedals: string;
-  bronzeMedals: string;
-  statistics: UserStatistics;
-}
-
-const BELT_COLORS = {
-  white: "#FFFFFF",
-  yellow: "#F7DC6F",
-  orange: "#F39C12",
-  green: "#28B463",
-  blue: "#2980B9",
-  brown: "#A0522D",
-  black: "#000000",
-};
+import { BELT_COLORS, UserType } from "@/src/types/types";
 
 const ProfileScreen: React.FC = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const [userData, setUserData] = useState<UserData | null>(null);
+  const [userData, setUserData] = useState<UserType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
@@ -56,7 +27,7 @@ const ProfileScreen: React.FC = () => {
       if (user?.uid) {
         try {
           const data = await getUserDataFromFirestore(user.uid);
-          setUserData(data as UserData);
+          setUserData(data as UserType);
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
