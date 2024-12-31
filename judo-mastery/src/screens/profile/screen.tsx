@@ -12,6 +12,7 @@ import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
+import { colors } from "@/src/theme/colors";
 
 // Define UserStatistics interface
 interface UserStatistics {
@@ -55,7 +56,7 @@ const ProfileScreen: React.FC = () => {
       if (user?.uid) {
         try {
           const data = await getUserDataFromFirestore(user.uid);
-          setUserData(data as UserData); // Type assertion to match UserData
+          setUserData(data as UserData);
         } catch (error) {
           console.error("Error fetching user data:", error);
         } finally {
@@ -70,16 +71,17 @@ const ProfileScreen: React.FC = () => {
   const calculateXPProgress = (): number => {
     if (!userData?.statistics?.xp) return 0;
     const currentXP = userData.statistics.xp;
-    const totalXP = 500; // Example threshold for level up
+    const totalXP = 500;
     return (currentXP / totalXP) * 100;
-    // ! gonna modify the logic later
   };
 
   if (loading) {
     return (
       <SafeAreaView style={styles.loadingContainer}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={styles.loadingText}>{t("common.loading")}</Text>
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>
+          {t("common.loading")}
+        </Text>
       </SafeAreaView>
     );
   }
@@ -87,7 +89,9 @@ const ProfileScreen: React.FC = () => {
   if (!userData) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.errorText}>{t("profile.no-data")}</Text>
+        <Text style={[styles.errorText, { color: theme.colors.notification }]}>
+          {t("profile.no-data")}
+        </Text>
       </SafeAreaView>
     );
   }
@@ -96,19 +100,17 @@ const ProfileScreen: React.FC = () => {
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       {/* Header */}
       <View style={[styles.header, { backgroundColor: theme.colors.primary }]}>
-        <Text style={styles.headerTitle}>{t("profile.title")}</Text>
+        <Text style={[styles.headerTitle, { color: theme.colors.text }]}>
+          {t("profile.title")}
+        </Text>
       </View>
 
       {/* Main Content */}
       <ScrollView contentContainerStyle={styles.content}>
         {/* Profile Section */}
         <View style={[styles.profileSection, { backgroundColor: theme.colors.card }]}>
-          <Ionicons
-            name="person-circle-outline"
-            size={100}
-            color={theme.colors.placeholder}
-          />
-          <Text style={styles.username}>
+          <Ionicons name="person-circle-outline" size={100} color={theme.colors.placeholder} />
+          <Text style={[styles.username, { color: theme.colors.text }]}>
             {userData.firstName || t("profile.default-first-name")}{" "}
             {userData.name || t("profile.default-last-name")}
           </Text>
@@ -116,23 +118,18 @@ const ProfileScreen: React.FC = () => {
             <View
               style={[
                 styles.belt,
-                { backgroundColor: BELT_COLORS[userData.beltRank] },
+                { backgroundColor: BELT_COLORS[userData.beltRank] || theme.colors.secondary },
               ]}
             >
-              <Text
-                style={[
-                  styles.beltText,
-                  { color: theme.colors.primary, fontFamily: "Hiragino Mincho ProN" }, // Example Japanese font
-                ]}
-              >
+              <Text style={[styles.beltText, { color: theme.colors.primary }]}>
                 柔道
               </Text>
             </View>
           </View>
-          <Text style={styles.levelText}>
+          <Text style={[styles.levelText, { color: theme.colors.text }]}>
             {t("profile.level")}: {userData.level}
           </Text>
-          <View style={styles.progressBarContainer}>
+          <View style={[styles.progressBarContainer, { backgroundColor: theme.colors.border }]}>
             <View
               style={[
                 styles.progressBar,
@@ -140,7 +137,9 @@ const ProfileScreen: React.FC = () => {
               ]}
             />
           </View>
-          <Text style={styles.xpText}>{userData.statistics.xp} / 500 XP</Text>
+          <Text style={[styles.xpText, { color: theme.colors.text }]}>
+            {userData.statistics.xp} / 500 XP
+          </Text>
         </View>
 
         {/* Achievements Section */}
@@ -149,16 +148,22 @@ const ProfileScreen: React.FC = () => {
         </Text>
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
           <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
-            <Ionicons name="medal-outline" size={30} color="gold" />
-            <Text style={styles.medalCount}>{userData.goldMedals}</Text>
+            <Ionicons name="medal-outline" size={30} color={theme.colors.primary} />
+            <Text style={[styles.medalCount, { color: theme.colors.text }]}>
+              {userData.goldMedals}
+            </Text>
           </View>
           <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
-            <Ionicons name="medal-outline" size={30} color="#C0C0C0" />
-            <Text style={styles.medalCount}>{userData.silverMedals}</Text>
+            <Ionicons name="medal-outline" size={30} color={colors["slate-500"]} />
+            <Text style={[styles.medalCount, { color: theme.colors.text }]}>
+              {userData.silverMedals}
+            </Text>
           </View>
           <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
-            <Ionicons name="medal-outline" size={30} color="#CD7F32" />
-            <Text style={styles.medalCount}>{userData.bronzeMedals}</Text>
+            <Ionicons name="medal-outline" size={30} color={colors["amber-500"]} />
+            <Text style={[styles.medalCount, { color: theme.colors.text }]}>
+              {userData.bronzeMedals}
+            </Text>
           </View>
         </ScrollView>
 
@@ -169,13 +174,21 @@ const ProfileScreen: React.FC = () => {
         <ScrollView horizontal showsHorizontalScrollIndicator={false} style={styles.horizontalScroll}>
           <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
             <Ionicons name="checkmark-done-outline" size={30} color={theme.colors.primary} />
-            <Text style={styles.statValue}>{userData.statistics.tasks_completed}</Text>
-            <Text style={styles.statLabel}>{t("profile.tasks-completed")}</Text>
+            <Text style={[styles.statValue, { color: theme.colors.text }]}>
+              {userData.statistics.tasks_completed}
+            </Text>
+            <Text style={[styles.statLabel, { color: theme.colors.text }]}>
+              {t("profile.tasks-completed")}
+            </Text>
           </View>
           <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
             <MaterialIcons name="school" size={30} color={theme.colors.primary} />
-            <Text style={styles.statValue}>{userData.statistics.techniques_learned}</Text>
-            <Text style={styles.statLabel}>{t("profile.techniques-learned")}</Text>
+            <Text style={[styles.statValue, { color: theme.colors.text }]}>
+              {userData.statistics.techniques_learned}
+            </Text>
+            <Text style={[styles.statLabel, { color: theme.colors.text }]}>
+              {t("profile.techniques-learned")}
+            </Text>
           </View>
         </ScrollView>
       </ScrollView>
@@ -195,7 +208,6 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 10,
     fontSize: 16,
-    color: "#777",
   },
   header: {
     padding: 20,
@@ -203,12 +215,11 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 20,
     borderBottomRightRadius: 20,
     elevation: 5,
-    marginBottom: '3%'
+    marginBottom: "3%",
   },
   headerTitle: {
     fontSize: 24,
     fontWeight: "bold",
-    color: "#000",
   },
   content: {
     paddingHorizontal: 20,
@@ -224,10 +235,10 @@ const styles = StyleSheet.create({
   beltContainer: {
     flexDirection: "row",
     alignItems: "center",
-    margin: '2%',
+    margin: "2%",
   },
   belt: {
-    width: '50%',
+    width: "50%",
     height: 25,
     borderRadius: 5,
   },
@@ -235,7 +246,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     fontWeight: "bold",
     fontSize: 16,
-    writingDirection: "rtl", 
+    writingDirection: "rtl",
   },
   username: {
     fontSize: 24,
@@ -249,7 +260,6 @@ const styles = StyleSheet.create({
   progressBarContainer: {
     width: "100%",
     height: 10,
-    backgroundColor: "#e0e0e0",
     borderRadius: 5,
     marginVertical: 10,
   },
@@ -259,7 +269,6 @@ const styles = StyleSheet.create({
   },
   xpText: {
     fontSize: 14,
-    color: "#777",
   },
   sectionTitle: {
     fontSize: 20,
@@ -297,11 +306,9 @@ const styles = StyleSheet.create({
   },
   statLabel: {
     fontSize: 14,
-    color: "#777",
   },
   errorText: {
     fontSize: 16,
-    color: "red",
     textAlign: "center",
   },
 });
