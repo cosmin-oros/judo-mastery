@@ -71,7 +71,7 @@ const ExtraUserDataScreen: React.FC = () => {
         ...user,
         birthDate: user.birthDate || "",
         firstName: user.firstName || "",
-        lastName: user.lastName || "",
+        lastName: user.name || "",
         experience,
         beltRank,
         trainingFrequency: Number(trainingFrequency),
