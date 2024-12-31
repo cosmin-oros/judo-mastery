@@ -5,6 +5,7 @@ import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
+  ActivityIndicator,
 } from "react-native";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
@@ -12,52 +13,53 @@ import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
-const BELT_COLORS: Record<string, string> = {
-  white: "#FFFFFF",
-  yellow: "#F7DC6F",
-  orange: "#F39C12",
-  green: "#28B463",
-  blue: "#2980B9",
-  purple: "#8E44AD",
-  brown: "#A0522D",
-  black: "#000000",
-};
-
+// Define UserStatistics interface
 interface UserStatistics {
   xp: number;
   tasks_completed: number;
   techniques_learned: number;
 }
 
+// Define UserData interface
 interface UserData {
   uid: string;
-  firstName: string;
-  lastName: string;
+  firstName?: string;
+  name?: string;
   level: number;
-  beltRank: string;
-  goals: string;
-  competitionsParticipated: string;
-  ippons: string;
-  wazaAris: string;
-  yukos: string;
+  beltRank: keyof typeof BELT_COLORS;
   goldMedals: string;
   silverMedals: string;
   bronzeMedals: string;
   statistics: UserStatistics;
 }
 
+const BELT_COLORS = {
+  white: "#FFFFFF",
+  yellow: "#F7DC6F",
+  orange: "#F39C12",
+  green: "#28B463",
+  blue: "#2980B9",
+  brown: "#A0522D",
+  black: "#000000",
+};
+
 const ProfileScreen: React.FC = () => {
   const { user } = useAuth();
   const { t } = useTranslation();
   const { theme } = useTheme();
   const [userData, setUserData] = useState<UserData | null>(null);
+  const [loading, setLoading] = useState<boolean>(true);
 
   useEffect(() => {
     const fetchUserData = async () => {
       if (user?.uid) {
-        const data = await getUserDataFromFirestore(user.uid);
-        if (data) {
-          setUserData(data as UserData);
+        try {
+          const data = await getUserDataFromFirestore(user.uid);
+          setUserData(data as UserData); // Type assertion to match UserData
+        } catch (error) {
+          console.error("Error fetching user data:", error);
+        } finally {
+          setLoading(false);
         }
       }
     };
@@ -67,48 +69,69 @@ const ProfileScreen: React.FC = () => {
 
   const calculateXPProgress = (): number => {
     if (!userData?.statistics?.xp) return 0;
-    const currentXP = userData.statistics.xp || 0;
-    const totalXP = 500; // Example max XP for level
+    const currentXP = userData.statistics.xp;
+    const totalXP = 500; // Example threshold for level up
     return (currentXP / totalXP) * 100;
+    // ! gonna modify the logic later
   };
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={styles.loadingText}>{t("common.loading")}</Text>
+      </SafeAreaView>
+    );
+  }
 
   if (!userData) {
     return (
       <SafeAreaView style={styles.container}>
-        <Text style={styles.loadingText}>{t("common.loading")}</Text>
+        <Text style={styles.errorText}>{t("profile.no-data")}</Text>
       </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {/* Topbar */}
-      <View style={[styles.topBar, { backgroundColor: theme.colors.primary }]}>
-        <Text style={styles.topBarTitle}>{t("profile.title")}</Text>
+      {/* Header */}
+      <View style={[styles.header, { backgroundColor: theme.colors.primary }]}>
+        <Text style={styles.headerTitle}>{t("profile.title")}</Text>
       </View>
 
+      {/* Main Content */}
       <ScrollView contentContainerStyle={styles.content}>
         {/* Profile Section */}
         <View style={[styles.profileSection, { backgroundColor: theme.colors.card }]}>
-          <View style={styles.avatarContainer}>
-            <Ionicons
-              name="person-circle-outline"
-              size={100}
-              color={theme.colors.placeholder}
-              style={styles.avatar}
-            />
-            <View
-              style={[
-                styles.beltWrap,
-                { borderColor: BELT_COLORS[userData.beltRank] || "#ccc" },
-              ]}
-            />
-          </View>
+          <Ionicons
+            name="person-circle-outline"
+            size={100}
+            color={theme.colors.placeholder}
+          />
           <Text style={styles.username}>
             {userData.firstName || t("profile.default-first-name")}{" "}
-            {userData.lastName || t("profile.default-last-name")}
+            {userData.name || t("profile.default-last-name")}
           </Text>
-          <Text style={styles.levelText}>{t("profile.level")}: {userData.level}</Text>
+          <View style={styles.beltContainer}>
+            <View
+              style={[
+                styles.belt,
+                { backgroundColor: BELT_COLORS[userData.beltRank] },
+              ]}
+            >
+              <Text
+                style={[
+                  styles.beltText,
+                  { color: theme.colors.primary, fontFamily: "Hiragino Mincho ProN" }, // Example Japanese font
+                ]}
+              >
+                柔道
+              </Text>
+            </View>
+          </View>
+          <Text style={styles.levelText}>
+            {t("profile.level")}: {userData.level}
+          </Text>
           <View style={styles.progressBarContainer}>
             <View
               style={[
@@ -117,9 +140,7 @@ const ProfileScreen: React.FC = () => {
               ]}
             />
           </View>
-          <Text style={styles.xpText}>
-            {userData.statistics.xp} / 500 XP
-          </Text>
+          <Text style={styles.xpText}>{userData.statistics.xp} / 500 XP</Text>
         </View>
 
         {/* Achievements Section */}
@@ -166,16 +187,28 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
   },
-  topBar: {
-    borderBottomLeftRadius: 20,
-    borderBottomRightRadius: 20,
-    paddingVertical: 20,
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
     alignItems: "center",
   },
-  topBarTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    color: "#fff",
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
+    color: "#777",
+  },
+  header: {
+    padding: 20,
+    alignItems: "center",
+    borderBottomLeftRadius: 20,
+    borderBottomRightRadius: 20,
+    elevation: 5,
+    marginBottom: '3%'
+  },
+  headerTitle: {
+    fontSize: 24,
+    fontWeight: "bold",
+    color: "#000",
   },
   content: {
     paddingHorizontal: 20,
@@ -186,22 +219,23 @@ const styles = StyleSheet.create({
     padding: 20,
     borderRadius: 12,
     marginBottom: 20,
-    elevation: 5,
+    elevation: 3,
   },
-  avatarContainer: {
-    position: "relative",
+  beltContainer: {
+    flexDirection: "row",
+    alignItems: "center",
+    margin: '2%',
   },
-  avatar: {
-    zIndex: 1,
+  belt: {
+    width: '50%',
+    height: 25,
+    borderRadius: 5,
   },
-  beltWrap: {
-    position: "absolute",
-    top: 90,
-    left: 10,
-    right: 10,
-    height: 10,
-    borderWidth: 5,
-    borderRadius: 20,
+  beltText: {
+    textAlign: "center",
+    fontWeight: "bold",
+    fontSize: 16,
+    writingDirection: "rtl", 
   },
   username: {
     fontSize: 24,
@@ -218,7 +252,6 @@ const styles = StyleSheet.create({
     backgroundColor: "#e0e0e0",
     borderRadius: 5,
     marginVertical: 10,
-    elevation: 2,
   },
   progressBar: {
     height: "100%",
@@ -243,7 +276,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 5,
   },
   medalCount: {
     fontSize: 18,
@@ -257,7 +289,6 @@ const styles = StyleSheet.create({
     marginRight: 15,
     alignItems: "center",
     justifyContent: "center",
-    elevation: 5,
   },
   statValue: {
     fontSize: 22,
@@ -268,10 +299,10 @@ const styles = StyleSheet.create({
     fontSize: 14,
     color: "#777",
   },
-  loadingText: {
+  errorText: {
     fontSize: 16,
+    color: "red",
     textAlign: "center",
-    marginTop: 20,
   },
 });
 
