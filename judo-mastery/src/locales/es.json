@@ -93,5 +93,32 @@
     "saveSuccessMessage": "Tus datos se han guardado exitosamente.",
     "saveErrorTitle": "Error al guardar",
     "saveErrorMessage": "Hubo un error al guardar tus datos."
+  },
+  "profile": {
+    "title": "Perfil",
+    "statistics": "Estadísticas",
+    "tasks-completed": "Tareas completadas",
+    "techniques-learned": "Técnicas aprendidas",
+    "daily-tasks": "Tareas diarias",
+    "goals": "Metas",
+    "belt-rank": "Rango del cinturón",
+    "competitions-participated": "Competiciones participadas",
+    "level": "Nivel",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Medallas",
+      "gold": "Medallas de oro",
+      "silver": "Medallas de plata",
+      "bronze": "Medallas de bronce"
+    },
+    "ippons": "Ippons",
+    "waza-aris": "Waza-aris",
+    "yukos": "Yukos",
+    "belt-judo": "柔道",
+    "default-first-name": "Nombre",
+    "default-last-name": "Apellido",
+    "loading": "Cargando...",
+    "no-data": "No hay datos disponibles",
+    "achievements": "Logros"
   }
 }

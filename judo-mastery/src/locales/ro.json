@@ -93,5 +93,32 @@
     "saveSuccessMessage": "Datele tale au fost salvate cu succes.",
     "saveErrorTitle": "Eroare la salvare",
     "saveErrorMessage": "A apărut o eroare la salvarea datelor tale."
+  },
+  "profile": {
+    "title": "Profil",
+    "statistics": "Statistici",
+    "tasks-completed": "Sarcini finalizate",
+    "techniques-learned": "Tehnici învățate",
+    "daily-tasks": "Sarcini zilnice",
+    "goals": "Obiective",
+    "belt-rank": "Rangul centurii",
+    "competitions-participated": "Competiții participat",
+    "level": "Nivel",
+    "xp-progress": "{current} / {total} XP",
+    "medals": {
+      "title": "Medalii",
+      "gold": "Medalii de aur",
+      "silver": "Medalii de argint",
+      "bronze": "Medalii de bronz"
+    },
+    "ippons": "Ippon-uri",
+    "waza-aris": "Waza-ari-uri",
+    "yukos": "Yuko-uri",
+    "belt-judo": "柔道",
+    "default-first-name": "Prenume",
+    "default-last-name": "Nume",
+    "loading": "Se încarcă...",
+    "no-data": "Nu există date disponibile",
+    "achievements": "Realizări"
   }
 }
