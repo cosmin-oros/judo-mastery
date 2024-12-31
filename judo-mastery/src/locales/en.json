@@ -113,6 +113,12 @@
     },
     "ippons": "Ippons",
     "waza-aris": "Waza-Aris",
-    "yukos": "Yukos"
+    "yukos": "Yukos",
+    "belt-judo": "柔道",
+    "default-first-name": "First Name",
+    "default-last-name": "Last Name",
+    "loading": "Loading...",
+    "no-data": "No data available",
+    "achievements": "Achievements"
   }
 }

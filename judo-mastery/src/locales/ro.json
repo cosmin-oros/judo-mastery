@@ -97,22 +97,28 @@
   "profile": {
     "title": "Profil",
     "statistics": "Statistici",
-    "tasks-completed": "Sarcini Finalizate",
-    "techniques-learned": "Tehnici Învățate",
-    "daily-tasks": "Sarcini Zilnice",
+    "tasks-completed": "Sarcini finalizate",
+    "techniques-learned": "Tehnici învățate",
+    "daily-tasks": "Sarcini zilnice",
     "goals": "Obiective",
-    "belt-rank": "Grad Centură",
-    "competitions-participated": "Competiții Participante",
+    "belt-rank": "Rangul centurii",
+    "competitions-participated": "Competiții participat",
     "level": "Nivel",
     "xp-progress": "{current} / {total} XP",
     "medals": {
       "title": "Medalii",
-      "gold": "Medalii de Aur",
-      "silver": "Medalii de Argint",
-      "bronze": "Medalii de Bronz"
+      "gold": "Medalii de aur",
+      "silver": "Medalii de argint",
+      "bronze": "Medalii de bronz"
     },
     "ippons": "Ippon-uri",
-    "waza-aris": "Waza-Ari-uri",
-    "yukos": "Yuko-uri"
+    "waza-aris": "Waza-ari-uri",
+    "yukos": "Yuko-uri",
+    "belt-judo": "柔道",
+    "default-first-name": "Prenume",
+    "default-last-name": "Nume",
+    "loading": "Se încarcă...",
+    "no-data": "Nu există date disponibile",
+    "achievements": "Realizări"
   }
 }

@@ -97,22 +97,28 @@
   "profile": {
     "title": "Perfil",
     "statistics": "Estadísticas",
-    "tasks-completed": "Tareas Completadas",
-    "techniques-learned": "Técnicas Aprendidas",
-    "daily-tasks": "Tareas Diarias",
-    "goals": "Objetivos",
-    "belt-rank": "Rango del Cinturón",
-    "competitions-participated": "Competiciones Participadas",
+    "tasks-completed": "Tareas completadas",
+    "techniques-learned": "Técnicas aprendidas",
+    "daily-tasks": "Tareas diarias",
+    "goals": "Metas",
+    "belt-rank": "Rango del cinturón",
+    "competitions-participated": "Competiciones participadas",
     "level": "Nivel",
     "xp-progress": "{current} / {total} XP",
     "medals": {
       "title": "Medallas",
-      "gold": "Medallas de Oro",
-      "silver": "Medallas de Plata",
-      "bronze": "Medallas de Bronce"
+      "gold": "Medallas de oro",
+      "silver": "Medallas de plata",
+      "bronze": "Medallas de bronce"
     },
     "ippons": "Ippons",
-    "waza-aris": "Waza-Aris",
-    "yukos": "Yukos"
+    "waza-aris": "Waza-aris",
+    "yukos": "Yukos",
+    "belt-judo": "柔道",
+    "default-first-name": "Nombre",
+    "default-last-name": "Apellido",
+    "loading": "Cargando...",
+    "no-data": "No hay datos disponibles",
+    "achievements": "Logros"
   }
 }

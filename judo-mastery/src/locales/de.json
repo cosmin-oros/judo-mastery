@@ -101,7 +101,7 @@
     "techniques-learned": "Erlernte Techniken",
     "daily-tasks": "Tägliche Aufgaben",
     "goals": "Ziele",
-    "belt-rank": "Gürtelgrad",
+    "belt-rank": "Gürtelrang",
     "competitions-participated": "Teilgenommene Wettbewerbe",
     "level": "Stufe",
     "xp-progress": "{current} / {total} XP",
@@ -112,7 +112,13 @@
       "bronze": "Bronzemedaillen"
     },
     "ippons": "Ippons",
-    "waza-aris": "Waza-Aris",
-    "yukos": "Yukos"
+    "waza-aris": "Waza-aris",
+    "yukos": "Yukos",
+    "belt-judo": "柔道",
+    "default-first-name": "Vorname",
+    "default-last-name": "Nachname",
+    "loading": "Laden...",
+    "no-data": "Keine Daten verfügbar",
+    "achievements": "Erfolge"
   }
 }

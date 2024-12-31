@@ -95,24 +95,30 @@
     "saveErrorMessage": "データ保存中にエラーが発生しました。再試行してください。"
   },
   "profile": {
-    "title": "Profil",
-    "statistics": "Statistiken",
-    "tasks-completed": "Abgeschlossene Aufgaben",
-    "techniques-learned": "Erlernte Techniken",
-    "daily-tasks": "Tägliche Aufgaben",
-    "goals": "Ziele",
-    "belt-rank": "Gürtelgrad",
-    "competitions-participated": "Teilgenommene Wettbewerbe",
-    "level": "Stufe",
+    "title": "プロフィール",
+    "statistics": "統計",
+    "tasks-completed": "完了したタスク",
+    "techniques-learned": "学んだ技術",
+    "daily-tasks": "日課",
+    "goals": "目標",
+    "belt-rank": "ベルトランク",
+    "competitions-participated": "参加した大会",
+    "level": "レベル",
     "xp-progress": "{current} / {total} XP",
     "medals": {
-      "title": "Medaillen",
-      "gold": "Goldmedaillen",
-      "silver": "Silbermedaillen",
-      "bronze": "Bronzemedaillen"
+      "title": "メダル",
+      "gold": "金メダル",
+      "silver": "銀メダル",
+      "bronze": "銅メダル"
     },
-    "ippons": "Ippons",
-    "waza-aris": "Waza-Aris",
-    "yukos": "Yukos"
+    "ippons": "一本",
+    "waza-aris": "技あり",
+    "yukos": "有効",
+    "belt-judo": "柔道",
+    "default-first-name": "名",
+    "default-last-name": "姓",
+    "loading": "読み込み中...",
+    "no-data": "データがありません",
+    "achievements": "成果"
   }
 }
