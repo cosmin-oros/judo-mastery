@@ -120,5 +120,19 @@
     "loading": "Chargement...",
     "no-data": "Pas de données disponibles",
     "achievements": "Réalisations"
+  },
+  "settings": {
+    "title": "Paramètres",
+    "darkMode": "Mode Sombre",
+    "notifications": "Notifications",
+    "language": "Langue",
+    "rateApp": "Noter l'Application",
+    "privacyPolicy": "Politique de Confidentialité",
+    "shareApp": "Partager l'Application",
+    "feedback": "Retour",
+    "helpCenter": "Centre d'Aide",
+    "resetAccount": "Réinitialiser le Compte",
+    "logout": "Déconnexion",
+    "appVersion": "Version de l'Application : {{version}}"
   }
 }
