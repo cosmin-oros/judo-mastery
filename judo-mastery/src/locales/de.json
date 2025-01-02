@@ -126,13 +126,16 @@
     "darkMode": "Dunkelmodus",
     "notifications": "Benachrichtigungen",
     "language": "Sprache",
-    "rateApp": "App Bewerten",
+    "rateApp": "App bewerten",
     "privacyPolicy": "Datenschutzrichtlinie",
-    "shareApp": "App Teilen",
+    "shareApp": "App teilen",
     "feedback": "Feedback",
     "helpCenter": "Hilfezentrum",
-    "resetAccount": "Konto Zurücksetzen",
+    "resetAccount": "Konto zurücksetzen",
     "logout": "Abmelden",
-    "appVersion": "App-Version: {{version}}"
+    "appVersion": "App-Version: {{version}}",
+    "enableNotificationPermission": "Aktivieren Sie Benachrichtigungen in den App-Einstellungen.",
+    "notificationsEnabled": "Benachrichtigungen sind aktiviert.",
+    "notificationsDisabled": "Benachrichtigungen sind deaktiviert."
   }
 }

@@ -133,6 +133,9 @@
     "helpCenter": "Help Center",
     "resetAccount": "Reset Account",
     "logout": "Logout",
-    "appVersion": "App Version: {{version}}"
+    "appVersion": "App Version: {{version}}",
+    "enableNotificationPermission": "Enable notifications in the app settings.",
+    "notificationsEnabled": "Notifications are enabled.",
+    "notificationsDisabled": "Notifications are disabled."
   }
 }

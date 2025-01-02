@@ -128,11 +128,14 @@
     "language": "言語",
     "rateApp": "アプリを評価する",
     "privacyPolicy": "プライバシーポリシー",
-    "shareApp": "アプリを共有",
+    "shareApp": "アプリを共有する",
     "feedback": "フィードバック",
     "helpCenter": "ヘルプセンター",
-    "resetAccount": "アカウントをリセット",
+    "resetAccount": "アカウントをリセットする",
     "logout": "ログアウト",
-    "appVersion": "アプリのバージョン: {{version}}"
+    "appVersion": "アプリのバージョン: {{version}}",
+    "enableNotificationPermission": "アプリの設定で通知を有効にしてください。",
+    "notificationsEnabled": "通知が有効になっています。",
+    "notificationsDisabled": "通知が無効になっています。"
   }
 }

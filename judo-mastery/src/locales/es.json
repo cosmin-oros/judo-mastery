@@ -123,16 +123,19 @@
   },
   "settings": {
     "title": "Configuración",
-    "darkMode": "Modo Oscuro",
+    "darkMode": "Modo oscuro",
     "notifications": "Notificaciones",
     "language": "Idioma",
-    "rateApp": "Calificar la Aplicación",
-    "privacyPolicy": "Política de Privacidad",
-    "shareApp": "Compartir Aplicación",
+    "rateApp": "Calificar aplicación",
+    "privacyPolicy": "Política de privacidad",
+    "shareApp": "Compartir aplicación",
     "feedback": "Comentarios",
-    "helpCenter": "Centro de Ayuda",
-    "resetAccount": "Restablecer Cuenta",
-    "logout": "Cerrar Sesión",
-    "appVersion": "Versión de la Aplicación: {{version}}"
+    "helpCenter": "Centro de ayuda",
+    "resetAccount": "Restablecer cuenta",
+    "logout": "Cerrar sesión",
+    "appVersion": "Versión de la aplicación: {{version}}",
+    "enableNotificationPermission": "Habilita las notificaciones en la configuración de la aplicación.",
+    "notificationsEnabled": "Las notificaciones están habilitadas.",
+    "notificationsDisabled": "Las notificaciones están deshabilitadas."
   }
 }

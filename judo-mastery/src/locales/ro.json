@@ -123,16 +123,19 @@
   },
   "settings": {
     "title": "Setări",
-    "darkMode": "Mod Întunecat",
+    "darkMode": "Mod întunecat",
     "notifications": "Notificări",
     "language": "Limbă",
-    "rateApp": "Evaluează Aplicația",
-    "privacyPolicy": "Politica de Confidențialitate",
-    "shareApp": "Distribuie Aplicația",
+    "rateApp": "Evaluează aplicația",
+    "privacyPolicy": "Politica de confidențialitate",
+    "shareApp": "Distribuie aplicația",
     "feedback": "Feedback",
-    "helpCenter": "Centru de Ajutor",
-    "resetAccount": "Resetează Contul",
+    "helpCenter": "Centru de ajutor",
+    "resetAccount": "Resetează contul",
     "logout": "Deconectare",
-    "appVersion": "Versiunea Aplicației: {{version}}"
+    "appVersion": "Versiunea aplicației: {{version}}",
+    "enableNotificationPermission": "Permite notificările în setările aplicației.",
+    "notificationsEnabled": "Notificările sunt activate.",
+    "notificationsDisabled": "Notificările sunt dezactivate."
   }
 }
