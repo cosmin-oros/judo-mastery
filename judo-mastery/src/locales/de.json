@@ -144,6 +144,14 @@
     "logoutSuccessTitle": "Abgemeldet",
     "logoutSuccessMessage": "Sie wurden erfolgreich abgemeldet.",
     "logoutErrorTitle": "Abmeldung fehlgeschlagen",
-    "logoutErrorMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
+    "logoutErrorMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "resetAccountTitle": "Konto zurücksetzen",
+    "resetAccountMessage": "Möchten Sie Ihr Konto wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "resetAccountSuccessTitle": "Konto zurückgesetzt",
+    "resetAccountSuccessMessage": "Ihr Konto wurde erfolgreich zurückgesetzt.",
+    "resetAccountErrorTitle": "Zurücksetzen fehlgeschlagen",
+    "resetAccountErrorMessage": "Das Konto konnte nicht zurückgesetzt werden. Bitte versuchen Sie es erneut.",
+    "errorTitle": "Fehler",
+    "userNotAuthenticated": "Benutzer ist nicht authentifiziert."
   }
 }

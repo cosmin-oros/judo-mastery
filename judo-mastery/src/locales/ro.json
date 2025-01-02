@@ -144,6 +144,14 @@
     "logoutSuccessTitle": "Deconectat",
     "logoutSuccessMessage": "V-ați deconectat cu succes.",
     "logoutErrorTitle": "Eroare la deconectare",
-    "logoutErrorMessage": "A apărut o eroare la deconectare. Vă rugăm să încercați din nou."
+    "logoutErrorMessage": "A apărut o eroare la deconectare. Vă rugăm să încercați din nou.",
+    "resetAccountTitle": "Resetează contul",
+    "resetAccountMessage": "Sigur doriți să vă resetați contul? Această acțiune nu poate fi anulată.",
+    "resetAccountSuccessTitle": "Cont resetat",
+    "resetAccountSuccessMessage": "Contul dumneavoastră a fost resetat cu succes.",
+    "resetAccountErrorTitle": "Resetarea a eșuat",
+    "resetAccountErrorMessage": "Nu s-a putut reseta contul. Vă rugăm să încercați din nou.",
+    "errorTitle": "Eroare",
+    "userNotAuthenticated": "Utilizatorul nu este autentificat."
   }
 }

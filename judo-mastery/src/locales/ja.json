@@ -144,6 +144,14 @@
     "logoutSuccessTitle": "ログアウトしました",
     "logoutSuccessMessage": "正常にログアウトしました。",
     "logoutErrorTitle": "ログアウトに失敗しました",
-    "logoutErrorMessage": "ログアウト中にエラーが発生しました。もう一度お試しください。"
+    "logoutErrorMessage": "ログアウト中にエラーが発生しました。もう一度お試しください。",
+    "resetAccountTitle": "アカウントをリセット",
+    "resetAccountMessage": "本当にアカウントをリセットしますか？この操作は元に戻せません。",
+    "resetAccountSuccessTitle": "アカウントがリセットされました",
+    "resetAccountSuccessMessage": "アカウントが正常にリセットされました。",
+    "resetAccountErrorTitle": "リセットに失敗しました",
+    "resetAccountErrorMessage": "アカウントをリセットできませんでした。もう一度お試しください。",
+    "errorTitle": "エラー",
+    "userNotAuthenticated": "ユーザーが認証されていません。"
   }
 }

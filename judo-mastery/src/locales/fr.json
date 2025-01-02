@@ -144,6 +144,14 @@
     "logoutSuccessTitle": "Déconnecté",
     "logoutSuccessMessage": "Vous vous êtes déconnecté avec succès.",
     "logoutErrorTitle": "Échec de la déconnexion",
-    "logoutErrorMessage": "Une erreur s'est produite lors de la déconnexion. Veuillez réessayer."
+    "logoutErrorMessage": "Une erreur s'est produite lors de la déconnexion. Veuillez réessayer.",
+    "resetAccountTitle": "Réinitialiser le compte",
+    "resetAccountMessage": "Êtes-vous sûr de vouloir réinitialiser votre compte ? Cette action est irréversible.",
+    "resetAccountSuccessTitle": "Compte réinitialisé",
+    "resetAccountSuccessMessage": "Votre compte a été réinitialisé avec succès.",
+    "resetAccountErrorTitle": "Échec de la réinitialisation",
+    "resetAccountErrorMessage": "Impossible de réinitialiser le compte. Veuillez réessayer.",
+    "errorTitle": "Erreur",
+    "userNotAuthenticated": "L'utilisateur n'est pas authentifié."
   }
 }

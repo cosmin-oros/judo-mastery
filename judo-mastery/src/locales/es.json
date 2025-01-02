@@ -144,6 +144,14 @@
     "logoutSuccessTitle": "Sesión cerrada",
     "logoutSuccessMessage": "Has cerrado sesión con éxito.",
     "logoutErrorTitle": "Error al cerrar sesión",
-    "logoutErrorMessage": "Se produjo un error al cerrar sesión. Por favor, inténtalo de nuevo."
+    "logoutErrorMessage": "Se produjo un error al cerrar sesión. Por favor, inténtalo de nuevo.",
+    "resetAccountTitle": "Restablecer cuenta",
+    "resetAccountMessage": "¿Está seguro de que desea restablecer su cuenta? Esta acción no se puede deshacer.",
+    "resetAccountSuccessTitle": "Cuenta restablecida",
+    "resetAccountSuccessMessage": "Su cuenta se ha restablecido con éxito.",
+    "resetAccountErrorTitle": "Error de restablecimiento",
+    "resetAccountErrorMessage": "No se pudo restablecer la cuenta. Por favor, inténtelo de nuevo.",
+    "errorTitle": "Error",
+    "userNotAuthenticated": "El usuario no está autenticado."
   }
 }
