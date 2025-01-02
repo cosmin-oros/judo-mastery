@@ -9,11 +9,12 @@ import Option from "./components/Option";
 import NavigationOptions from "./components/NavigationOptions";
 import { SettingsNavigationOption } from "@/src/types/types";
 import { Ionicons } from "@expo/vector-icons";
+import { darkTheme } from "@/src/theme/themes";
 
 const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
-  const [isDarkMode, setIsDarkMode] = useState(false);
+  const [isDarkMode, setIsDarkMode] = useState(theme === darkTheme);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
   useEffect(() => {
