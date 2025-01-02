@@ -59,6 +59,7 @@ export const BELT_COLORS = {
 
 // Theme Type
 import { lightTheme } from "@/src/theme/themes";
+import { Ionicons } from "@expo/vector-icons";
 type ThemeType = typeof lightTheme;
 
 // Theme Context Type
@@ -98,4 +99,28 @@ export interface ProfileSectionProps {
 
 export interface StatisticsSectionProps {
   userData: UserType;
+}
+
+export interface SettingsHeaderProps {
+  title: string;
+}
+
+export interface SettingsOptionProps {
+  icon: keyof typeof Ionicons.glyphMap;
+  label: string;
+  isSwitch?: boolean;
+  switchValue?: boolean;
+  onSwitchToggle?: () => void;
+  onPress?: () => void;
+}
+
+export type SettingsNavigationOption = {
+  label: string;
+  icon: keyof typeof Ionicons.glyphMap;
+  route: string;
+};
+
+export interface SettingsNavigationOptionsProps {
+  options: SettingsNavigationOption[];
+  onNavigate: (route: string) => void;
 }
