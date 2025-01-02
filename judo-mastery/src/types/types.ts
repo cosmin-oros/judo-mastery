@@ -114,11 +114,12 @@ export interface SettingsOptionProps {
   onPress?: () => void;
 }
 
-export type SettingsNavigationOption = {
+export interface SettingsNavigationOption {
   label: string;
   icon: keyof typeof Ionicons.glyphMap;
-  route: string;
-};
+  route?: string;
+  action?: () => void;
+}
 
 export interface SettingsNavigationOptionsProps {
   options: SettingsNavigationOption[];

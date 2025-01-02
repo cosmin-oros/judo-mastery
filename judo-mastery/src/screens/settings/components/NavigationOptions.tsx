@@ -10,7 +10,15 @@ const NavigationOptions: React.FC<SettingsNavigationOptionsProps> = ({ options, 
           key={index}
           icon={option.icon}
           label={option.label}
-          onPress={() => onNavigate(option.route)}
+          onPress={() => {
+            if (option.action) {
+              // Execute the action if it exists
+              option.action();
+            } else if (option.route) {
+              // Navigate to the route if specified
+              onNavigate(option.route);
+            }
+          }}
         />
       ))}
     </>

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { View, ScrollView, StyleSheet, Text, Alert } from "react-native";
+import { View, ScrollView, StyleSheet, Text, Alert, Linking } from "react-native";
 import * as Notifications from "expo-notifications";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
@@ -10,6 +10,7 @@ import NavigationOptions from "./components/NavigationOptions";
 import { SettingsNavigationOption } from "@/src/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import { darkTheme } from "@/src/theme/themes";
+import { showAlert } from "@/src/utils/showAlert";
 
 const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -54,15 +55,86 @@ const SettingsScreen: React.FC = () => {
     }
   };
 
+  const handleRateApp = () => {
+    // ! implement when the app will be on the market
+    showAlert("Rate App", "Still in development");
+  };
+
+  const handlePrivacyPolicy = () => {
+    // ! replace with actual one and use i18n
+    Linking.openURL("https://your-privacy-policy-url.com").catch(() => {
+      showAlert("Privacy Policy", "Unable to open the privacy policy.");
+    });
+  };
+
+  const handleShareApp = () => {
+    // ! implement when the app will be on the market
+    showAlert("Share App", "Still in development");
+  };
+
+  const handleFeedback = () => {
+    // ! implement when the app will be on the market
+    showAlert("Feedback", "Still in development");
+  };
+
+  const handleHelpCenter = () => {
+    // ! replace with actual one and use i18n
+    Linking.openURL("https://your-help-center-url.com").catch(() => {
+      showAlert("Help Center", "Unable to open the help center.");
+    });
+  };
+
+  const handleResetAccount = () => {
+    showAlert(
+      "Reset Account",
+      "Are you sure you want to reset your account? This action cannot be undone.",
+      () => {
+        console.log("Account reset logic goes here");
+      }
+    );
+  };
+
   const navigationOptions: SettingsNavigationOption[] = [
-    { label: t("settings.language"), icon: "globe-outline" as keyof typeof Ionicons.glyphMap, route: "/settings/settings-language-selection" },
-    { label: t("settings.rateApp"), icon: "star-outline" as keyof typeof Ionicons.glyphMap, route: "/rate-app" },
-    { label: t("settings.privacyPolicy"), icon: "document-text-outline" as keyof typeof Ionicons.glyphMap, route: "/privacy-policy" },
-    { label: t("settings.shareApp"), icon: "share-outline" as keyof typeof Ionicons.glyphMap, route: "/share-app" },
-    { label: t("settings.feedback"), icon: "chatbubble-outline" as keyof typeof Ionicons.glyphMap, route: "/feedback" },
-    { label: t("settings.helpCenter"), icon: "help-circle-outline" as keyof typeof Ionicons.glyphMap, route: "/help-center" },
-    { label: t("settings.resetAccount"), icon: "refresh-outline" as keyof typeof Ionicons.glyphMap, route: "/reset-account" },
-    { label: t("settings.logout"), icon: "log-out-outline" as keyof typeof Ionicons.glyphMap, route: "/logout" },
+    {
+      label: t("settings.language"),
+      icon: "globe-outline" as keyof typeof Ionicons.glyphMap,
+      route: "/settings/settings-language-selection",
+    },
+    {
+      label: t("settings.rateApp"),
+      icon: "star-outline" as keyof typeof Ionicons.glyphMap,
+      action: handleRateApp,
+    },
+    {
+      label: t("settings.privacyPolicy"),
+      icon: "document-text-outline" as keyof typeof Ionicons.glyphMap,
+      action: handlePrivacyPolicy,
+    },
+    {
+      label: t("settings.shareApp"),
+      icon: "share-outline" as keyof typeof Ionicons.glyphMap,
+      action: handleShareApp,
+    },
+    {
+      label: t("settings.feedback"),
+      icon: "chatbubble-outline" as keyof typeof Ionicons.glyphMap,
+      action: handleFeedback,
+    },
+    {
+      label: t("settings.helpCenter"),
+      icon: "help-circle-outline" as keyof typeof Ionicons.glyphMap,
+      action: handleHelpCenter,
+    },
+    {
+      label: t("settings.resetAccount"),
+      icon: "refresh-outline" as keyof typeof Ionicons.glyphMap,
+      action: handleResetAccount,
+    },
+    {
+      label: t("settings.logout"),
+      icon: "log-out-outline" as keyof typeof Ionicons.glyphMap,
+      route: "/logout",
+    },
   ];
 
   return (
