@@ -54,7 +54,7 @@ const SettingsScreen: React.FC = () => {
   };
 
   const navigationOptions: SettingsNavigationOption[] = [
-    { label: t("settings.language"), icon: "globe-outline" as keyof typeof Ionicons.glyphMap, route: "/language" },
+    { label: t("settings.language"), icon: "globe-outline" as keyof typeof Ionicons.glyphMap, route: "/settings/settings-language-selection" },
     { label: t("settings.rateApp"), icon: "star-outline" as keyof typeof Ionicons.glyphMap, route: "/rate-app" },
     { label: t("settings.privacyPolicy"), icon: "document-text-outline" as keyof typeof Ionicons.glyphMap, route: "/privacy-policy" },
     { label: t("settings.shareApp"), icon: "share-outline" as keyof typeof Ionicons.glyphMap, route: "/share-app" },
