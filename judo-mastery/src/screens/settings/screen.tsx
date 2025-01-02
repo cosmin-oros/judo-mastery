@@ -1,5 +1,6 @@
-import React, { useState } from "react";
-import { View, ScrollView, StyleSheet, Text } from "react-native";
+import React, { useState, useEffect } from "react";
+import { View, ScrollView, StyleSheet, Text, Alert } from "react-native";
+import * as Notifications from "expo-notifications";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { replaceRoute } from "@/src/utils/replaceRoute";
@@ -15,14 +16,41 @@ const SettingsScreen: React.FC = () => {
   const [isDarkMode, setIsDarkMode] = useState(false);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
 
+  useEffect(() => {
+    // Check initial notification permissions on component mount
+    const checkNotificationPermissions = async () => {
+      const { status } = await Notifications.getPermissionsAsync();
+      if (status !== "granted") {
+        setNotificationsEnabled(false);
+      }
+    };
+    checkNotificationPermissions();
+  }, []);
+
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     toggleTheme();
   };
 
-  const toggleNotifications = () => {
-    setNotificationsEnabled(!notificationsEnabled);
-    // Notification logic goes here
+  const toggleNotifications = async () => {
+    if (!notificationsEnabled) {
+      // Request notification permissions
+      const { status } = await Notifications.requestPermissionsAsync();
+      if (status !== "granted") {
+        Alert.alert(
+          t("settings.notifications"),
+          t("settings.enableNotificationPermission"),
+        );
+        return;
+      }
+      // Enable notifications
+      setNotificationsEnabled(true);
+      Alert.alert(t("settings.notifications"), t("settings.notificationsEnabled"));
+    } else {
+      // Disable notifications
+      setNotificationsEnabled(false);
+      Alert.alert(t("settings.notifications"), t("settings.notificationsDisabled"));
+    }
   };
 
   const navigationOptions: SettingsNavigationOption[] = [
