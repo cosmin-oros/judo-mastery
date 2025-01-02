@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "Regístrate",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "ok": "Aceptar",
+    "cancel": "Cancelar"
   },
   "auth": {
     "errors": {
@@ -136,6 +138,12 @@
     "appVersion": "Versión de la aplicación: {{version}}",
     "enableNotificationPermission": "Habilita las notificaciones en la configuración de la aplicación.",
     "notificationsEnabled": "Las notificaciones están habilitadas.",
-    "notificationsDisabled": "Las notificaciones están deshabilitadas."
+    "notificationsDisabled": "Las notificaciones están deshabilitadas.",
+    "logoutTitle": "Cerrar sesión",
+    "logoutMessage": "¿Estás seguro de que deseas cerrar sesión?",
+    "logoutSuccessTitle": "Sesión cerrada",
+    "logoutSuccessMessage": "Has cerrado sesión con éxito.",
+    "logoutErrorTitle": "Error al cerrar sesión",
+    "logoutErrorMessage": "Se produjo un error al cerrar sesión. Por favor, inténtalo de nuevo."
   }
 }

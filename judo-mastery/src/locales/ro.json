@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "Înregistrează-te",
-    "login": "Autentificare"
+    "login": "Autentificare",
+    "ok": "OK",
+    "cancel": "Anulează"
   },
   "auth": {
     "errors": {
@@ -136,6 +138,12 @@
     "appVersion": "Versiunea aplicației: {{version}}",
     "enableNotificationPermission": "Permite notificările în setările aplicației.",
     "notificationsEnabled": "Notificările sunt activate.",
-    "notificationsDisabled": "Notificările sunt dezactivate."
+    "notificationsDisabled": "Notificările sunt dezactivate.",
+    "logoutTitle": "Deconectare",
+    "logoutMessage": "Sigur doriți să vă deconectați?",
+    "logoutSuccessTitle": "Deconectat",
+    "logoutSuccessMessage": "V-ați deconectat cu succes.",
+    "logoutErrorTitle": "Eroare la deconectare",
+    "logoutErrorMessage": "A apărut o eroare la deconectare. Vă rugăm să încercați din nou."
   }
 }

@@ -2,7 +2,9 @@
   "common": {
     "app_name": "柔道マスタリー",
     "sign-up": "サインアップ",
-    "login": "ログイン"
+    "login": "ログイン",
+    "ok": "OK",
+    "cancel": "キャンセル"
   },
   "auth": {
     "errors": {
@@ -136,6 +138,12 @@
     "appVersion": "アプリのバージョン: {{version}}",
     "enableNotificationPermission": "アプリの設定で通知を有効にしてください。",
     "notificationsEnabled": "通知が有効になっています。",
-    "notificationsDisabled": "通知が無効になっています。"
+    "notificationsDisabled": "通知が無効になっています。",
+    "logoutTitle": "ログアウト",
+    "logoutMessage": "本当にログアウトしますか？",
+    "logoutSuccessTitle": "ログアウトしました",
+    "logoutSuccessMessage": "正常にログアウトしました。",
+    "logoutErrorTitle": "ログアウトに失敗しました",
+    "logoutErrorMessage": "ログアウト中にエラーが発生しました。もう一度お試しください。"
   }
 }

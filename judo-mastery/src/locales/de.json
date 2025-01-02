@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "Registrieren",
-    "login": "Anmelden"
+    "login": "Anmelden",
+    "ok": "OK",
+    "cancel": "Abbrechen"
   },
   "auth": {
     "errors": {
@@ -136,6 +138,12 @@
     "appVersion": "App-Version: {{version}}",
     "enableNotificationPermission": "Aktivieren Sie Benachrichtigungen in den App-Einstellungen.",
     "notificationsEnabled": "Benachrichtigungen sind aktiviert.",
-    "notificationsDisabled": "Benachrichtigungen sind deaktiviert."
+    "notificationsDisabled": "Benachrichtigungen sind deaktiviert.",
+    "logoutTitle": "Abmelden",
+    "logoutMessage": "Möchten Sie sich wirklich abmelden?",
+    "logoutSuccessTitle": "Abgemeldet",
+    "logoutSuccessMessage": "Sie wurden erfolgreich abgemeldet.",
+    "logoutErrorTitle": "Abmeldung fehlgeschlagen",
+    "logoutErrorMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut."
   }
 }

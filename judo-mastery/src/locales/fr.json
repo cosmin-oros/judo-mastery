@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "S'inscrire",
-    "login": "Connexion"
+    "login": "Connexion",
+    "ok": "OK",
+    "cancel": "Annuler"
   },
   "auth": {
     "errors": {
@@ -136,6 +138,12 @@
     "appVersion": "Version de l'application : {{version}}",
     "enableNotificationPermission": "Activez les notifications dans les paramètres de l'application.",
     "notificationsEnabled": "Les notifications sont activées.",
-    "notificationsDisabled": "Les notifications sont désactivées."
+    "notificationsDisabled": "Les notifications sont désactivées.",
+    "logoutTitle": "Déconnexion",
+    "logoutMessage": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "logoutSuccessTitle": "Déconnecté",
+    "logoutSuccessMessage": "Vous vous êtes déconnecté avec succès.",
+    "logoutErrorTitle": "Échec de la déconnexion",
+    "logoutErrorMessage": "Une erreur s'est produite lors de la déconnexion. Veuillez réessayer."
   }
 }
