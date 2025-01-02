@@ -11,12 +11,14 @@ import { SettingsNavigationOption } from "@/src/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import { darkTheme } from "@/src/theme/themes";
 import { showAlert } from "@/src/utils/showAlert";
+import { useAuth } from "@/src/provider/auth/AuthProvider";
 
 const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(theme === darkTheme);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
+  const { logout } = useAuth();
 
   useEffect(() => {
     // Check initial notification permissions on component mount
@@ -94,6 +96,32 @@ const SettingsScreen: React.FC = () => {
     );
   };
 
+  const handleLogout = () => {
+    Alert.alert(
+      t("settings.logoutTitle"),
+      t("settings.logoutMessage"),
+      [
+        {
+          text: t("common.cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("common.ok"),
+          onPress: async () => {
+            try {
+              await logout();
+              showAlert(t("settings.logoutSuccessTitle"), t("settings.logoutSuccessMessage"));
+            } catch (error) {
+              console.error("Logout error:", error);
+              showAlert(t("settings.logoutErrorTitle"), t("settings.logoutErrorMessage"));
+            }
+          },
+        },
+      ],
+      { cancelable: true }
+    );
+  };
+
   const navigationOptions: SettingsNavigationOption[] = [
     {
       label: t("settings.language"),
@@ -133,7 +161,7 @@ const SettingsScreen: React.FC = () => {
     {
       label: t("settings.logout"),
       icon: "log-out-outline" as keyof typeof Ionicons.glyphMap,
-      route: "/logout",
+      action: handleLogout,
     },
   ];
 
