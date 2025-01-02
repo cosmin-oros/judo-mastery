@@ -7,18 +7,19 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import Header from "./components/Header";
 import Option from "./components/Option";
 import NavigationOptions from "./components/NavigationOptions";
-import { SettingsNavigationOption } from "@/src/types/types";
+import { SettingsNavigationOption, UserType } from "@/src/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import { darkTheme } from "@/src/theme/themes";
 import { showAlert } from "@/src/utils/showAlert";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
+import { saveUserDataToFirestore } from "@/src/firestoreService/userDataService";
 
 const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(theme === darkTheme);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const { logout } = useAuth();
+  const { user, logout } = useAuth();
 
   useEffect(() => {
     // Check initial notification permissions on component mount
@@ -87,11 +88,54 @@ const SettingsScreen: React.FC = () => {
   };
 
   const handleResetAccount = () => {
+
+    if (!user?.uid) {
+      showAlert(t("settings.errorTitle"), t("settings.userNotAuthenticated"));
+      return;
+    }
+
+    const defaultUserData: Partial<UserType> = {
+      achievements: [],
+      beltRank: "white",
+      daily_tasks: [],
+      icon: 1,
+      level: 1,
+      statistics: {
+        tasks_completed: 0,
+        techniques_learned: 0,
+        xp: 0,
+      },
+      experience: "",
+      trainingFrequency: 0,
+      goals: "",
+      trainingFocus: "",
+      favoriteTechniques: "",
+      competitionsParticipated: "",
+      ippons: "0",
+      wazaAris: "0",
+      yukos: "0",
+      goldMedals: "0",
+      silverMedals: "0",
+      bronzeMedals: "0",
+    };
+
     showAlert(
-      "Reset Account",
-      "Are you sure you want to reset your account? This action cannot be undone.",
-      () => {
-        console.log("Account reset logic goes here");
+      t("settings.resetAccountTitle"),
+      t("settings.resetAccountMessage"),
+      async () => {
+        try {
+          await saveUserDataToFirestore({ ...user, ...defaultUserData });
+          showAlert(
+            t("settings.resetAccountSuccessTitle"),
+            t("settings.resetAccountSuccessMessage")
+          );
+        } catch (error) {
+          console.error("Error resetting account:", error);
+          showAlert(
+            t("settings.resetAccountErrorTitle"),
+            t("settings.resetAccountErrorMessage")
+          );
+        }
       }
     );
   };
