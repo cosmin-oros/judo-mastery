@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "Sign Up",
-    "login": "Login"
+    "login": "Login",
+    "ok": "OK",
+    "cancel": "Cancel"
   },
   "auth": {
     "errors": {
@@ -133,6 +135,23 @@
     "helpCenter": "Help Center",
     "resetAccount": "Reset Account",
     "logout": "Logout",
-    "appVersion": "App Version: {{version}}"
+    "appVersion": "App Version: {{version}}",
+    "enableNotificationPermission": "Enable notifications in the app settings.",
+    "notificationsEnabled": "Notifications are enabled.",
+    "notificationsDisabled": "Notifications are disabled.",
+    "logoutTitle": "Log Out",
+    "logoutMessage": "Are you sure you want to log out?",
+    "logoutSuccessTitle": "Logged Out",
+    "logoutSuccessMessage": "You have successfully logged out.",
+    "logoutErrorTitle": "Logout Failed",
+    "logoutErrorMessage": "An error occurred while logging out. Please try again.",
+    "resetAccountTitle": "Reset Account",
+    "resetAccountMessage": "Are you sure you want to reset your account? This action cannot be undone.",
+    "resetAccountSuccessTitle": "Account Reset",
+    "resetAccountSuccessMessage": "Your account has been successfully reset.",
+    "resetAccountErrorTitle": "Reset Failed",
+    "resetAccountErrorMessage": "Failed to reset the account. Please try again.",
+    "errorTitle": "Error",
+    "userNotAuthenticated": "User is not authenticated."
   }
 }

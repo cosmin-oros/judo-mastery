@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "Regístrate",
-    "login": "Iniciar sesión"
+    "login": "Iniciar sesión",
+    "ok": "Aceptar",
+    "cancel": "Cancelar"
   },
   "auth": {
     "errors": {
@@ -123,16 +125,33 @@
   },
   "settings": {
     "title": "Configuración",
-    "darkMode": "Modo Oscuro",
+    "darkMode": "Modo oscuro",
     "notifications": "Notificaciones",
     "language": "Idioma",
-    "rateApp": "Calificar la Aplicación",
-    "privacyPolicy": "Política de Privacidad",
-    "shareApp": "Compartir Aplicación",
+    "rateApp": "Calificar aplicación",
+    "privacyPolicy": "Política de privacidad",
+    "shareApp": "Compartir aplicación",
     "feedback": "Comentarios",
-    "helpCenter": "Centro de Ayuda",
-    "resetAccount": "Restablecer Cuenta",
-    "logout": "Cerrar Sesión",
-    "appVersion": "Versión de la Aplicación: {{version}}"
+    "helpCenter": "Centro de ayuda",
+    "resetAccount": "Restablecer cuenta",
+    "logout": "Cerrar sesión",
+    "appVersion": "Versión de la aplicación: {{version}}",
+    "enableNotificationPermission": "Habilita las notificaciones en la configuración de la aplicación.",
+    "notificationsEnabled": "Las notificaciones están habilitadas.",
+    "notificationsDisabled": "Las notificaciones están deshabilitadas.",
+    "logoutTitle": "Cerrar sesión",
+    "logoutMessage": "¿Estás seguro de que deseas cerrar sesión?",
+    "logoutSuccessTitle": "Sesión cerrada",
+    "logoutSuccessMessage": "Has cerrado sesión con éxito.",
+    "logoutErrorTitle": "Error al cerrar sesión",
+    "logoutErrorMessage": "Se produjo un error al cerrar sesión. Por favor, inténtalo de nuevo.",
+    "resetAccountTitle": "Restablecer cuenta",
+    "resetAccountMessage": "¿Está seguro de que desea restablecer su cuenta? Esta acción no se puede deshacer.",
+    "resetAccountSuccessTitle": "Cuenta restablecida",
+    "resetAccountSuccessMessage": "Su cuenta se ha restablecido con éxito.",
+    "resetAccountErrorTitle": "Error de restablecimiento",
+    "resetAccountErrorMessage": "No se pudo restablecer la cuenta. Por favor, inténtelo de nuevo.",
+    "errorTitle": "Error",
+    "userNotAuthenticated": "El usuario no está autenticado."
   }
 }

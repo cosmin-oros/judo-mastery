@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "S'inscrire",
-    "login": "Connexion"
+    "login": "Connexion",
+    "ok": "OK",
+    "cancel": "Annuler"
   },
   "auth": {
     "errors": {
@@ -123,16 +125,33 @@
   },
   "settings": {
     "title": "Paramètres",
-    "darkMode": "Mode Sombre",
+    "darkMode": "Mode sombre",
     "notifications": "Notifications",
     "language": "Langue",
-    "rateApp": "Noter l'Application",
-    "privacyPolicy": "Politique de Confidentialité",
-    "shareApp": "Partager l'Application",
-    "feedback": "Retour",
-    "helpCenter": "Centre d'Aide",
-    "resetAccount": "Réinitialiser le Compte",
+    "rateApp": "Noter l'application",
+    "privacyPolicy": "Politique de confidentialité",
+    "shareApp": "Partager l'application",
+    "feedback": "Retour d'information",
+    "helpCenter": "Centre d'aide",
+    "resetAccount": "Réinitialiser le compte",
     "logout": "Déconnexion",
-    "appVersion": "Version de l'Application : {{version}}"
+    "appVersion": "Version de l'application : {{version}}",
+    "enableNotificationPermission": "Activez les notifications dans les paramètres de l'application.",
+    "notificationsEnabled": "Les notifications sont activées.",
+    "notificationsDisabled": "Les notifications sont désactivées.",
+    "logoutTitle": "Déconnexion",
+    "logoutMessage": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "logoutSuccessTitle": "Déconnecté",
+    "logoutSuccessMessage": "Vous vous êtes déconnecté avec succès.",
+    "logoutErrorTitle": "Échec de la déconnexion",
+    "logoutErrorMessage": "Une erreur s'est produite lors de la déconnexion. Veuillez réessayer.",
+    "resetAccountTitle": "Réinitialiser le compte",
+    "resetAccountMessage": "Êtes-vous sûr de vouloir réinitialiser votre compte ? Cette action est irréversible.",
+    "resetAccountSuccessTitle": "Compte réinitialisé",
+    "resetAccountSuccessMessage": "Votre compte a été réinitialisé avec succès.",
+    "resetAccountErrorTitle": "Échec de la réinitialisation",
+    "resetAccountErrorMessage": "Impossible de réinitialiser le compte. Veuillez réessayer.",
+    "errorTitle": "Erreur",
+    "userNotAuthenticated": "L'utilisateur n'est pas authentifié."
   }
 }

@@ -3,15 +3,7 @@ import { View, StyleSheet, Text, FlatList, TouchableOpacity } from "react-native
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { replaceRoute } from "@/src/utils/replaceRoute";
-
-const languages = [
-  { code: "en", name: "English", flag: "🇺🇸" },
-  { code: "ro", name: "Română", flag: "🇷🇴" },
-  { code: "es", name: "Español", flag: "🇪🇸" },
-  { code: "de", name: "Deutsch", flag: "🇩🇪" },
-  { code: "fr", name: "Français", flag: "🇫🇷" },
-  { code: "ja", name: "日本語", flag: "🇯🇵" },
-];
+import { languages } from "@/src/utils/constants";
 
 const LanguageSelectionScreen: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -50,7 +42,7 @@ const LanguageSelectionScreen: React.FC = () => {
               style={[
                 styles.languageName,
                 {
-                  color: item.code === selectedLanguage ? theme.colors.background : theme.colors.text,
+                  color: theme.colors.text,
                 },
               ]}
             >

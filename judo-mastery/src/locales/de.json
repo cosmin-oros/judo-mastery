@@ -2,7 +2,9 @@
   "common": {
     "app_name": "Judo Mastery",
     "sign-up": "Registrieren",
-    "login": "Anmelden"
+    "login": "Anmelden",
+    "ok": "OK",
+    "cancel": "Abbrechen"
   },
   "auth": {
     "errors": {
@@ -126,13 +128,30 @@
     "darkMode": "Dunkelmodus",
     "notifications": "Benachrichtigungen",
     "language": "Sprache",
-    "rateApp": "App Bewerten",
+    "rateApp": "App bewerten",
     "privacyPolicy": "Datenschutzrichtlinie",
-    "shareApp": "App Teilen",
+    "shareApp": "App teilen",
     "feedback": "Feedback",
     "helpCenter": "Hilfezentrum",
-    "resetAccount": "Konto Zurücksetzen",
+    "resetAccount": "Konto zurücksetzen",
     "logout": "Abmelden",
-    "appVersion": "App-Version: {{version}}"
+    "appVersion": "App-Version: {{version}}",
+    "enableNotificationPermission": "Aktivieren Sie Benachrichtigungen in den App-Einstellungen.",
+    "notificationsEnabled": "Benachrichtigungen sind aktiviert.",
+    "notificationsDisabled": "Benachrichtigungen sind deaktiviert.",
+    "logoutTitle": "Abmelden",
+    "logoutMessage": "Möchten Sie sich wirklich abmelden?",
+    "logoutSuccessTitle": "Abgemeldet",
+    "logoutSuccessMessage": "Sie wurden erfolgreich abgemeldet.",
+    "logoutErrorTitle": "Abmeldung fehlgeschlagen",
+    "logoutErrorMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "resetAccountTitle": "Konto zurücksetzen",
+    "resetAccountMessage": "Möchten Sie Ihr Konto wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
+    "resetAccountSuccessTitle": "Konto zurückgesetzt",
+    "resetAccountSuccessMessage": "Ihr Konto wurde erfolgreich zurückgesetzt.",
+    "resetAccountErrorTitle": "Zurücksetzen fehlgeschlagen",
+    "resetAccountErrorMessage": "Das Konto konnte nicht zurückgesetzt werden. Bitte versuchen Sie es erneut.",
+    "errorTitle": "Fehler",
+    "userNotAuthenticated": "Benutzer ist nicht authentifiziert."
   }
 }
