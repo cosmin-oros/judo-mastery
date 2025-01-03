@@ -22,6 +22,8 @@ const ExtraUserDataScreen: React.FC = () => {
   const { theme } = useTheme();
   const { user } = useAuth();
 
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
   const [experience, setExperience] = useState("");
   const [beltRank, setBeltRank] = useState("white");
   const [trainingFrequency, setTrainingFrequency] = useState("");
@@ -43,6 +45,8 @@ const ExtraUserDataScreen: React.FC = () => {
 
   const validateInputs = () => {
     if (
+      firstName === undefined ||
+      lastName === undefined ||
       experience === undefined || 
       experience === null ||
       competitionsParticipated === undefined || 
@@ -69,9 +73,8 @@ const ExtraUserDataScreen: React.FC = () => {
     if (user) {
       const updatedUserData = {
         ...user,
-        birthDate: user.birthDate || "",
-        firstName: user.firstName || "",
-        lastName: user.name || "",
+        firstName: firstName,
+        lastName: lastName,
         experience,
         beltRank,
         trainingFrequency: Number(trainingFrequency),
@@ -109,13 +112,35 @@ const ExtraUserDataScreen: React.FC = () => {
           {t("extra-user-data.title")}
         </Text>
 
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={firstName}
+            onChangeText={setFirstName}
+            placeholder={t("extra-user-data.firstNamePlaceholder")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={lastName}
+            onChangeText={setLastName}
+            placeholder={t("extra-user-data.lastNamePlaceholder")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
         {/* Competition Section */}
         <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
           {t("extra-user-data.competitionSection")}
         </Text>
 
         {/* Experience */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="school" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -128,7 +153,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Competitions Participated */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <AntDesign name="Trophy" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -141,7 +166,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Ippons */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -154,7 +179,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Waza-Aris */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -167,7 +192,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Yukos */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -180,7 +205,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Gold Medals */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -193,7 +218,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Silver Medals */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors["gray-700"]} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -206,7 +231,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Bronze Medals */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors["amber-500"]} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -239,14 +264,19 @@ const ExtraUserDataScreen: React.FC = () => {
           ]}
           setOpen={setOpenBeltRank}
           setValue={setBeltRank}
-          style={[styles.picker, { backgroundColor: theme.colors.card }]}
+          style={[
+            styles.picker,
+            { backgroundColor: theme.colors.card },
+          ]}
           dropDownContainerStyle={{
             backgroundColor: theme.colors.card,
           }}
+          textStyle={{
+            color: theme.colors.text, 
+          }}
         />
-
         {/* Training Frequency */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons
             name="fitness-center"
             size={24}
@@ -263,7 +293,7 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Goals */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="flag" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -293,10 +323,13 @@ const ExtraUserDataScreen: React.FC = () => {
           dropDownContainerStyle={{
             backgroundColor: theme.colors.card,
           }}
+          textStyle={{
+            color: theme.colors.text, 
+          }}
         />
 
         {/* Favorite Techniques */}
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="stars" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
@@ -309,7 +342,7 @@ const ExtraUserDataScreen: React.FC = () => {
       </ScrollView>
 
       {/* Save Button */}
-      <View style={styles.saveButtonContainer}>
+      <View style={[styles.saveButtonContainer, { backgroundColor: theme.colors.background }]}>
         <TouchableOpacity
           style={[styles.saveButton, { backgroundColor: theme.colors.primary }]}
           onPress={handleSaveProfile}

@@ -55,6 +55,24 @@
     "login-button": "Anmelden",
     "no-account": "Haben Sie kein Konto?"
   },
+  "home": {
+    "dailyTasks": "Tägliche Aufgaben",
+    "greeting": "Willkommen zurück",
+    "tasks": {
+      "stretchingRoutine": "Dehnroutine",
+      "pushups": "10 Liegestütze"
+    },
+    "eventsTitle": "Veranstaltungen",
+    "events": {
+      "localCompetition": "Lokaler Judo-Wettbewerb",
+      "trainingSession": "Trainingseinheit"
+    },
+    "techniqueOfTheDay": "Technik des Tages",
+    "technique": {
+      "title": "Seoi Nage",
+      "description": "Eine Schulterwurf-Technik, um einen Gegner effizient zu Boden zu bringen."
+    }
+  },
   "language-selection": {
     "title": "Sprache auswählen",
     "next-step": "Nächster Schritt"
@@ -94,11 +112,14 @@
     "saveSuccessTitle": "Erfolgreich gespeichert",
     "saveSuccessMessage": "Ihre Daten wurden erfolgreich gespeichert.",
     "saveErrorTitle": "Fehler beim Speichern",
-    "saveErrorMessage": "Beim Speichern Ihrer Daten ist ein Fehler aufgetreten."
+    "saveErrorMessage": "Beim Speichern Ihrer Daten ist ein Fehler aufgetreten.",
+    "firstNamePlaceholder": "Geben Sie Ihren Vornamen ein",
+    "lastNamePlaceholder": "Geben Sie Ihren Nachnamen ein"
   },
   "profile": {
     "title": "Profil",
     "statistics": "Statistiken",
+    "defaultFirstName": "Gast",
     "tasks-completed": "Abgeschlossene Aufgaben",
     "techniques-learned": "Erlernte Techniken",
     "daily-tasks": "Tägliche Aufgaben",
@@ -124,34 +145,34 @@
     "achievements": "Erfolge"
   },
   "settings": {
-    "title": "Einstellungen",
-    "darkMode": "Dunkelmodus",
-    "notifications": "Benachrichtigungen",
-    "language": "Sprache",
-    "rateApp": "App bewerten",
-    "privacyPolicy": "Datenschutzrichtlinie",
-    "shareApp": "App teilen",
-    "feedback": "Feedback",
-    "helpCenter": "Hilfezentrum",
-    "resetAccount": "Konto zurücksetzen",
-    "logout": "Abmelden",
-    "appVersion": "App-Version: {{version}}",
-    "enableNotificationPermission": "Aktivieren Sie Benachrichtigungen in den App-Einstellungen.",
-    "notificationsEnabled": "Benachrichtigungen sind aktiviert.",
-    "notificationsDisabled": "Benachrichtigungen sind deaktiviert.",
-    "logoutTitle": "Abmelden",
-    "logoutMessage": "Möchten Sie sich wirklich abmelden?",
-    "logoutSuccessTitle": "Abgemeldet",
-    "logoutSuccessMessage": "Sie wurden erfolgreich abgemeldet.",
-    "logoutErrorTitle": "Abmeldung fehlgeschlagen",
-    "logoutErrorMessage": "Beim Abmelden ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
-    "resetAccountTitle": "Konto zurücksetzen",
-    "resetAccountMessage": "Möchten Sie Ihr Konto wirklich zurücksetzen? Diese Aktion kann nicht rückgängig gemacht werden.",
-    "resetAccountSuccessTitle": "Konto zurückgesetzt",
-    "resetAccountSuccessMessage": "Ihr Konto wurde erfolgreich zurückgesetzt.",
-    "resetAccountErrorTitle": "Zurücksetzen fehlgeschlagen",
-    "resetAccountErrorMessage": "Das Konto konnte nicht zurückgesetzt werden. Bitte versuchen Sie es erneut.",
-    "errorTitle": "Fehler",
-    "userNotAuthenticated": "Benutzer ist nicht authentifiziert."
+    "title": "Paramètres",
+    "darkMode": "Mode Sombre",
+    "notifications": "Notifications",
+    "language": "Langue",
+    "rateApp": "Évaluer l'App",
+    "privacyPolicy": "Politique de Confidentialité",
+    "shareApp": "Partager l'App",
+    "feedback": "Commentaires",
+    "helpCenter": "Centre d'Aide",
+    "resetAccount": "Réinitialiser le Compte",
+    "logout": "Déconnexion",
+    "appVersion": "Version de l'App: {{version}}",
+    "enableNotificationPermission": "Activez les notifications dans les paramètres de l'application.",
+    "notificationsEnabled": "Les notifications sont activées.",
+    "notificationsDisabled": "Les notifications sont désactivées.",
+    "resetAccountTitle": "Réinitialiser le Compte",
+    "resetAccountMessage": "Êtes-vous sûr de vouloir réinitialiser votre compte ? Cette action est irréversible.",
+    "resetAccountSuccessTitle": "Compte Réinitialisé",
+    "resetAccountSuccessMessage": "Votre compte a été réinitialisé avec succès.",
+    "resetAccountErrorTitle": "Erreur de Réinitialisation",
+    "resetAccountErrorMessage": "Impossible de réinitialiser le compte. Veuillez réessayer.",
+    "errorTitle": "Erreur",
+    "userNotAuthenticated": "L'utilisateur n'est pas authentifié.",
+    "logoutTitle": "Déconnexion",
+    "logoutMessage": "Êtes-vous sûr de vouloir vous déconnecter ?",
+    "logoutSuccessTitle": "Déconnecté",
+    "logoutSuccessMessage": "Vous avez été déconnecté avec succès.",
+    "logoutErrorTitle": "Erreur de Déconnexion",
+    "logoutErrorMessage": "Échec de la déconnexion. Veuillez réessayer."
   }
 }

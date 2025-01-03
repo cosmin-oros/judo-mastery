@@ -8,7 +8,7 @@ const Option: React.FC<SettingsOptionProps> = ({ icon, label, isSwitch, switchVa
   const { theme } = useTheme();
 
   return (
-    <View style={styles.optionContainer}>
+    <TouchableOpacity onPress={onPress} style={styles.optionContainer}>
       <Ionicons name={icon} size={24} color={theme.colors.primary} />
       <Text style={[styles.optionText, { color: theme.colors.text }]}>{label}</Text>
       {isSwitch ? (
@@ -19,11 +19,11 @@ const Option: React.FC<SettingsOptionProps> = ({ icon, label, isSwitch, switchVa
           trackColor={{ false: "#ccc", true: theme.colors.primary }}
         />
       ) : (
-        <TouchableOpacity onPress={onPress}>
+        <TouchableOpacity>
           <Ionicons name="chevron-forward" size={18} color={theme.colors.primary} />
         </TouchableOpacity>
       )}
-    </View>
+    </TouchableOpacity>
   );
 };
 

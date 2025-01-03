@@ -55,6 +55,24 @@
     "login-button": "Iniciar sesión",
     "no-account": "¿No tienes una cuenta?"
   },
+  "home": {
+    "dailyTasks": "Tareas Diarias",
+    "greeting": "Bienvenido de nuevo",
+    "tasks": {
+      "stretchingRoutine": "Rutina de Estiramientos",
+      "pushups": "10 Flexiones"
+    },
+    "eventsTitle": "Eventos",
+    "events": {
+      "localCompetition": "Competencia de Judo Local",
+      "trainingSession": "Sesión de Entrenamiento"
+    },
+    "techniqueOfTheDay": "Técnica del Día",
+    "technique": {
+      "title": "Seoi Nage",
+      "description": "Una técnica de lanzamiento por el hombro para derribar eficientemente a un oponente."
+    }
+  },
   "language-selection": {
     "title": "Selecciona idioma",
     "next-step": "Siguiente Paso"
@@ -94,11 +112,14 @@
     "saveSuccessTitle": "Guardado exitoso",
     "saveSuccessMessage": "Tus datos se han guardado exitosamente.",
     "saveErrorTitle": "Error al guardar",
-    "saveErrorMessage": "Hubo un error al guardar tus datos."
+    "saveErrorMessage": "Hubo un error al guardar tus datos.",
+    "firstNamePlaceholder": "Ingresa tu nombre",
+    "lastNamePlaceholder": "Ingresa tu apellido"
   },
   "profile": {
     "title": "Perfil",
     "statistics": "Estadísticas",
+    "defaultFirstName": "Invitado",
     "tasks-completed": "Tareas completadas",
     "techniques-learned": "Técnicas aprendidas",
     "daily-tasks": "Tareas diarias",
@@ -124,34 +145,34 @@
     "achievements": "Logros"
   },
   "settings": {
-    "title": "Configuración",
-    "darkMode": "Modo oscuro",
+    "title": "Configuraciones",
+    "darkMode": "Modo Oscuro",
     "notifications": "Notificaciones",
     "language": "Idioma",
-    "rateApp": "Calificar aplicación",
-    "privacyPolicy": "Política de privacidad",
-    "shareApp": "Compartir aplicación",
+    "rateApp": "Calificar App",
+    "privacyPolicy": "Política de Privacidad",
+    "shareApp": "Compartir App",
     "feedback": "Comentarios",
-    "helpCenter": "Centro de ayuda",
-    "resetAccount": "Restablecer cuenta",
-    "logout": "Cerrar sesión",
-    "appVersion": "Versión de la aplicación: {{version}}",
-    "enableNotificationPermission": "Habilita las notificaciones en la configuración de la aplicación.",
+    "helpCenter": "Centro de Ayuda",
+    "resetAccount": "Restablecer Cuenta",
+    "logout": "Cerrar Sesión",
+    "appVersion": "Versión de la App: {{version}}",
+    "enableNotificationPermission": "Habilita las notificaciones en la configuración de la app.",
     "notificationsEnabled": "Las notificaciones están habilitadas.",
     "notificationsDisabled": "Las notificaciones están deshabilitadas.",
-    "logoutTitle": "Cerrar sesión",
-    "logoutMessage": "¿Estás seguro de que deseas cerrar sesión?",
-    "logoutSuccessTitle": "Sesión cerrada",
-    "logoutSuccessMessage": "Has cerrado sesión con éxito.",
-    "logoutErrorTitle": "Error al cerrar sesión",
-    "logoutErrorMessage": "Se produjo un error al cerrar sesión. Por favor, inténtalo de nuevo.",
-    "resetAccountTitle": "Restablecer cuenta",
-    "resetAccountMessage": "¿Está seguro de que desea restablecer su cuenta? Esta acción no se puede deshacer.",
-    "resetAccountSuccessTitle": "Cuenta restablecida",
-    "resetAccountSuccessMessage": "Su cuenta se ha restablecido con éxito.",
-    "resetAccountErrorTitle": "Error de restablecimiento",
-    "resetAccountErrorMessage": "No se pudo restablecer la cuenta. Por favor, inténtelo de nuevo.",
+    "resetAccountTitle": "Restablecer Cuenta",
+    "resetAccountMessage": "¿Estás seguro de que deseas restablecer tu cuenta? Esta acción no se puede deshacer.",
+    "resetAccountSuccessTitle": "Cuenta Restablecida",
+    "resetAccountSuccessMessage": "Tu cuenta ha sido restablecida con éxito.",
+    "resetAccountErrorTitle": "Error al Restablecer",
+    "resetAccountErrorMessage": "No se pudo restablecer la cuenta. Inténtalo de nuevo.",
     "errorTitle": "Error",
-    "userNotAuthenticated": "El usuario no está autenticado."
+    "userNotAuthenticated": "El usuario no está autenticado.",
+    "logoutTitle": "Cerrar Sesión",
+    "logoutMessage": "¿Estás seguro de que deseas cerrar sesión?",
+    "logoutSuccessTitle": "Sesión Cerrada",
+    "logoutSuccessMessage": "Has cerrado sesión con éxito.",
+    "logoutErrorTitle": "Error al Cerrar Sesión",
+    "logoutErrorMessage": "Error al cerrar sesión. Inténtalo de nuevo."
   }
 }

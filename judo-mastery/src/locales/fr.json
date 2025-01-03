@@ -55,6 +55,24 @@
     "login-button": "Connexion",
     "no-account": "Vous n'avez pas de compte ?"
   },
+  "home": {
+    "dailyTasks": "Tâches Quotidiennes",
+    "greeting": "Bon retour",
+    "tasks": {
+      "stretchingRoutine": "Routine d'Étirement",
+      "pushups": "10 Pompes"
+    },
+    "eventsTitle": "Événements",
+    "events": {
+      "localCompetition": "Compétition de Judo Locale",
+      "trainingSession": "Session d'Entraînement"
+    },
+    "techniqueOfTheDay": "Technique du Jour",
+    "technique": {
+      "title": "Seoi Nage",
+      "description": "Une technique de projection par l'épaule pour faire tomber efficacement un adversaire."
+    }
+  },
   "language-selection": {
     "title": "Sélectionner la langue",
     "next-step": "Étape Suivante"
@@ -94,11 +112,14 @@
     "saveSuccessTitle": "Enregistrement réussi",
     "saveSuccessMessage": "Vos données ont été enregistrées avec succès.",
     "saveErrorTitle": "Erreur lors de l'enregistrement",
-    "saveErrorMessage": "Une erreur s'est produite lors de l'enregistrement de vos données."
+    "saveErrorMessage": "Une erreur s'est produite lors de l'enregistrement de vos données.",
+    "firstNamePlaceholder": "Entrez votre prénom",
+    "lastNamePlaceholder": "Entrez votre nom de famille"
   },
   "profile": {
     "title": "Profil",
     "statistics": "Statistiques",
+    "defaultFirstName": "Invité",
     "tasks-completed": "Tâches terminées",
     "techniques-learned": "Techniques apprises",
     "daily-tasks": "Tâches quotidiennes",
@@ -125,33 +146,33 @@
   },
   "settings": {
     "title": "Paramètres",
-    "darkMode": "Mode sombre",
+    "darkMode": "Mode Sombre",
     "notifications": "Notifications",
     "language": "Langue",
-    "rateApp": "Noter l'application",
-    "privacyPolicy": "Politique de confidentialité",
-    "shareApp": "Partager l'application",
-    "feedback": "Retour d'information",
-    "helpCenter": "Centre d'aide",
-    "resetAccount": "Réinitialiser le compte",
+    "rateApp": "Évaluer l'App",
+    "privacyPolicy": "Politique de Confidentialité",
+    "shareApp": "Partager l'App",
+    "feedback": "Commentaires",
+    "helpCenter": "Centre d'Aide",
+    "resetAccount": "Réinitialiser le Compte",
     "logout": "Déconnexion",
-    "appVersion": "Version de l'application : {{version}}",
+    "appVersion": "Version de l'App: {{version}}",
     "enableNotificationPermission": "Activez les notifications dans les paramètres de l'application.",
     "notificationsEnabled": "Les notifications sont activées.",
     "notificationsDisabled": "Les notifications sont désactivées.",
+    "resetAccountTitle": "Réinitialiser le Compte",
+    "resetAccountMessage": "Êtes-vous sûr de vouloir réinitialiser votre compte ? Cette action est irréversible.",
+    "resetAccountSuccessTitle": "Compte Réinitialisé",
+    "resetAccountSuccessMessage": "Votre compte a été réinitialisé avec succès.",
+    "resetAccountErrorTitle": "Erreur de Réinitialisation",
+    "resetAccountErrorMessage": "Impossible de réinitialiser le compte. Veuillez réessayer.",
+    "errorTitle": "Erreur",
+    "userNotAuthenticated": "L'utilisateur n'est pas authentifié.",
     "logoutTitle": "Déconnexion",
     "logoutMessage": "Êtes-vous sûr de vouloir vous déconnecter ?",
     "logoutSuccessTitle": "Déconnecté",
-    "logoutSuccessMessage": "Vous vous êtes déconnecté avec succès.",
-    "logoutErrorTitle": "Échec de la déconnexion",
-    "logoutErrorMessage": "Une erreur s'est produite lors de la déconnexion. Veuillez réessayer.",
-    "resetAccountTitle": "Réinitialiser le compte",
-    "resetAccountMessage": "Êtes-vous sûr de vouloir réinitialiser votre compte ? Cette action est irréversible.",
-    "resetAccountSuccessTitle": "Compte réinitialisé",
-    "resetAccountSuccessMessage": "Votre compte a été réinitialisé avec succès.",
-    "resetAccountErrorTitle": "Échec de la réinitialisation",
-    "resetAccountErrorMessage": "Impossible de réinitialiser le compte. Veuillez réessayer.",
-    "errorTitle": "Erreur",
-    "userNotAuthenticated": "L'utilisateur n'est pas authentifié."
+    "logoutSuccessMessage": "Vous avez été déconnecté avec succès.",
+    "logoutErrorTitle": "Erreur de Déconnexion",
+    "logoutErrorMessage": "Échec de la déconnexion. Veuillez réessayer."
   }
 }

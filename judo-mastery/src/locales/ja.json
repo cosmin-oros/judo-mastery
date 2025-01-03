@@ -55,6 +55,24 @@
     "login-button": "ログイン",
     "no-account": "アカウントをお持ちでないですか？"
   },
+  "home": {
+    "dailyTasks": "毎日のタスク",
+    "greeting": "お帰りなさい",
+    "tasks": {
+      "stretchingRoutine": "ストレッチルーティン",
+      "pushups": "腕立て伏せ10回"
+    },
+    "eventsTitle": "イベント",
+    "events": {
+      "localCompetition": "ローカル柔道大会",
+      "trainingSession": "トレーニングセッション"
+    },
+    "techniqueOfTheDay": "今日の技",
+    "technique": {
+      "title": "背負い投げ",
+      "description": "相手を効率的に倒すための肩投げ技です。"
+    }
+  },
   "language-selection": {
     "title": "言語を選択",
     "next-step": "次のステップ"
@@ -94,11 +112,14 @@
     "saveSuccessTitle": "保存成功",
     "saveSuccessMessage": "データは正常に保存されました。",
     "saveErrorTitle": "保存エラー",
-    "saveErrorMessage": "データ保存中にエラーが発生しました。再試行してください。"
+    "saveErrorMessage": "データ保存中にエラーが発生しました。再試行してください。",
+    "firstNamePlaceholder": "名を入力してください",
+    "lastNamePlaceholder": "姓を入力してください"
   },
   "profile": {
     "title": "プロフィール",
     "statistics": "統計",
+    "defaultFirstName": "ゲスト",
     "tasks-completed": "完了したタスク",
     "techniques-learned": "学んだ技術",
     "daily-tasks": "日課",
@@ -128,30 +149,30 @@
     "darkMode": "ダークモード",
     "notifications": "通知",
     "language": "言語",
-    "rateApp": "アプリを評価する",
+    "rateApp": "アプリを評価",
     "privacyPolicy": "プライバシーポリシー",
-    "shareApp": "アプリを共有する",
+    "shareApp": "アプリを共有",
     "feedback": "フィードバック",
     "helpCenter": "ヘルプセンター",
-    "resetAccount": "アカウントをリセットする",
+    "resetAccount": "アカウントをリセット",
     "logout": "ログアウト",
-    "appVersion": "アプリのバージョン: {{version}}",
-    "enableNotificationPermission": "アプリの設定で通知を有効にしてください。",
+    "appVersion": "アプリバージョン: {{version}}",
+    "enableNotificationPermission": "アプリ設定で通知を有効にしてください。",
     "notificationsEnabled": "通知が有効になっています。",
     "notificationsDisabled": "通知が無効になっています。",
-    "logoutTitle": "ログアウト",
-    "logoutMessage": "本当にログアウトしますか？",
-    "logoutSuccessTitle": "ログアウトしました",
-    "logoutSuccessMessage": "正常にログアウトしました。",
-    "logoutErrorTitle": "ログアウトに失敗しました",
-    "logoutErrorMessage": "ログアウト中にエラーが発生しました。もう一度お試しください。",
     "resetAccountTitle": "アカウントをリセット",
-    "resetAccountMessage": "本当にアカウントをリセットしますか？この操作は元に戻せません。",
-    "resetAccountSuccessTitle": "アカウントがリセットされました",
+    "resetAccountMessage": "アカウントをリセットしますか？ この操作は元に戻せません。",
+    "resetAccountSuccessTitle": "アカウントリセット",
     "resetAccountSuccessMessage": "アカウントが正常にリセットされました。",
-    "resetAccountErrorTitle": "リセットに失敗しました",
+    "resetAccountErrorTitle": "リセットエラー",
     "resetAccountErrorMessage": "アカウントをリセットできませんでした。もう一度お試しください。",
     "errorTitle": "エラー",
-    "userNotAuthenticated": "ユーザーが認証されていません。"
+    "userNotAuthenticated": "ユーザーが認証されていません。",
+    "logoutTitle": "ログアウト",
+    "logoutMessage": "本当にログアウトしますか？",
+    "logoutSuccessTitle": "ログアウト成功",
+    "logoutSuccessMessage": "正常にログアウトしました。",
+    "logoutErrorTitle": "ログアウトエラー",
+    "logoutErrorMessage": "ログアウトに失敗しました。もう一度お試しください。"
   }
 }
