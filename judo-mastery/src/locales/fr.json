@@ -55,6 +55,23 @@
     "login-button": "Connexion",
     "no-account": "Vous n'avez pas de compte ?"
   },
+  "home": {
+    "dailyTasks": "Tâches Quotidiennes",
+    "tasks": {
+      "stretchingRoutine": "Routine d'Étirement",
+      "pushups": "10 Pompes"
+    },
+    "eventsTitle": "Événements",
+    "events": {
+      "localCompetition": "Compétition de Judo Locale",
+      "trainingSession": "Session d'Entraînement"
+    },
+    "techniqueOfTheDay": "Technique du Jour",
+    "technique": {
+      "title": "Seoi Nage",
+      "description": "Une technique de projection par l'épaule pour faire tomber efficacement un adversaire."
+    }
+  },
   "language-selection": {
     "title": "Sélectionner la langue",
     "next-step": "Étape Suivante"

@@ -55,6 +55,23 @@
     "login-button": "Autentificare",
     "no-account": "Nu ai un cont?"
   },
+  "home": {
+    "dailyTasks": "Sarcini zilnice",
+    "tasks": {
+      "stretchingRoutine": "Rutina de întindere",
+      "pushups": "10 Flotări"
+    },
+    "eventsTitle": "Evenimente",
+    "events": {
+      "localCompetition": "Competiție locală de Judo",
+      "trainingSession": "Sesiune de antrenament"
+    },
+    "techniqueOfTheDay": "Tehnica zilei",
+    "technique": {
+      "title": "Seoi Nage",
+      "description": "O tehnică de aruncare pe umăr pentru a doborî eficient un adversar."
+    }
+  },
   "language-selection": {
     "title": "Selectează limba",
     "next-step": "Pasul Următor"

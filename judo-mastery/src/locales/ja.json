@@ -55,6 +55,23 @@
     "login-button": "ログイン",
     "no-account": "アカウントをお持ちでないですか？"
   },
+  "home": {
+    "dailyTasks": "毎日のタスク",
+    "tasks": {
+      "stretchingRoutine": "ストレッチルーティン",
+      "pushups": "腕立て伏せ10回"
+    },
+    "eventsTitle": "イベント",
+    "events": {
+      "localCompetition": "ローカル柔道大会",
+      "trainingSession": "トレーニングセッション"
+    },
+    "techniqueOfTheDay": "今日の技",
+    "technique": {
+      "title": "背負い投げ",
+      "description": "相手を効率的に倒すための肩投げ技です。"
+    }
+  },
   "language-selection": {
     "title": "言語を選択",
     "next-step": "次のステップ"

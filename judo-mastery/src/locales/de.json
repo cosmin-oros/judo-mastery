@@ -55,6 +55,23 @@
     "login-button": "Anmelden",
     "no-account": "Haben Sie kein Konto?"
   },
+  "home": {
+    "dailyTasks": "Tägliche Aufgaben",
+    "tasks": {
+      "stretchingRoutine": "Dehnroutine",
+      "pushups": "10 Liegestütze"
+    },
+    "eventsTitle": "Veranstaltungen",
+    "events": {
+      "localCompetition": "Lokaler Judo-Wettbewerb",
+      "trainingSession": "Trainingseinheit"
+    },
+    "techniqueOfTheDay": "Technik des Tages",
+    "technique": {
+      "title": "Seoi Nage",
+      "description": "Eine Schulterwurf-Technik, um einen Gegner effizient zu Boden zu bringen."
+    }
+  },
   "language-selection": {
     "title": "Sprache auswählen",
     "next-step": "Nächster Schritt"
