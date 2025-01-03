@@ -57,6 +57,7 @@
   },
   "home": {
     "dailyTasks": "Sarcini zilnice",
+    "greeting": "Bine ai revenit",
     "tasks": {
       "stretchingRoutine": "Rutina de întindere",
       "pushups": "10 Flotări"
@@ -117,6 +118,7 @@
   },
   "profile": {
     "title": "Profil",
+    "defaultFirstName": "Vizitator",
     "statistics": "Statistici",
     "tasks-completed": "Sarcini finalizate",
     "techniques-learned": "Tehnici învățate",

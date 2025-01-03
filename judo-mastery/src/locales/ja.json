@@ -57,6 +57,7 @@
   },
   "home": {
     "dailyTasks": "毎日のタスク",
+    "greeting": "お帰りなさい",
     "tasks": {
       "stretchingRoutine": "ストレッチルーティン",
       "pushups": "腕立て伏せ10回"
@@ -118,6 +119,7 @@
   "profile": {
     "title": "プロフィール",
     "statistics": "統計",
+    "defaultFirstName": "ゲスト",
     "tasks-completed": "完了したタスク",
     "techniques-learned": "学んだ技術",
     "daily-tasks": "日課",

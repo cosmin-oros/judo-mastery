@@ -57,6 +57,7 @@
   },
   "home": {
     "dailyTasks": "Daily Tasks",
+    "greeting": "Welcome back",
     "tasks": {
       "stretchingRoutine": "Stretching Routine",
       "pushups": "10 Push-ups"
@@ -117,6 +118,7 @@
   },
   "profile": {
     "title": "Profile",
+    "defaultFirstName": "Guest",
     "statistics": "Statistics",
     "tasks-completed": "Tasks Completed",
     "techniques-learned": "Techniques Learned",

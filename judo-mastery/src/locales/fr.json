@@ -57,6 +57,7 @@
   },
   "home": {
     "dailyTasks": "Tâches Quotidiennes",
+    "greeting": "Bon retour",
     "tasks": {
       "stretchingRoutine": "Routine d'Étirement",
       "pushups": "10 Pompes"
@@ -118,6 +119,7 @@
   "profile": {
     "title": "Profil",
     "statistics": "Statistiques",
+    "defaultFirstName": "Invité",
     "tasks-completed": "Tâches terminées",
     "techniques-learned": "Techniques apprises",
     "daily-tasks": "Tâches quotidiennes",

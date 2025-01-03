@@ -57,6 +57,7 @@
   },
   "home": {
     "dailyTasks": "Tägliche Aufgaben",
+    "greeting": "Willkommen zurück",
     "tasks": {
       "stretchingRoutine": "Dehnroutine",
       "pushups": "10 Liegestütze"
@@ -118,6 +119,7 @@
   "profile": {
     "title": "Profil",
     "statistics": "Statistiken",
+    "defaultFirstName": "Gast",
     "tasks-completed": "Abgeschlossene Aufgaben",
     "techniques-learned": "Erlernte Techniken",
     "daily-tasks": "Tägliche Aufgaben",

@@ -57,6 +57,7 @@
   },
   "home": {
     "dailyTasks": "Tareas Diarias",
+    "greeting": "Bienvenido de nuevo",
     "tasks": {
       "stretchingRoutine": "Rutina de Estiramientos",
       "pushups": "10 Flexiones"
@@ -118,6 +119,7 @@
   "profile": {
     "title": "Perfil",
     "statistics": "Estadísticas",
+    "defaultFirstName": "Invitado",
     "tasks-completed": "Tareas completadas",
     "techniques-learned": "Técnicas aprendidas",
     "daily-tasks": "Tareas diarias",
