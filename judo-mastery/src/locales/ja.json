@@ -94,7 +94,9 @@
     "saveSuccessTitle": "保存成功",
     "saveSuccessMessage": "データは正常に保存されました。",
     "saveErrorTitle": "保存エラー",
-    "saveErrorMessage": "データ保存中にエラーが発生しました。再試行してください。"
+    "saveErrorMessage": "データ保存中にエラーが発生しました。再試行してください。",
+    "firstNamePlaceholder": "名を入力してください",
+    "lastNamePlaceholder": "姓を入力してください"
   },
   "profile": {
     "title": "プロフィール",

@@ -94,7 +94,9 @@
     "saveSuccessTitle": "Success",
     "saveSuccessMessage": "Your profile has been saved successfully.",
     "saveErrorTitle": "Error",
-    "saveErrorMessage": "There was an error saving your profile."
+    "saveErrorMessage": "There was an error saving your profile.",
+    "firstNamePlaceholder": "Enter your first name",
+    "lastNamePlaceholder": "Enter your last name"
   },
   "profile": {
     "title": "Profile",

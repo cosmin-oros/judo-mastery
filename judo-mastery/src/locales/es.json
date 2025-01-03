@@ -94,7 +94,9 @@
     "saveSuccessTitle": "Guardado exitoso",
     "saveSuccessMessage": "Tus datos se han guardado exitosamente.",
     "saveErrorTitle": "Error al guardar",
-    "saveErrorMessage": "Hubo un error al guardar tus datos."
+    "saveErrorMessage": "Hubo un error al guardar tus datos.",
+    "firstNamePlaceholder": "Ingresa tu nombre",
+    "lastNamePlaceholder": "Ingresa tu apellido"
   },
   "profile": {
     "title": "Perfil",

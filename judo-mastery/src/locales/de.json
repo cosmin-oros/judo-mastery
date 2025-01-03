@@ -94,7 +94,9 @@
     "saveSuccessTitle": "Erfolgreich gespeichert",
     "saveSuccessMessage": "Ihre Daten wurden erfolgreich gespeichert.",
     "saveErrorTitle": "Fehler beim Speichern",
-    "saveErrorMessage": "Beim Speichern Ihrer Daten ist ein Fehler aufgetreten."
+    "saveErrorMessage": "Beim Speichern Ihrer Daten ist ein Fehler aufgetreten.",
+    "firstNamePlaceholder": "Geben Sie Ihren Vornamen ein",
+    "lastNamePlaceholder": "Geben Sie Ihren Nachnamen ein"
   },
   "profile": {
     "title": "Profil",

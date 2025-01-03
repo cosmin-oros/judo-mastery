@@ -94,7 +94,9 @@
     "saveSuccessTitle": "Enregistrement réussi",
     "saveSuccessMessage": "Vos données ont été enregistrées avec succès.",
     "saveErrorTitle": "Erreur lors de l'enregistrement",
-    "saveErrorMessage": "Une erreur s'est produite lors de l'enregistrement de vos données."
+    "saveErrorMessage": "Une erreur s'est produite lors de l'enregistrement de vos données.",
+    "firstNamePlaceholder": "Entrez votre prénom",
+    "lastNamePlaceholder": "Entrez votre nom de famille"
   },
   "profile": {
     "title": "Profil",
