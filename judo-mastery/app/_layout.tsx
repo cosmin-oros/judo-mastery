@@ -1,9 +1,11 @@
 import { Stack } from "expo-router";
 import { useEffect, useState } from "react";
+import { StatusBar } from "react-native"; // Import StatusBar
 import * as SplashScreen from "expo-splash-screen";
 import { AuthProvider } from "@/src/provider/auth/AuthProvider";
 import i18n from "@/src/i18n";
-import { ThemeProvider } from "@/src/theme/ThemeProvider";
+import { ThemeProvider, useTheme } from "@/src/theme/ThemeProvider";
+import { lightTheme } from "@/src/theme/themes";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -28,8 +30,20 @@ export default function RootLayout() {
   return (
     <ThemeProvider>
       <AuthProvider>
+        <ThemedStatusBar />
         <Stack screenOptions={{ headerShown: false }} />
       </AuthProvider>
     </ThemeProvider>
+  );
+}
+
+function ThemedStatusBar() {
+  const { theme } = useTheme(); // Access the theme
+
+  return (
+    <StatusBar
+      barStyle={theme === lightTheme ? "light-content" : "dark-content"} // Adapts to theme
+      backgroundColor={theme.colors.background} // Uses theme background color
+    />
   );
 }
