@@ -4,7 +4,8 @@
     "sign-up": "Registrieren",
     "login": "Anmelden",
     "ok": "OK",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "loading": "Laden..."
   },
   "auth": {
     "errors": {

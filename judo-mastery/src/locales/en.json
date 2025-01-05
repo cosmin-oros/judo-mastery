@@ -4,7 +4,8 @@
     "sign-up": "Sign Up",
     "login": "Login",
     "ok": "OK",
-    "cancel": "Cancel"
+    "cancel": "Cancel",
+    "loading": "Loading..."
   },
   "auth": {
     "errors": {

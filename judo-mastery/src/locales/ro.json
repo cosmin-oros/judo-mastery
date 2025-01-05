@@ -4,7 +4,8 @@
     "sign-up": "Înregistrează-te",
     "login": "Autentificare",
     "ok": "OK",
-    "cancel": "Anulează"
+    "cancel": "Anulează",
+    "loading": "Se încarcă..."
   },
   "auth": {
     "errors": {
