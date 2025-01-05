@@ -19,19 +19,19 @@ const AchievementsSection: React.FC<AchievementsSectionProps> = ({ userData }) =
         <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={30} color={theme.colors.primary} />
           <Text style={[styles.medalCount, { color: theme.colors.text }]}>
-            {userData.goldMedals}
+            {userData.goldMedals ? userData.goldMedals : 0}
           </Text>
         </View>
         <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={30} color={colors["slate-500"]} />
           <Text style={[styles.medalCount, { color: theme.colors.text }]}>
-            {userData.silverMedals}
+            {userData.silverMedals ? userData.silverMedals : 0}
           </Text>
         </View>
         <View style={[styles.medalCard, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={30} color={colors["amber-500"]} />
           <Text style={[styles.medalCount, { color: theme.colors.text }]}>
-            {userData.bronzeMedals}
+            {userData.bronzeMedals ? userData.bronzeMedals : 0}
           </Text>
         </View>
       </ScrollView>
