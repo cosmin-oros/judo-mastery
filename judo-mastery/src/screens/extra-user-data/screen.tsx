@@ -108,6 +108,12 @@ const ExtraUserDataScreen: React.FC = () => {
           { backgroundColor: theme.colors.background },
         ]}
       >
+        <TouchableOpacity
+          style={styles.skipButton}
+          onPress={() => replaceRoute("/(tabs)/home")}
+        >
+          <Ionicons name="arrow-forward-circle" size={32} color={theme.colors.primary} />
+        </TouchableOpacity>
         <Text style={[styles.title, { color: theme.colors.text }]}>
           {t("extra-user-data.title")}
         </Text>
@@ -422,6 +428,11 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontSize: 18,
     fontWeight: "600",
+  },
+  skipButton: {
+    position: "absolute",
+    right: 20,
+    zIndex: 10,
   },
 });
 
