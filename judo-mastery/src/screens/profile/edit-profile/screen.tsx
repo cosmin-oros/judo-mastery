@@ -16,8 +16,10 @@ import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { saveUserDataToFirestore } from "@/src/firestoreService/userDataService";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { colors } from "@/src/theme/colors";
+import Header from "../../settings/components/Header";
+import EditHeader from "../components/EditHeader";
 
-const ExtraUserDataScreen: React.FC = () => {
+const EditProfileScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
   const { user } = useAuth();
@@ -93,7 +95,7 @@ const ExtraUserDataScreen: React.FC = () => {
       try {
         await saveUserDataToFirestore(updatedUserData); // Save to Firestore
         Alert.alert(t("extra-user-data.saveSuccessTitle"), t("extra-user-data.saveSuccessMessage"));
-        replaceRoute("/(tabs)/home");
+        replaceRoute("/(tabs)/profile");
       } catch (error) {
         Alert.alert(t("extra-user-data.saveErrorTitle"), t("extra-user-data.saveErrorMessage"));
       }
@@ -102,22 +104,13 @@ const ExtraUserDataScreen: React.FC = () => {
 
   return (
     <View style={styles.screen}>
+      <EditHeader title={t('profile.editTitle')}/>
       <ScrollView
         contentContainerStyle={[
           styles.container,
           { backgroundColor: theme.colors.background },
         ]}
       >
-        <TouchableOpacity
-          style={styles.skipButton}
-          onPress={() => replaceRoute("/(tabs)/home")}
-        >
-          <Ionicons name="arrow-forward-circle" size={32} color={theme.colors.primary} />
-        </TouchableOpacity>
-        <Text style={[styles.title, { color: theme.colors.text }]}>
-          {t("extra-user-data.title")}
-        </Text>
-
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
@@ -345,21 +338,20 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-      </ScrollView>
-
-      {/* Save Button */}
-      <View style={[styles.saveButtonContainer, { backgroundColor: theme.colors.background }]}>
+        
         <TouchableOpacity
-          style={[styles.saveButton, { backgroundColor: theme.colors.primary }]}
-          onPress={handleSaveProfile}
-        >
-          <Text
-            style={[styles.saveButtonText, { color: theme.colors.background }]}
-          >
+            style={[
+            styles.saveButton,
+            { backgroundColor: theme.colors.primary, flexDirection: "row", alignItems: "center" }
+            ]}
+            onPress={handleSaveProfile}
+            >
+            <Ionicons name="checkmark-done-outline" size={24} color={theme.colors.background} />
+            <Text style={[styles.saveButtonText, { color: theme.colors.background, marginLeft: 8 }]}>
             {t("extra-user-data.save")}
-          </Text>
+            </Text>
         </TouchableOpacity>
-      </View>
+      </ScrollView>
     </View>
   );
 };
@@ -421,21 +413,17 @@ const styles = StyleSheet.create({
     backgroundColor: "white",
   },
   saveButton: {
-    paddingVertical: 15,
+    paddingVertical: 12,
+    paddingHorizontal: 20,
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 20,
   },
   saveButtonText: {
     fontSize: 18,
     fontWeight: "600",
   },
-  skipButton: {
-    position: "absolute",
-    top: 10,
-    right: 20,
-    zIndex: 10,
-  },
 });
 
-export default ExtraUserDataScreen;
+export default EditProfileScreen;

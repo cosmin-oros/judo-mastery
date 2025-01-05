@@ -5,6 +5,8 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
@@ -15,6 +17,7 @@ import Header from "./components/Header";
 import AchievementsSection from "./components/AchievementsSection";
 import ProfileSection from "./components/ProfileSection";
 import StatisticsSection from "./components/StatisticsSection";
+import { replaceRoute } from "@/src/utils/replaceRoute";
 
 const ProfileScreen: React.FC = () => {
   const { user } = useAuth();

@@ -4,7 +4,8 @@
     "sign-up": "Înregistrează-te",
     "login": "Autentificare",
     "ok": "OK",
-    "cancel": "Anulează"
+    "cancel": "Anulează",
+    "loading": "Se încarcă..."
   },
   "auth": {
     "errors": {
@@ -142,7 +143,8 @@
     "default-last-name": "Nume",
     "loading": "Se încarcă...",
     "no-data": "Nu există date disponibile",
-    "achievements": "Realizări"
+    "achievements": "Realizări",
+    "editProfile": "Editează profilul"
   },
   "settings": {
     "title": "Setări",

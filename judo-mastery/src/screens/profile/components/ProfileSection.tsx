@@ -1,9 +1,10 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { BELT_COLORS, ProfileSectionProps } from "@/src/types/types";
 import { useTranslation } from "react-i18next";
+import { replaceRoute } from "@/src/utils/replaceRoute";
 
 const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
   const { theme } = useTheme();
@@ -18,6 +19,12 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
 
   return (
     <View style={[styles.profileSection, { backgroundColor: theme.colors.card }]}>
+      <TouchableOpacity
+        style={styles.editIconContainer}
+        onPress={() => replaceRoute("/(tabs)/profile/edit-profile")}
+      >
+        <Ionicons name="create-outline" size={24} color={theme.colors.primary} />
+      </TouchableOpacity>
       <Ionicons name="person-circle-outline" size={100} color={theme.colors.placeholder} />
       <Text style={[styles.username, { color: theme.colors.text }]}>
         {userData?.firstName || t("profile.default-first-name")}{" "}
@@ -29,6 +36,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
             styles.belt,
             {
               backgroundColor: BELT_COLORS[userData?.beltRank || "white"] || theme.colors.secondary,
+              borderColor: theme.colors.text,
+              borderWidth: 1,
             },
           ]}
         >
@@ -60,6 +69,11 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 20,
     elevation: 3,
+  },
+  editIconContainer: {
+    position: "absolute",
+    top: 10,
+    right: 10,
   },
   beltContainer: {
     flexDirection: "row",

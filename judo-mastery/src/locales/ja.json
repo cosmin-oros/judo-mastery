@@ -4,7 +4,8 @@
     "sign-up": "サインアップ",
     "login": "ログイン",
     "ok": "OK",
-    "cancel": "キャンセル"
+    "cancel": "キャンセル",
+    "loading": "読み込み中..."
   },
   "auth": {
     "errors": {
@@ -142,7 +143,8 @@
     "default-last-name": "姓",
     "loading": "読み込み中...",
     "no-data": "データがありません",
-    "achievements": "成果"
+    "achievements": "成果",
+    "editProfile": "プロフィールを編集"
   },
   "settings": {
     "title": "設定",

@@ -4,7 +4,8 @@
     "sign-up": "S'inscrire",
     "login": "Connexion",
     "ok": "OK",
-    "cancel": "Annuler"
+    "cancel": "Annuler",
+    "loading": "Chargement..."
   },
   "auth": {
     "errors": {
@@ -142,7 +143,8 @@
     "default-last-name": "Nom",
     "loading": "Chargement...",
     "no-data": "Pas de données disponibles",
-    "achievements": "Réalisations"
+    "achievements": "Réalisations",
+    "editProfile": "Modifier le profil"
   },
   "settings": {
     "title": "Paramètres",

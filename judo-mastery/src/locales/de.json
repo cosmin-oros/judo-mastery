@@ -4,7 +4,8 @@
     "sign-up": "Registrieren",
     "login": "Anmelden",
     "ok": "OK",
-    "cancel": "Abbrechen"
+    "cancel": "Abbrechen",
+    "loading": "Laden..."
   },
   "auth": {
     "errors": {
@@ -142,7 +143,8 @@
     "default-last-name": "Nachname",
     "loading": "Laden...",
     "no-data": "Keine Daten verfügbar",
-    "achievements": "Erfolge"
+    "achievements": "Erfolge",
+    "editTitle": "Profil bearbeiten"
   },
   "settings": {
     "title": "Paramètres",
