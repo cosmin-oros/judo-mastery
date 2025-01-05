@@ -16,6 +16,8 @@ import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { saveUserDataToFirestore } from "@/src/firestoreService/userDataService";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { colors } from "@/src/theme/colors";
+import Header from "../../settings/components/Header";
+import EditHeader from "../components/EditHeader";
 
 const EditProfileScreen: React.FC = () => {
   const { t } = useTranslation();
@@ -102,16 +104,13 @@ const EditProfileScreen: React.FC = () => {
 
   return (
     <View style={styles.screen}>
+      <EditHeader title={t('profile.editTitle')}/>
       <ScrollView
         contentContainerStyle={[
           styles.container,
           { backgroundColor: theme.colors.background },
         ]}
       >
-        <Text style={[styles.title, { color: theme.colors.text }]}>
-          {t("profile.editTitle")}
-        </Text>
-
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
