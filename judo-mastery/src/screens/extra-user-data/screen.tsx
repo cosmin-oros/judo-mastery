@@ -372,6 +372,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
+    paddingTop: '2%'
   },
   title: {
     fontSize: 28,
@@ -431,6 +432,7 @@ const styles = StyleSheet.create({
   },
   skipButton: {
     position: "absolute",
+    top: 10,
     right: 20,
     zIndex: 10,
   },
