@@ -29,6 +29,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
             styles.belt,
             {
               backgroundColor: BELT_COLORS[userData?.beltRank || "white"] || theme.colors.secondary,
+              borderColor: theme.colors.text, 
+              borderWidth: 1,
             },
           ]}
         >
