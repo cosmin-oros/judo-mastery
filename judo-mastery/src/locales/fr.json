@@ -143,7 +143,8 @@
     "default-last-name": "Nom",
     "loading": "Chargement...",
     "no-data": "Pas de données disponibles",
-    "achievements": "Réalisations"
+    "achievements": "Réalisations",
+    "editProfile": "Modifier le profil"
   },
   "settings": {
     "title": "Paramètres",

@@ -143,7 +143,8 @@
     "default-last-name": "Nume",
     "loading": "Se încarcă...",
     "no-data": "Nu există date disponibile",
-    "achievements": "Realizări"
+    "achievements": "Realizări",
+    "editProfile": "Editează profilul"
   },
   "settings": {
     "title": "Setări",

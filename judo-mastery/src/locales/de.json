@@ -143,7 +143,8 @@
     "default-last-name": "Nachname",
     "loading": "Laden...",
     "no-data": "Keine Daten verfügbar",
-    "achievements": "Erfolge"
+    "achievements": "Erfolge",
+    "editTitle": "Profil bearbeiten"
   },
   "settings": {
     "title": "Paramètres",
