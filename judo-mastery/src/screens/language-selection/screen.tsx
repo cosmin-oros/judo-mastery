@@ -4,6 +4,7 @@ import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { languages } from "@/src/utils/constants";
+import { Ionicons } from "@expo/vector-icons"; // For modern icon
 
 const LanguageSelectionScreen: React.FC = () => {
   const { t, i18n } = useTranslation();
@@ -21,9 +22,20 @@ const LanguageSelectionScreen: React.FC = () => {
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {/* Skip Button */}
+      <TouchableOpacity
+        style={styles.skipButton}
+        onPress={() => replaceRoute("/(tabs)/home")}
+      >
+        <Ionicons name="arrow-forward-circle" size={32} color={theme.colors.primary} />
+      </TouchableOpacity>
+
+      {/* Title */}
       <Text style={[styles.title, { color: theme.colors.text, fontFamily: theme.fonts.bold.fontFamily, fontWeight: theme.fonts.bold.fontWeight }]}>
         {t("language-selection.title")}
       </Text>
+
+      {/* Language List */}
       <FlatList
         data={languages}
         keyExtractor={(item) => item.code}
@@ -52,6 +64,8 @@ const LanguageSelectionScreen: React.FC = () => {
         )}
         contentContainerStyle={styles.listContainer}
       />
+
+      {/* Next Step Button */}
       <TouchableOpacity
         style={[styles.nextButton, { backgroundColor: theme.colors.primary }]}
         onPress={handleNextStep}
@@ -70,6 +84,12 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingTop: '5%', 
   },
+  skipButton: {
+    position: "absolute",
+    top: 20,
+    right: 20,
+    zIndex: 10,
+  },
   title: {
     fontSize: 26,
     fontWeight: "600",
@@ -78,14 +98,14 @@ const styles = StyleSheet.create({
   },
   listContainer: {
     marginHorizontal: '1%',
-    paddingBottom: 30, // Increased bottom padding for spacing between list and button
+    paddingBottom: 30, 
   },
   card: {
     flexDirection: "row",
     alignItems: "center",
     paddingVertical: 15,
     paddingHorizontal: 20,
-    marginVertical: 12, // Increased margin between language cards
+    marginVertical: 12, 
     borderRadius: 18,
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 4 },

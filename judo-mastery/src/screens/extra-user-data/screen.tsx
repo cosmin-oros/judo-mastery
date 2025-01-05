@@ -108,6 +108,12 @@ const ExtraUserDataScreen: React.FC = () => {
           { backgroundColor: theme.colors.background },
         ]}
       >
+        <TouchableOpacity
+          style={styles.skipButton}
+          onPress={() => replaceRoute("/(tabs)/home")}
+        >
+          <Ionicons name="arrow-forward-circle" size={32} color={theme.colors.primary} />
+        </TouchableOpacity>
         <Text style={[styles.title, { color: theme.colors.text }]}>
           {t("extra-user-data.title")}
         </Text>
@@ -219,7 +225,7 @@ const ExtraUserDataScreen: React.FC = () => {
 
         {/* Silver Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
-          <Ionicons name="medal-outline" size={24} color={colors["gray-700"]} />
+          <Ionicons name="medal-outline" size={24} color={colors["slate-500"]} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={silverMedals}
@@ -422,6 +428,11 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontSize: 18,
     fontWeight: "600",
+  },
+  skipButton: {
+    position: "absolute",
+    right: 20,
+    zIndex: 10,
   },
 });
 
