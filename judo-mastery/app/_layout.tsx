@@ -43,7 +43,7 @@ function ThemedStatusBar() {
   return (
     <StatusBar
       barStyle={theme === lightTheme ? "light-content" : "dark-content"} // Adapts to theme
-      backgroundColor={theme.colors.background} // Uses theme background color
+      backgroundColor={theme.colors.primary} // Uses theme background color
     />
   );
 }
