@@ -120,6 +120,7 @@ const HomeScreen: React.FC = () => {
             </View>
           </View>
         </View>
+        {/* Dojos near you, other sections */}
       </ScrollView>
     </View>
   );
