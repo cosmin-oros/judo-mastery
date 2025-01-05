@@ -5,6 +5,8 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
+  TouchableOpacity,
+  View,
 } from "react-native";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
@@ -15,6 +17,7 @@ import Header from "./components/Header";
 import AchievementsSection from "./components/AchievementsSection";
 import ProfileSection from "./components/ProfileSection";
 import StatisticsSection from "./components/StatisticsSection";
+import { replaceRoute } from "@/src/utils/replaceRoute";
 
 const ProfileScreen: React.FC = () => {
   const { user } = useAuth();
@@ -69,6 +72,16 @@ const ProfileScreen: React.FC = () => {
         <AchievementsSection userData={userData} />
         <StatisticsSection userData={userData} />
       </ScrollView>
+      <View style={[styles.editButtonContainer, { backgroundColor: theme.colors.background }]}>
+        <TouchableOpacity
+          style={[styles.editButton, { backgroundColor: theme.colors.primary }]}
+          onPress={() => replaceRoute("/(tabs)/profile/edit-profile")}
+        >
+          <Text style={[styles.editButtonText, { color: theme.colors.background }]}>
+            {t("profile.editProfile")}
+          </Text>
+        </TouchableOpacity>
+      </View>
     </SafeAreaView>
   );
 };
@@ -93,6 +106,23 @@ const styles = StyleSheet.create({
   errorText: {
     fontSize: 16,
     textAlign: "center",
+  },
+  editButtonContainer: {
+    padding: 20,
+    position: "absolute",
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },
+  editButton: {
+    paddingVertical: 15,
+    borderRadius: 18,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  editButtonText: {
+    fontSize: 18,
+    fontWeight: "600",
   },
 });
 
