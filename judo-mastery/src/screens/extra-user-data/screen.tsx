@@ -225,7 +225,7 @@ const ExtraUserDataScreen: React.FC = () => {
 
         {/* Silver Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
-          <Ionicons name="medal-outline" size={24} color={colors["gray-700"]} />
+          <Ionicons name="medal-outline" size={24} color={colors["slate-500"]} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={silverMedals}
