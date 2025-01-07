@@ -120,8 +120,8 @@
   },
   "profile": {
     "title": "Profil",
-    "statistics": "Statistiques",
     "defaultFirstName": "Invité",
+    "statistics": "Statistiques",
     "tasks-completed": "Tâches terminées",
     "techniques-learned": "Techniques apprises",
     "daily-tasks": "Tâches quotidiennes",
@@ -137,15 +137,18 @@
       "bronze": "Médailles de bronze"
     },
     "ippons": "Ippons",
-    "waza-aris": "Waza-aris",
+    "waza-aris": "Waza-Aris",
     "yukos": "Yukos",
-    "belt-judo": "柔道",
+    "belt-judo": "Judo",
     "default-first-name": "Prénom",
     "default-last-name": "Nom",
     "loading": "Chargement...",
     "no-data": "Pas de données disponibles",
     "achievements": "Réalisations",
-    "editProfile": "Modifier le profil"
+    "no-achievements": "Aucune réalisation pour l'instant",
+    "other-stats": "Autres statistiques",
+    "competition-stats": "Statistiques de compétition",
+    "editTitle": "Modifier le profil"
   },
   "settings": {
     "title": "Paramètres",

@@ -21,26 +21,17 @@ const CompetitionStatsSection: React.FC<CompetitionStatsProps> = ({ userData }) 
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
             {userData.goldMedals || 0}
           </Text>
-          <Text style={[styles.statLabel, { color: theme.colors.text }]}>
-            {t("profile.gold-medals")}
-          </Text>
         </View>
         <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={30} color={colors["slate-500"]} />
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
             {userData.silverMedals || 0}
           </Text>
-          <Text style={[styles.statLabel, { color: theme.colors.text }]}>
-            {t("profile.silver-medals")}
-          </Text>
         </View>
         <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={30} color={colors["orange-600"]} />
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
             {userData.bronzeMedals || 0}
-          </Text>
-          <Text style={[styles.statLabel, { color: theme.colors.text }]}>
-            {t("profile.bronze-medals")}
           </Text>
         </View>
       </ScrollView>
@@ -71,10 +62,7 @@ const styles = StyleSheet.create({
     fontWeight: "600",
     marginTop: 10,
   },
-  statLabel: {
-    fontSize: 14,
-    textAlign: "center",
-  },
+
 });
 
 export default CompetitionStatsSection;

@@ -145,6 +145,9 @@
     "loading": "Loading...",
     "no-data": "No data available",
     "achievements": "Achievements",
+    "no-achievements": "No achievements yet",
+    "other-stats": "Other Stats",
+    "competition-stats": "Competition Stats",
     "editTitle": "Edit Profile"
   },
   "settings": {

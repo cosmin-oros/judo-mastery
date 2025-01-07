@@ -70,9 +70,9 @@ const ProfileScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <ProfileSection userData={userData} />
         <AchievementsSection userData={userData} />
+        <StatisticsSection userData={userData}/>
         <CompetitionStatsSection userData={userData} />
         <OtherStatsSection userData={userData} />
-        <StatisticsSection userData={userData}/>
       </ScrollView>
     </SafeAreaView>
   );

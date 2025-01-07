@@ -88,6 +88,7 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontStyle: "italic",
     textAlign: "center",
+    marginVertical: '5%'
   },
 });
 

@@ -120,8 +120,8 @@
   },
   "profile": {
     "title": "Profil",
-    "statistics": "Statistiken",
     "defaultFirstName": "Gast",
+    "statistics": "Statistiken",
     "tasks-completed": "Abgeschlossene Aufgaben",
     "techniques-learned": "Erlernte Techniken",
     "daily-tasks": "Tägliche Aufgaben",
@@ -137,14 +137,17 @@
       "bronze": "Bronzemedaillen"
     },
     "ippons": "Ippons",
-    "waza-aris": "Waza-aris",
+    "waza-aris": "Waza-Aris",
     "yukos": "Yukos",
-    "belt-judo": "柔道",
+    "belt-judo": "Judo",
     "default-first-name": "Vorname",
     "default-last-name": "Nachname",
-    "loading": "Laden...",
+    "loading": "Wird geladen...",
     "no-data": "Keine Daten verfügbar",
     "achievements": "Erfolge",
+    "no-achievements": "Noch keine Erfolge",
+    "other-stats": "Andere Statistiken",
+    "competition-stats": "Wettkampfdaten",
     "editTitle": "Profil bearbeiten"
   },
   "settings": {

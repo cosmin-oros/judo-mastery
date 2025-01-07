@@ -127,7 +127,7 @@
     "daily-tasks": "Sarcini zilnice",
     "goals": "Obiective",
     "belt-rank": "Rangul centurii",
-    "competitions-participated": "Competiții participat",
+    "competitions-participated": "Competiții la care a participat",
     "level": "Nivel",
     "xp-progress": "{current} / {total} XP",
     "medals": {
@@ -136,16 +136,19 @@
       "silver": "Medalii de argint",
       "bronze": "Medalii de bronz"
     },
-    "ippons": "Ippon-uri",
-    "waza-aris": "Waza-ari-uri",
+    "ippons": "Ipponuri",
+    "waza-aris": "Waza-ari",
     "yukos": "Yuko-uri",
-    "belt-judo": "柔道",
+    "belt-judo": "Judo",
     "default-first-name": "Prenume",
     "default-last-name": "Nume",
     "loading": "Se încarcă...",
-    "no-data": "Nu există date disponibile",
+    "no-data": "Date indisponibile",
     "achievements": "Realizări",
-    "editProfile": "Editează profilul"
+    "no-achievements": "Nicio realizare încă",
+    "other-stats": "Alte statistici",
+    "competition-stats": "Statistici competiționale",
+    "editTitle": "Editează profilul"
   },
   "settings": {
     "title": "Setări",
