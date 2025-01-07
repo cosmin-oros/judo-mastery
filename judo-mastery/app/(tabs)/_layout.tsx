@@ -3,6 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
 
 const Layout = () => {
   const { theme } = useTheme();
@@ -44,6 +45,36 @@ const Layout = () => {
             tabBarLabel: t("home.title"),
             tabBarIcon: ({ color, size }) => (
               <FontAwesome name="home" size={size || 25} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="techniques"
+          options={{
+            title: t("techniques.title"),
+            tabBarLabel: t("techniques.title"),
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="sports-kabaddi" size={size || 25} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="terminology"
+          options={{
+            title: t("terminology.title"),
+            tabBarLabel: t("terminology.title"),
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="menu-book" size={size || 25} color={color} />
+            ),
+          }}
+        />
+        <Tabs.Screen
+          name="dojos"
+          options={{
+            title: t("dojos.title"),
+            tabBarLabel: t("dojos.title"),
+            tabBarIcon: ({ color, size }) => (
+              <MaterialIcons name="temple-buddhist" size={size || 25} color={color} />
             ),
           }}
         />
