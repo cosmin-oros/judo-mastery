@@ -57,6 +57,7 @@
     "no-account": "アカウントをお持ちでないですか？"
   },
   "home": {
+    "title": "ホーム",
     "dailyTasks": "毎日のタスク",
     "greeting": "お帰りなさい",
     "tasks": {

@@ -57,6 +57,7 @@
     "no-account": "Vous n'avez pas de compte ?"
   },
   "home": {
+    "title": "Accueil",
     "dailyTasks": "Tâches Quotidiennes",
     "greeting": "Bon retour",
     "tasks": {

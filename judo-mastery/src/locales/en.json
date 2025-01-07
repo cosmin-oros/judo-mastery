@@ -57,6 +57,7 @@
     "no-account": "Don't have an account?"
   },
   "home": {
+    "title": "Home",
     "dailyTasks": "Daily Tasks",
     "greeting": "Welcome back",
     "tasks": {

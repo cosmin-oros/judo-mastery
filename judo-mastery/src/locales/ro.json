@@ -57,6 +57,7 @@
     "no-account": "Nu ai un cont?"
   },
   "home": {
+    "title": "Acasă",
     "dailyTasks": "Sarcini zilnice",
     "greeting": "Bine ai revenit",
     "tasks": {

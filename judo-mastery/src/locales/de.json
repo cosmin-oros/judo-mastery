@@ -57,6 +57,7 @@
     "no-account": "Haben Sie kein Konto?"
   },
   "home": {
+    "title": "Startseite",
     "dailyTasks": "Tägliche Aufgaben",
     "greeting": "Willkommen zurück",
     "tasks": {
