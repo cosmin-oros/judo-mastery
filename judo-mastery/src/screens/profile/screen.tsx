@@ -5,7 +5,6 @@ import {
   Text,
   ActivityIndicator,
   StyleSheet,
-  TouchableOpacity,
   View,
 } from "react-native";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
@@ -16,8 +15,9 @@ import { UserType } from "@/src/types/types";
 import Header from "./components/Header";
 import AchievementsSection from "./components/AchievementsSection";
 import ProfileSection from "./components/ProfileSection";
+import CompetitionStatsSection from "./components/CompetitionStatsSection";
+import OtherStatsSection from "./components/OtherStatsSection";
 import StatisticsSection from "./components/StatisticsSection";
-import { replaceRoute } from "@/src/utils/replaceRoute";
 
 const ProfileScreen: React.FC = () => {
   const { user } = useAuth();
@@ -70,7 +70,9 @@ const ProfileScreen: React.FC = () => {
       <ScrollView contentContainerStyle={styles.content}>
         <ProfileSection userData={userData} />
         <AchievementsSection userData={userData} />
-        <StatisticsSection userData={userData} />
+        <StatisticsSection userData={userData}/>
+        <CompetitionStatsSection userData={userData} />
+        <OtherStatsSection userData={userData} />
       </ScrollView>
     </SafeAreaView>
   );

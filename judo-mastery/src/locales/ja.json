@@ -57,6 +57,7 @@
     "no-account": "アカウントをお持ちでないですか？"
   },
   "home": {
+    "title": "ホーム",
     "dailyTasks": "毎日のタスク",
     "greeting": "お帰りなさい",
     "tasks": {
@@ -119,14 +120,14 @@
   },
   "profile": {
     "title": "プロフィール",
-    "statistics": "統計",
     "defaultFirstName": "ゲスト",
-    "tasks-completed": "完了したタスク",
-    "techniques-learned": "学んだ技術",
-    "daily-tasks": "日課",
+    "statistics": "統計",
+    "tasks-completed": "タスク完了",
+    "techniques-learned": "習得した技",
+    "daily-tasks": "日々のタスク",
     "goals": "目標",
-    "belt-rank": "ベルトランク",
-    "competitions-participated": "参加した大会",
+    "belt-rank": "帯ランク",
+    "competitions-participated": "参加した競技",
     "level": "レベル",
     "xp-progress": "{current} / {total} XP",
     "medals": {
@@ -136,15 +137,18 @@
       "bronze": "銅メダル"
     },
     "ippons": "一本",
-    "waza-aris": "技あり",
+    "waza-aris": "技有",
     "yukos": "有効",
     "belt-judo": "柔道",
     "default-first-name": "名",
     "default-last-name": "姓",
     "loading": "読み込み中...",
-    "no-data": "データがありません",
-    "achievements": "成果",
-    "editProfile": "プロフィールを編集"
+    "no-data": "データなし",
+    "achievements": "実績",
+    "no-achievements": "まだ実績がありません",
+    "other-stats": "その他の統計",
+    "competition-stats": "大会の統計",
+    "editTitle": "プロフィールを編集"
   },
   "settings": {
     "title": "設定",

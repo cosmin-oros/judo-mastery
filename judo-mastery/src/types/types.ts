@@ -125,3 +125,20 @@ export interface SettingsNavigationOptionsProps {
   options: SettingsNavigationOption[];
   onNavigate: (route: string) => void;
 }
+
+export type CompetitionStatsProps = {
+  userData: {
+    goldMedals?: string; // Number of gold medals
+    silverMedals?: string; // Number of silver medals
+    bronzeMedals?: string; // Number of bronze medals
+  };
+};
+
+export type OtherStatsProps = {
+  userData: {
+    ippons?: string; // Number of ippons scored
+    wazaAris?: string; // Number of waza-aris scored
+    yukos?: string; // Number of yukos scored
+    competitionsParticipated?: string; // Number of competitions participated
+  };
+};
