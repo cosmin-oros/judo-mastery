@@ -142,3 +142,11 @@ export type OtherStatsProps = {
     competitionsParticipated?: string; // Number of competitions participated
   };
 };
+
+export interface LessonType {
+  id: string;
+  title: Record<string, string>;
+  xp: number;
+  category: string;
+  terminology: string[];
+}
