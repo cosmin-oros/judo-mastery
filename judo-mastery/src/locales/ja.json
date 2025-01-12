@@ -180,5 +180,14 @@
     "logoutSuccessMessage": "正常にログアウトしました。",
     "logoutErrorTitle": "ログアウトエラー",
     "logoutErrorMessage": "ログアウトに失敗しました。もう一度お試しください。"
+  },
+  "terminology": {
+    "title": "用語",
+    "beginner": "初心者",
+    "intermediate": "中級者",
+    "advanced": "上級者",
+    "xp": "{{xp}} XP",
+    "completed": "完了",
+    "uncategorized": "未分類"
   }
 }

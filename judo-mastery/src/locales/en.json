@@ -182,6 +182,12 @@
     "logoutErrorMessage": "Failed to log out. Please try again."
   },
   "terminology": {
-    "beginner": "Beginner"
+    "title": "Terminology",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "xp": "{{xp}} XP",
+    "completed": "Completed",
+    "uncategorized": "Uncategorized"
   }
 }

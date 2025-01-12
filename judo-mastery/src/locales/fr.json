@@ -180,5 +180,14 @@
     "logoutSuccessMessage": "Vous avez été déconnecté avec succès.",
     "logoutErrorTitle": "Erreur de Déconnexion",
     "logoutErrorMessage": "Échec de la déconnexion. Veuillez réessayer."
+  },
+  "terminology": {
+    "title": "Terminologie",
+    "beginner": "Débutant",
+    "intermediate": "Intermédiaire",
+    "advanced": "Avancé",
+    "xp": "{{xp}} XP",
+    "completed": "Terminé",
+    "uncategorized": "Non catégorisé"
   }
 }

@@ -100,11 +100,11 @@ const TerminologyScreen: React.FC = () => {
                       {lesson.title[i18n.language] || lesson.title.en}
                     </Text>
                     <Text style={[styles.lessonXP, { color: theme.colors.text }]}>
-                      {t("lessons.xp", { xp: lesson.xp })}
+                      {t("terminology.xp", { xp: lesson.xp })}
                     </Text>
                     {isCompleted && (
                       <Text style={[styles.completedText, { color: theme.colors.primary }]}>
-                        {t("lessons.completed")}
+                        {t("terminology.completed")}
                       </Text>
                     )}
                   </TouchableOpacity>
