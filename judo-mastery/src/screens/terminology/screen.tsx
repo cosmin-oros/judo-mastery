@@ -7,13 +7,16 @@ import {
   StyleSheet,
   View,
   TouchableOpacity,
+  FlatList,
 } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { fetchLessonsFromFirestore, getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
 import { LessonType } from "@/src/types/types";
-import Header from "./components/Header"; 
+import { Ionicons } from "@expo/vector-icons";
+import Header from "./components/Header";
 
 const TerminologyScreen: React.FC = () => {
   const { theme } = useTheme();
@@ -66,6 +69,42 @@ const TerminologyScreen: React.FC = () => {
     return acc;
   }, {} as Record<string, LessonType[]>);
 
+  const renderLessonCard = (lesson: LessonType, isCompleted: boolean) => (
+    <TouchableOpacity
+      key={lesson.id}
+      style={styles.lessonCard}
+      onPress={() => handleLessonPress(lesson)}
+      disabled={isCompleted}
+    >
+      <LinearGradient
+        colors={
+          isCompleted
+            ? [theme.colors.primary, theme.colors.primary]
+            : [theme.colors.card, theme.colors.card]
+        }
+        style={styles.gradient}
+      >
+        <Ionicons
+          name={isCompleted ? "checkmark-circle" : "book"}
+          size={36}
+          color={isCompleted ? theme.colors.background : theme.colors.text}
+          style={styles.lessonIcon}
+        />
+        <Text style={[styles.lessonTitle, { color: theme.colors.text }]}>
+          {lesson.title[i18n.language] || lesson.title.en}
+        </Text>
+        <Text style={[styles.lessonXP, { color: theme.colors.text }]}>
+          {t("terminology.xp", { xp: lesson.xp })}
+        </Text>
+        {isCompleted && (
+          <Text style={[styles.completedText, { color: theme.colors.background }]}>
+            {t("terminology.completed")}
+          </Text>
+        )}
+      </LinearGradient>
+    </TouchableOpacity>
+  );
+
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Header title={t("terminology.title")} />
@@ -75,42 +114,17 @@ const TerminologyScreen: React.FC = () => {
             <Text style={[styles.categoryTitle, { color: theme.colors.text }]}>
               {t(`terminology.${category.toLowerCase()}`)}
             </Text>
-            <View style={styles.lessonContainer}>
-              {groupedLessons[category].map((lesson) => {
-                const isCompleted = userData?.lessons_completed?.includes(lesson.id);
-                return (
-                  <TouchableOpacity
-                    key={lesson.id}
-                    style={[
-                      styles.lessonCard,
-                      {
-                        backgroundColor: isCompleted
-                          ? theme.colors.primary
-                          : theme.colors.card,
-                        shadowColor: theme.colors.placeholder,
-                        shadowOffset: { width: 0, height: 2 },
-                        shadowOpacity: 0.25,
-                        shadowRadius: 4,
-                      },
-                    ]}
-                    onPress={() => handleLessonPress(lesson)}
-                    disabled={isCompleted}
-                  >
-                    <Text style={[styles.lessonTitle, { color: theme.colors.text }]}>
-                      {lesson.title[i18n.language] || lesson.title.en}
-                    </Text>
-                    <Text style={[styles.lessonXP, { color: theme.colors.text }]}>
-                      {t("terminology.xp", { xp: lesson.xp })}
-                    </Text>
-                    {isCompleted && (
-                      <Text style={[styles.completedText, { color: theme.colors.primary }]}>
-                        {t("terminology.completed")}
-                      </Text>
-                    )}
-                  </TouchableOpacity>
-                );
-              })}
-            </View>
+            <FlatList
+              data={groupedLessons[category]}
+              horizontal
+              showsHorizontalScrollIndicator={false}
+              keyExtractor={(item) => item.id}
+              renderItem={({ item }) => {
+                const isCompleted = userData?.lessons_completed?.includes(item.id);
+                return renderLessonCard(item, isCompleted);
+              }}
+              contentContainerStyle={styles.lessonRow}
+            />
           </View>
         ))}
       </ScrollView>
@@ -142,36 +156,46 @@ const styles = StyleSheet.create({
     fontWeight: "700",
     marginBottom: 15,
   },
-  lessonContainer: {
-    flexDirection: "row",
-    flexWrap: "wrap",
-    gap: 15,
+  lessonRow: {
+    paddingLeft: 10,
   },
   lessonCard: {
+    width: 160,
+    height: 220,
+    marginRight: 15,
+    borderRadius: 15,
+    overflow: "hidden",
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 6,
+    elevation: 6,
+  },
+  gradient: {
     flex: 1,
-    minWidth: "48%",
-    padding: 20,
-    borderRadius: 12,
-    marginBottom: 15,
+    padding: 15,
     alignItems: "center",
     justifyContent: "center",
-    height: 160,
+    borderRadius: 15,
+  },
+  lessonIcon: {
+    marginBottom: 10,
   },
   lessonTitle: {
-    fontSize: 18,
-    fontWeight: "700",
+    fontSize: 16,
+    fontWeight: "600",
     textAlign: "center",
     marginBottom: 10,
   },
   lessonXP: {
     fontSize: 14,
     fontWeight: "500",
-    marginBottom: 10,
+    color: "#FFF",
   },
   completedText: {
     fontSize: 14,
-    fontStyle: "italic",
-    marginTop: 5,
+    fontWeight: "700",
+    marginTop: 10,
   },
 });
 
