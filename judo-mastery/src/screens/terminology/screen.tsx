@@ -13,10 +13,12 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
-import { fetchLessonsFromFirestore, getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
+import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
+import { fetchLessonsFromFirestore } from "@/src/firestoreService/lessonsService";
 import { LessonType } from "@/src/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "./components/Header";
+import { router } from "expo-router";
 
 const TerminologyScreen: React.FC = () => {
   const { theme } = useTheme();
@@ -48,8 +50,10 @@ const TerminologyScreen: React.FC = () => {
   }, [user]);
 
   const handleLessonPress = (lesson: LessonType) => {
-    console.log("Navigate to lesson:", lesson.id);
-    // Implement navigation to lesson details
+    router.push({
+      pathname: "/(tabs)/terminology/lesson",
+      params: { lessonId: lesson.id },
+    });
   };
 
   if (loading) {
