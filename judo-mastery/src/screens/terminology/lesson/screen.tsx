@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   SafeAreaView,
   View,
@@ -10,7 +10,8 @@ import {
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
-import { updateUserLessonProgress } from "@/src/firestoreService/userDataService";
+import { updateUserLessonProgress } from "@/src/firestoreService/lessonsService";
+import { getLessonFromFirestore } from "@/src/firestoreService/lessonsService";
 import { useLocalSearchParams } from "expo-router";
 import * as Progress from "react-native-progress";
 import { showAlert } from "@/src/utils/showAlert";
@@ -32,20 +33,44 @@ const LessonScreen: React.FC = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const { user } = useAuth();
-  const { lesson: lessonParam } = useLocalSearchParams<{ lesson: string }>();
+  const { lessonId } = useLocalSearchParams<{ lessonId: string }>();
 
+  const [lesson, setLesson] = useState<LessonType | null>(null);
   const [currentTermIndex, setCurrentTermIndex] = useState(0);
-  const [loading, setLoading] = useState(false);
+  const [loading, setLoading] = useState(true);
 
-  // Parse and validate lessonParam
-  let lesson: LessonType | null = null;
-  try {
-    lesson = lessonParam ? JSON.parse(lessonParam) : null;
-  } catch (error) {
-    console.error("Failed to parse lessonParam:", error);
+  // Fetch the lesson data when the component mounts
+  useEffect(() => {
+    const fetchLesson = async () => {
+      if (!lessonId) return;
+
+      try {
+        const lessonData = await getLessonFromFirestore(lessonId);
+
+        // Type assertion ensures the fetched data matches LessonType
+        setLesson(lessonData as LessonType);
+      } catch (error) {
+        console.error("Error fetching lesson:", error);
+        showAlert(t("lesson.error-fetching"));
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchLesson();
+  }, [lessonId]);
+
+  if (loading) {
+    return (
+      <SafeAreaView style={styles.loadingContainer}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>
+          {t("common.loading")}
+        </Text>
+      </SafeAreaView>
+    );
   }
 
-  // Handle missing lesson data
   if (!lesson) {
     return (
       <SafeAreaView style={styles.errorContainer}>
@@ -57,15 +82,6 @@ const LessonScreen: React.FC = () => {
   }
 
   const terms = lesson.terminology || [];
-  if (terms.length === 0) {
-    return (
-      <SafeAreaView style={styles.errorContainer}>
-        <Text style={[styles.errorText, { color: theme.colors.text }]}>
-          {t("lesson.error-no-terms")}
-        </Text>
-      </SafeAreaView>
-    );
-  }
 
   const handleNextTerm = () => {
     if (currentTermIndex < terms.length - 1) {
@@ -93,17 +109,6 @@ const LessonScreen: React.FC = () => {
   };
 
   const progress = (currentTermIndex + 1) / terms.length;
-
-  if (loading) {
-    return (
-      <SafeAreaView style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>
-          {t("common.loading")}
-        </Text>
-      </SafeAreaView>
-    );
-  }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -171,15 +176,18 @@ const LessonScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+    backgroundColor: "#f9f9f9",
   },
   errorContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
+    padding: 20,
   },
   errorText: {
     fontSize: 16,
     textAlign: "center",
+    color: "#ff4d4f",
   },
   loadingContainer: {
     flex: 1,
@@ -189,44 +197,66 @@ const styles = StyleSheet.create({
   loadingText: {
     marginTop: 10,
     fontSize: 16,
+    color: "#888",
   },
   header: {
     padding: 20,
     alignItems: "center",
+    backgroundColor: "#6200ea",
+    borderBottomLeftRadius: 15,
+    borderBottomRightRadius: 15,
+    elevation: 3,
   },
   title: {
     fontSize: 24,
     fontWeight: "700",
+    color: "#fff",
     textAlign: "center",
   },
   progressContainer: {
     paddingHorizontal: 20,
+    marginTop: 20,
     marginBottom: 20,
   },
   progressText: {
     marginTop: 10,
     fontSize: 14,
     textAlign: "center",
+    color: "#555",
   },
   termContainer: {
     flex: 1,
     padding: 20,
     justifyContent: "center",
     alignItems: "center",
+    marginHorizontal: 10,
+    borderWidth: 1,
+    borderColor: "#ddd",
+    borderRadius: 10,
+    backgroundColor: "#fff",
+    elevation: 2,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 1 },
+    shadowOpacity: 0.2,
+    shadowRadius: 2,
   },
   termOriginal: {
     fontSize: 28,
     fontWeight: "700",
-    marginBottom: 10,
+    marginBottom: 15,
+    color: "#333",
   },
   termTranslated: {
     fontSize: 22,
     fontWeight: "500",
-    marginBottom: 15,
+    marginBottom: 10,
+    color: "#555",
   },
   termDescription: {
     fontSize: 16,
     textAlign: "center",
+    lineHeight: 22,
+    color: "#777",
   },
   navigationContainer: {
     padding: 20,
@@ -237,16 +267,29 @@ const styles = StyleSheet.create({
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    backgroundColor: "#6200ea",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   finishButton: {
     width: "80%",
     padding: 15,
     borderRadius: 10,
     alignItems: "center",
+    backgroundColor: "#4caf50",
+    elevation: 3,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.2,
+    shadowRadius: 3,
   },
   buttonText: {
     fontSize: 16,
     fontWeight: "700",
+    color: "#fff",
   },
 });
 
