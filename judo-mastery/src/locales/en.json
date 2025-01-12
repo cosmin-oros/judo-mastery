@@ -180,5 +180,14 @@
     "logoutSuccessMessage": "You have been successfully logged out.",
     "logoutErrorTitle": "Logout Error",
     "logoutErrorMessage": "Failed to log out. Please try again."
+  },
+  "terminology": {
+    "title": "Terminology",
+    "beginner": "Beginner",
+    "intermediate": "Intermediate",
+    "advanced": "Advanced",
+    "xp": "{{xp}} XP",
+    "completed": "Completed",
+    "uncategorized": "Uncategorized"
   }
 }

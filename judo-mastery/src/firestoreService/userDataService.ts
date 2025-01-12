@@ -1,5 +1,5 @@
 import { doc, setDoc, getDoc } from "firebase/firestore";
-import { firestore } from "../provider/auth/firebase";
+import { firestore } from "@/src/provider/auth/firebase";
 
 // Save user data to Firestore
 export const saveUserDataToFirestore = async (userData: any) => {

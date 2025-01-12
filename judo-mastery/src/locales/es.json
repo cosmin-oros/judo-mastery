@@ -180,5 +180,14 @@
     "logoutSuccessMessage": "Has cerrado sesión con éxito.",
     "logoutErrorTitle": "Error al Cerrar Sesión",
     "logoutErrorMessage": "Error al cerrar sesión. Inténtalo de nuevo."
+  },
+  "terminology": {
+    "title": "Terminología",
+    "beginner": "Principiante",
+    "intermediate": "Intermedio",
+    "advanced": "Avanzado",
+    "xp": "{{xp}} XP",
+    "completed": "Completado",
+    "uncategorized": "Sin categoría"
   }
 }

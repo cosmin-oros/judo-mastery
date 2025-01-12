@@ -180,5 +180,14 @@
     "logoutSuccessMessage": "Te-ai deconectat cu succes.",
     "logoutErrorTitle": "Eroare la Deconectare",
     "logoutErrorMessage": "Deconectarea a eșuat. Încearcă din nou."
+  },
+  "terminology": {
+    "title": "Terminologie",
+    "beginner": "Începător",
+    "intermediate": "Intermediar",
+    "advanced": "Avansat",
+    "xp": "{{xp}} XP",
+    "completed": "Completat",
+    "uncategorized": "Fără categorie"
   }
 }
