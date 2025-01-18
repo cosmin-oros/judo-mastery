@@ -17,6 +17,7 @@ export type UserType = {
   daily_tasks?: string[]; // Array of task IDs (optional)
   icon?: number; // Icon identifier (optional)
   level?: number; // User's level
+  xp?: number; // User's xp
   statistics?: UserStatistics; // User's statistics
   // Additional fields specific to the judo athlete
   experience?: string; // User's experience in judo (optional)

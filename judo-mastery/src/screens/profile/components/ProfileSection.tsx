@@ -6,16 +6,30 @@ import { BELT_COLORS, ProfileSectionProps } from "@/src/types/types";
 import { useTranslation } from "react-i18next";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 
+// Function to calculate the current level and XP progress
+const calculateXPDetails = (xp: number): { level: number; currentXP: number; nextLevelXP: number; progress: number } => {
+  const levelCaps = Array.from({ length: 20 }, (_, i) => 500 + 600 * i); // XP thresholds for levels 2-20
+  let level = 1;
+
+  for (let i = 0; i < levelCaps.length; i++) {
+    if (xp < levelCaps[i]) {
+      const previousLevelXP = i === 0 ? 0 : levelCaps[i - 1];
+      const progress = ((xp - previousLevelXP) / (levelCaps[i] - previousLevelXP)) * 100;
+      return { level, currentXP: xp - previousLevelXP, nextLevelXP: levelCaps[i] - previousLevelXP, progress };
+    }
+    level++;
+  }
+
+  // If XP exceeds all levels, cap it at level 20
+  return { level: 20, currentXP: 0, nextLevelXP: 0, progress: 100 };
+};
+
 const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
   const { theme } = useTheme();
   const { t } = useTranslation();
 
-  const calculateXPProgress = (): number => {
-    if (!userData?.statistics?.xp) return 0;
-    const currentXP = userData.statistics?.xp || 0;
-    const totalXP = 500;
-    return (currentXP / totalXP) * 100;
-  };
+  const userXP = userData?.xp || 0;
+  const { level, currentXP, nextLevelXP, progress } = calculateXPDetails(userXP);
 
   return (
     <View style={[styles.profileSection, { backgroundColor: theme.colors.card }]}>
@@ -45,18 +59,18 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
         </View>
       </View>
       <Text style={[styles.levelText, { color: theme.colors.text }]}>
-        {t("profile.level")}: {userData?.level || 1}
+        {t("profile.level")}: {level}
       </Text>
       <View style={[styles.progressBarContainer, { backgroundColor: theme.colors.border }]}>
         <View
           style={[
             styles.progressBar,
-            { width: `${calculateXPProgress()}%`, backgroundColor: theme.colors.primary },
+            { width: `${progress}%`, backgroundColor: theme.colors.primary },
           ]}
         />
       </View>
       <Text style={[styles.xpText, { color: theme.colors.text }]}>
-        {userData?.statistics?.xp || 0} / 500 XP
+        {currentXP} / {nextLevelXP} XP
       </Text>
     </View>
   );
