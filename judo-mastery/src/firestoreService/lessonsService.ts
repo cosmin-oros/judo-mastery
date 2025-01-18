@@ -2,11 +2,26 @@ import { doc, setDoc, getDoc, getDocs, collection } from "firebase/firestore";
 import { firestore } from "@/src/provider/auth/firebase";
 import { LessonType } from "../types/types";
 
-// Update user's completed lessons and XP
+// Function to calculate the level based on XP
+const calculateLevel = (xp: number): { level: number; nextLevelXP: number } => {
+  const levelCaps = Array.from({ length: 20 }, (_, i) => 500 + 600 * i); // XP thresholds for levels 2-20
+  let level = 1;
+
+  for (let i = 0; i < levelCaps.length; i++) {
+    if (xp < levelCaps[i]) {
+      return { level, nextLevelXP: levelCaps[i] };
+    }
+    level++;
+  }
+
+  return { level: 20, nextLevelXP: 0 }; // Max level is 20
+};
+
+// Function to update user's progress
 export const updateUserLessonProgress = async (
   uid: string,
   lessonId: string,
-  xp: number
+  xpEarned: number
 ) => {
   const userRef = doc(firestore, "users", uid);
   const userDoc = await getDoc(userRef);
@@ -16,16 +31,32 @@ export const updateUserLessonProgress = async (
   }
 
   const userData = userDoc.data();
-  const lessonsCompleted = userData.lessons_completed || [];
   const currentXP = userData.xp || 0;
+  const lessonsCompleted = userData.lessons_completed || [];
 
+  // Calculate new XP and level
+  const newXP = currentXP + xpEarned;
+  const { level: newLevel, nextLevelXP } = calculateLevel(newXP);
+
+  // Check if the lesson has already been completed
+  if (lessonsCompleted.includes(lessonId)) {
+    console.warn("Lesson already completed. No XP added.");
+    return;
+  }
+
+  // Update Firestore with new XP, level, and completed lessons
   await setDoc(
     userRef,
     {
+      xp: newXP,
+      level: newLevel,
       lessons_completed: [...lessonsCompleted, lessonId],
-      xp: currentXP + xp,
     },
     { merge: true }
+  );
+
+  console.log(
+    `Updated user progress: XP=${newXP}, Level=${newLevel}, NextLevelXP=${nextLevelXP}`
   );
 };
 
