@@ -181,6 +181,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 6,
+    marginVertical: 10
   },
   gradient: {
     flex: 1,
