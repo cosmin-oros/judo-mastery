@@ -17,21 +17,7 @@ import { useLocalSearchParams } from "expo-router";
 import * as Progress from "react-native-progress";
 import { showAlert } from "@/src/utils/showAlert";
 import { replaceRoute } from "@/src/utils/replaceRoute";
-
-interface TermType {
-  id: string;
-  original: string;
-  translated: Record<string, string>;
-  description: Record<string, string>;
-  icon: string;
-}
-
-interface LessonType {
-  id: string;
-  title: Record<string, string>;
-  xp: number;
-  terminology: string[]; // Array of term IDs
-}
+import { LessonType, TermType } from "@/src/types/types";
 
 const LessonScreen: React.FC = () => {
   const { theme } = useTheme();

@@ -151,3 +151,11 @@ export interface LessonType {
   category: string;
   terminology: string[];
 }
+
+export interface TermType {
+  id: string;
+  original: string;
+  translated: Record<string, string>;
+  description: Record<string, string>;
+  icon: string;
+}
