@@ -50,10 +50,17 @@ const TerminologyScreen: React.FC = () => {
   }, [user]);
 
   const handleLessonPress = (lesson: LessonType) => {
-    router.push({
-      pathname: "/(tabs)/terminology/lesson",
-      params: { lessonId: lesson.id },
-    });
+    console.log(lesson)
+    if(lesson.id) {
+      router.push({
+        pathname: "/(tabs)/terminology/lesson",
+        params: {
+          lessonData: JSON.stringify(lesson),
+          lessonId: lesson.id, // Ensure the lessonId is included as fallback
+        },
+      });
+    }
+    
   };
 
   if (loading) {
