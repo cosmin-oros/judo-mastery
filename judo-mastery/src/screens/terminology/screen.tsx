@@ -50,10 +50,17 @@ const TerminologyScreen: React.FC = () => {
   }, [user]);
 
   const handleLessonPress = (lesson: LessonType) => {
-    router.push({
-      pathname: "/(tabs)/terminology/lesson",
-      params: { lessonId: lesson.id },
-    });
+    console.log(lesson)
+    if(lesson.id) {
+      router.push({
+        pathname: "/(tabs)/terminology/lesson",
+        params: {
+          lessonData: JSON.stringify(lesson),
+          lessonId: lesson.id, // Ensure the lessonId is included as fallback
+        },
+      });
+    }
+    
   };
 
   if (loading) {
@@ -174,6 +181,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 6,
+    marginVertical: 10
   },
   gradient: {
     flex: 1,

@@ -17,6 +17,7 @@ export type UserType = {
   daily_tasks?: string[]; // Array of task IDs (optional)
   icon?: number; // Icon identifier (optional)
   level?: number; // User's level
+  xp?: number; // User's xp
   statistics?: UserStatistics; // User's statistics
   // Additional fields specific to the judo athlete
   experience?: string; // User's experience in judo (optional)
@@ -149,4 +150,12 @@ export interface LessonType {
   xp: number;
   category: string;
   terminology: string[];
+}
+
+export interface TermType {
+  id: string;
+  original: string;
+  translated: Record<string, string>;
+  description: Record<string, string>;
+  icon: string;
 }

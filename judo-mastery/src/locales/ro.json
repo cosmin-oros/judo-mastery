@@ -189,5 +189,18 @@
     "xp": "{{xp}} XP",
     "completed": "Completat",
     "uncategorized": "Fără categorie"
+  },
+  "lesson": {
+    "error-fetching": "A apărut o eroare la încărcarea lecției. Te rugăm să încerci din nou.",
+    "error-missing-data": "Datele lecției lipsesc sau nu au putut fi încărcate.",
+    "error-missing-term": "Datele termenului lipsesc sau nu au putut fi încărcate.",
+    "error-missing-description": "Datele descrierii lipsesc sau nu au putut fi încărcate.",
+    "finished-success": "Ai finalizat cu succes lecția!",
+    "finished-error": "A apărut o eroare la marcarea lecției ca finalizată.",
+    "try-again": "Te rugăm să încerci din nou.",
+    "congratulations": "Felicitări!",
+    "progress": "Progres: {{current}} din {{total}}",
+    "next-term": "Termenul următor",
+    "finish": "Finalizează lecția"
   }
 }

@@ -189,5 +189,18 @@
     "xp": "{{xp}} XP",
     "completed": "Terminé",
     "uncategorized": "Non catégorisé"
+  },
+  "lesson": {
+    "error-fetching": "Une erreur est survenue lors du chargement de la leçon. Veuillez réessayer.",
+    "error-missing-data": "Les données de la leçon sont manquantes ou n'ont pas pu être chargées.",
+    "error-missing-term": "Les données du terme sont manquantes ou n'ont pas pu être chargées.",
+    "error-missing-description": "Les données de la description sont manquantes ou n'ont pas pu être chargées.",
+    "finished-success": "Vous avez terminé la leçon avec succès!",
+    "finished-error": "Une erreur s'est produite lors de la finalisation de la leçon.",
+    "try-again": "Veuillez réessayer.",
+    "congratulations": "Félicitations !",
+    "progress": "Progrès : {{current}} sur {{total}}",
+    "next-term": "Terme suivant",
+    "finish": "Terminer la leçon"
   }
 }

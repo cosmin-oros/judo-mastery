@@ -189,5 +189,18 @@
     "xp": "{{xp}} XP",
     "completed": "Completed",
     "uncategorized": "Uncategorized"
+  },
+  "lesson": {
+    "error-fetching": "An error occurred while fetching the lesson. Please try again.",
+    "error-missing-data": "Lesson data is missing or could not be loaded.",
+    "error-missing-term": "Term data is missing or could not be loaded.",
+    "error-missing-description": "Description data is missing or could not be loaded.",
+    "finished-success": "You have successfully completed the lesson!",
+    "finished-error": "An error occurred while marking the lesson as completed.",
+    "try-again": "Please try again.",
+    "congratulations": "Congratulations!",
+    "progress": "Progress: {{current}} of {{total}}",
+    "next-term": "Next Term",
+    "finish": "Finish Lesson"
   }
 }
