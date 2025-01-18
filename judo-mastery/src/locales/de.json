@@ -189,5 +189,18 @@
     "xp": "{{xp}} XP",
     "completed": "Abgeschlossen",
     "uncategorized": "Unkategorisiert"
+  },
+  "lesson": {
+    "error-fetching": "Beim Laden der Lektion ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
+    "error-missing-data": "Lektionsdaten fehlen oder konnten nicht geladen werden.",
+    "error-missing-term": "Begriffs-Daten fehlen oder konnten nicht geladen werden.",
+    "error-missing-description": "Beschreibung fehlt oder konnte nicht geladen werden.",
+    "finished-success": "Sie haben die Lektion erfolgreich abgeschlossen!",
+    "finished-error": "Beim Abschluss der Lektion ist ein Fehler aufgetreten.",
+    "try-again": "Bitte versuchen Sie es erneut.",
+    "congratulations": "Herzlichen Glückwunsch!",
+    "progress": "Fortschritt: {{current}} von {{total}}",
+    "next-term": "Nächster Begriff",
+    "finish": "Lektion beenden"
   }
 }

@@ -189,5 +189,18 @@
     "xp": "{{xp}} XP",
     "completed": "Completado",
     "uncategorized": "Sin categoría"
+  },
+  "lesson": {
+    "error-fetching": "Ocurrió un error al cargar la lección. Por favor, inténtelo de nuevo.",
+    "error-missing-data": "Faltan datos de la lección o no se pudieron cargar.",
+    "error-missing-term": "Faltan datos del término o no se pudieron cargar.",
+    "error-missing-description": "Faltan datos de la descripción o no se pudieron cargar.",
+    "finished-success": "¡Has completado la lección con éxito!",
+    "finished-error": "Ocurrió un error al finalizar la lección.",
+    "try-again": "Por favor, inténtelo de nuevo.",
+    "congratulations": "¡Felicidades!",
+    "progress": "Progreso: {{current}} de {{total}}",
+    "next-term": "Siguiente término",
+    "finish": "Finalizar lección"
   }
 }
