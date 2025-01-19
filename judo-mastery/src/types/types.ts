@@ -159,3 +159,27 @@ export interface TermType {
   description: Record<string, string>;
   icon: string;
 }
+
+export interface TechniqueType {
+  id: string;
+  original: string;
+  title: Record<string, string>;
+  description: Record<string, string>;
+  emoji: string;
+  videoUrl: string;
+  xp: number;
+}
+
+export interface WazaType {
+  id: string;
+  original: string;
+  title: Record<string, string>;
+  emoji: string;
+}
+
+export interface TechniqueCategoryType {
+  id: string;
+  original: string;
+  title: Record<string, string>;
+  emoji: string;
+}
