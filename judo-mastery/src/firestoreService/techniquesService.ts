@@ -1,29 +1,6 @@
 import { doc, getDoc, getDocs, collection } from "firebase/firestore";
 import { firestore } from "@/src/provider/auth/firebase";
-
-interface TechniqueType {
-  id: string;
-  original: string;
-  title: Record<string, string>;
-  description: Record<string, string>;
-  emoji: string;
-  videoUrl: string;
-  xp: number;
-}
-
-interface WazaType {
-  id: string;
-  original: string;
-  title: Record<string, string>;
-  emoji: string;
-}
-
-interface TechniqueCategoryType {
-  id: string;
-  original: string;
-  title: Record<string, string>;
-  emoji: string;
-}
+import { TechniqueCategoryType, WazaType, TechniqueType } from "../types/types";
 
 // Fetch all technique categories (e.g., Nage Waza, Katame Waza)
 export const fetchTechniqueCategories = async (): Promise<
