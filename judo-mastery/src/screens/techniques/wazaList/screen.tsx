@@ -11,6 +11,7 @@ import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { fetchWazas } from "@/src/firestoreService/techniquesService";
 import { Header } from "react-native/Libraries/NewAppScreen";
+import { useTranslation } from "react-i18next";
 
 const WazaListScreen: React.FC = () => {
   const [wazas, setWazas] = useState<any[]>([]);
@@ -18,6 +19,7 @@ const WazaListScreen: React.FC = () => {
   const { theme } = useTheme();
   const router = useRouter();
   const { categoryId, title } = useLocalSearchParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadWazas = async () => {
@@ -35,7 +37,7 @@ const WazaListScreen: React.FC = () => {
 
   const handleWazaPress = (wazaId: string, wazaTitle: string) => {
     router.push({
-      pathname: "/techniques",
+      pathname: "/(tabs)/techniques/techniqueDetails",
       params: { categoryId, wazaId, wazaTitle },
     });
   };
@@ -44,7 +46,7 @@ const WazaListScreen: React.FC = () => {
     return (
       <SafeAreaView style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>Loading...</Text>
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t('common.loading')}</Text>
       </SafeAreaView>
     );
   }

@@ -5,12 +5,14 @@ import { useLocalSearchParams } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { fetchTechniqueDetails } from "@/src/firestoreService/techniquesService";
 import Header from "../components/Header";
+import { useTranslation } from "react-i18next";
 
 const TechniqueDetailsScreen: React.FC = () => {
   const [technique, setTechnique] = useState<any | null>(null);
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const { categoryId, wazaId, techniqueId } = useLocalSearchParams();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadTechniqueDetails = async () => {
@@ -34,7 +36,7 @@ const TechniqueDetailsScreen: React.FC = () => {
     return (
       <SafeAreaView style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>Loading...</Text>
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t('common.loading')}</Text>
       </SafeAreaView>
     );
   }

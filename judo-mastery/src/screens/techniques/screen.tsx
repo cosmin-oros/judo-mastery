@@ -11,12 +11,14 @@ import { useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { fetchTechniqueCategories } from "@/src/firestoreService/techniquesService";
 import Header from "./components/Header";
+import { useTranslation } from "react-i18next";
 
 const TechniquesScreen: React.FC = () => {
   const [categories, setCategories] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const router = useRouter();
+  const { t } = useTranslation();
 
   useEffect(() => {
     const loadCategories = async () => {
@@ -34,7 +36,7 @@ const TechniquesScreen: React.FC = () => {
 
   const handleCategoryPress = (categoryId: string, title: string) => {
     router.push({
-      pathname: "/wazas",
+      pathname: "/(tabs)/techniques/wazaList",
       params: { categoryId, title },
     });
   };
@@ -43,7 +45,7 @@ const TechniquesScreen: React.FC = () => {
     return (
       <SafeAreaView style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>Loading...</Text>
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t('common.loading')}</Text>
       </SafeAreaView>
     );
   }
