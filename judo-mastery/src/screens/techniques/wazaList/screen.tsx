@@ -7,35 +7,36 @@ import {
   TouchableOpacity,
   ActivityIndicator,
 } from "react-native";
-import { useRouter } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
-import { fetchTechniqueCategories } from "@/src/firestoreService/techniquesService";
-import Header from "./components/Header";
+import { fetchWazas } from "@/src/firestoreService/techniquesService";
+import { Header } from "react-native/Libraries/NewAppScreen";
 
-const TechniquesScreen: React.FC = () => {
-  const [categories, setCategories] = useState<any[]>([]);
+const WazaListScreen: React.FC = () => {
+  const [wazas, setWazas] = useState<any[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const router = useRouter();
+  const { categoryId, title } = useLocalSearchParams();
 
   useEffect(() => {
-    const loadCategories = async () => {
+    const loadWazas = async () => {
       try {
-        const data = await fetchTechniqueCategories();
-        setCategories(data);
+        const data = await fetchWazas(categoryId as string);
+        setWazas(data);
       } catch (error) {
-        console.error("Error fetching categories:", error);
+        console.error("Error fetching wazas:", error);
       } finally {
         setLoading(false);
       }
     };
-    loadCategories();
-  }, []);
+    loadWazas();
+  }, [categoryId]);
 
-  const handleCategoryPress = (categoryId: string, title: string) => {
+  const handleWazaPress = (wazaId: string, wazaTitle: string) => {
     router.push({
-      pathname: "/wazas",
-      params: { categoryId, title },
+      pathname: "/techniques",
+      params: { categoryId, wazaId, wazaTitle },
     });
   };
 
@@ -50,14 +51,14 @@ const TechniquesScreen: React.FC = () => {
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      <Header title="Techniques" />
+      <Header title={title as string} />
       <FlatList
-        data={categories}
+        data={wazas}
         keyExtractor={(item) => item.id}
         renderItem={({ item }) => (
           <TouchableOpacity
             style={[styles.card, { backgroundColor: theme.colors.card }]}
-            onPress={() => handleCategoryPress(item.id, item.title.en)}
+            onPress={() => handleWazaPress(item.id, item.title.en)}
           >
             <Text style={styles.emoji}>{item.emoji}</Text>
             <Text style={[styles.title, { color: theme.colors.text }]}>{item.title.en}</Text>
@@ -83,4 +84,4 @@ const styles = StyleSheet.create({
   title: { fontSize: 18, fontWeight: "bold" },
 });
 
-export default TechniquesScreen;
+export default WazaListScreen;
