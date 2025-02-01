@@ -12,7 +12,7 @@ import {
 } from "react-native";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
-import { fetchWazas } from "@/src/firestoreService/techniquesService";
+import { fetchTechniquesForWaza } from "@/src/firestoreService/techniquesService";
 import Header from "../components/Header";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
@@ -20,52 +20,58 @@ import { colors } from "@/src/theme/colors";
 
 const screenWidth = Dimensions.get("window").width;
 
-interface Waza {
+interface Technique {
   id: string;
   emoji: string;
   original: string;
-  title: {
-    [key: string]: string;
-  };
+  title: { [key: string]: string };
+  description: { [key: string]: string };
+  videoUrl: string;
+  xp: number;
 }
 
-const WazaListScreen: React.FC = () => {
-  const [wazas, setWazas] = useState<Waza[]>([]);
+const TechniqueListScreen: React.FC = () => {
+  const [techniques, setTechniques] = useState<Technique[]>([]);
   const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
   const router = useRouter();
-  const { categoryId, title } = useLocalSearchParams();
+  const { categoryId, wazaId, wazaTitle } = useLocalSearchParams();
   const { t } = useTranslation();
 
-  const loadWazas = useCallback(async () => {
+  // Fetch techniques for the selected waza
+  const loadTechniques = useCallback(async () => {
     try {
-      const data = await fetchWazas(categoryId as string);
-      setWazas(data);
+      const data = await fetchTechniquesForWaza(
+        categoryId as string,
+        wazaId as string
+      );
+      setTechniques(data);
     } catch (error) {
-      console.error("Error fetching wazas:", error);
+      console.error("Error fetching techniques:", error);
     } finally {
       setLoading(false);
     }
-  }, [categoryId]);
+  }, [categoryId, wazaId]);
 
   useEffect(() => {
-    loadWazas();
-  }, [loadWazas]);
+    loadTechniques();
+  }, [loadTechniques]);
 
-  const handleWazaPress = (wazaId: string, wazaTitle: string) => {
+  // Navigate to the technique details screen when a technique is pressed
+  const handleTechniquePress = (techniqueId: string) => {
     router.push({
-      pathname: "/(tabs)/techniques/techniqueList",
-      params: { categoryId, wazaId, wazaTitle },
+      pathname: "/(tabs)/techniques/techniqueDetails",
+      params: { categoryId, wazaId, techniqueId },
     });
   };
 
-  // Back button handler (only icon, no text)
+  // Back button handler
   const handleBackPress = () => {
     router.back();
   };
 
-  // Animated scale for each card for a touch of interactivity
-  const renderWazaCard = ({ item }: { item: Waza }) => {
+  // Render a technique card with a scaling animation on press
+  const renderTechniqueCard = ({ item }: { item: Technique }) => {
     const scaleValue = new Animated.Value(1);
 
     const onPressIn = () => {
@@ -99,7 +105,7 @@ const WazaListScreen: React.FC = () => {
           activeOpacity={0.9}
           onPressIn={onPressIn}
           onPressOut={onPressOut}
-          onPress={() => handleWazaPress(item.id, item.title.en)}
+          onPress={() => handleTechniquePress(item.id)}
         >
           <View
             style={[
@@ -156,8 +162,8 @@ const WazaListScreen: React.FC = () => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      {/* Header displaying the title */}
-      <Header title={title as string} />
+      {/* Header displaying the waza title */}
+      <Header title={wazaTitle as string} />
 
       {/* Back button (icon only) below header */}
       <View style={styles.backButtonContainer}>
@@ -167,10 +173,10 @@ const WazaListScreen: React.FC = () => {
       </View>
 
       <FlatList
-        data={wazas}
+        data={techniques}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
-        renderItem={renderWazaCard}
+        renderItem={renderTechniqueCard}
       />
     </SafeAreaView>
   );
@@ -247,4 +253,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default WazaListScreen;
+export default TechniqueListScreen;
