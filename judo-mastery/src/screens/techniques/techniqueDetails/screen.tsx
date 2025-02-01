@@ -1,11 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { SafeAreaView, Text, StyleSheet, ScrollView, ActivityIndicator } from "react-native";
+import {
+  SafeAreaView,
+  Text,
+  StyleSheet,
+  ScrollView,
+  ActivityIndicator,
+  View,
+  TouchableOpacity,
+} from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
-import { useLocalSearchParams } from "expo-router";
+import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
-import { fetchTechniqueDetails } from "@/src/firestoreService/techniquesService";
+import { fetchTechniqueDetails, updateUserTechniqueProgress } from "@/src/firestoreService/techniquesService";
 import Header from "../components/Header";
 import { useTranslation } from "react-i18next";
+import { useAuth } from "@/src/provider/auth/AuthProvider";
+import { showAlert } from "@/src/utils/showAlert";
+import { replaceRoute } from "@/src/utils/replaceRoute";
+import { Ionicons } from "@expo/vector-icons";
+import { colors } from "@/src/theme/colors";
 
 const TechniqueDetailsScreen: React.FC = () => {
   const [technique, setTechnique] = useState<any | null>(null);
@@ -13,7 +26,10 @@ const TechniqueDetailsScreen: React.FC = () => {
   const { theme } = useTheme();
   const { categoryId, wazaId, techniqueId } = useLocalSearchParams();
   const { t } = useTranslation();
+  const router = useRouter();
+  const { user } = useAuth();
 
+  // Load technique details when the screen mounts.
   useEffect(() => {
     const loadTechniqueDetails = async () => {
       try {
@@ -32,11 +48,45 @@ const TechniqueDetailsScreen: React.FC = () => {
     loadTechniqueDetails();
   }, [categoryId, wazaId, techniqueId]);
 
+  // Extract YouTube video ID from the videoUrl.
+  let videoId = "";
+  if (technique?.videoUrl) {
+    const urlParts = technique.videoUrl.split("v=");
+    if (urlParts.length > 1) {
+      videoId = urlParts[1].split("&")[0];
+    }
+  }
+
+  // Handler for finishing the technique.
+  const handleFinishTechnique = async () => {
+    if (!user?.uid || !technique) return;
+    setLoading(true);
+    try {
+      // Update user progress (assumes updateUserTechniqueProgress is defined similar to lesson progress).
+      await updateUserTechniqueProgress(user.uid, technique.id, technique.xp);
+      showAlert(
+        t("technique.finished-success"),
+        t("technique.congratulations"),
+        () => replaceRoute("/(tabs)/techniques")
+      );
+    } catch (error) {
+      console.error("Error updating technique progress:", error);
+      showAlert(t("technique.finished-error"), t("technique.try-again"));
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  // Single Back button handler.
+  const handleBackPress = () => {
+    router.back();
+  };
+
   if (loading) {
     return (
       <SafeAreaView style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t('common.loading')}</Text>
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t("common.loading")}</Text>
       </SafeAreaView>
     );
   }
@@ -44,24 +94,60 @@ const TechniqueDetailsScreen: React.FC = () => {
   if (!technique) {
     return (
       <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <Text style={[styles.errorText, { color: theme.colors.text }]}>
-          Error loading technique details.
-        </Text>
+        <Text style={[styles.errorText, { color: theme.colors.text }]}>{t("technique.error-loading")}</Text>
       </SafeAreaView>
     );
   }
 
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+      {/* Header showing the technique title */}
       <Header title={technique.title.en} />
-      <ScrollView contentContainerStyle={styles.content}>
-        <Text style={[styles.title, { color: theme.colors.text }]}>{technique.title.en}</Text>
-        <Text style={[styles.description, { color: theme.colors.text }]}>
-          {technique.description.en}
-        </Text>
-        {technique.videoUrl && (
-          <YoutubePlayer height={200} videoId={technique.videoUrl.split("v=")[1]} />
-        )}
+
+      {/* Back button below header */}
+      <View style={styles.backButtonContainer}>
+        <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
+          <Ionicons name="arrow-back" size={28} color={theme.colors.text} />
+        </TouchableOpacity>
+      </View>
+
+      <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 40 }]}>
+        <View style={[
+          styles.card,
+          {
+            backgroundColor: theme.colors.card,
+            shadowColor: theme.colors.border,
+            borderColor: theme.colors.primary,
+          },
+        ]}>
+          <Text style={[styles.techTitle, theme.fonts.bold, { color: theme.colors.text }]}>
+            {technique.title.en}
+          </Text>
+          <Text style={[styles.techOriginal, theme.fonts.regular, { color: theme.colors.placeholder }]}>
+            {technique.original}
+          </Text>
+          <Text style={[styles.techDescription, theme.fonts.regular, { color: theme.colors.text }]}>
+            {technique.description.en}
+          </Text>
+          {videoId !== "" && (
+            <View style={styles.videoContainer}>
+              <YoutubePlayer height={200} videoId={videoId} />
+            </View>
+          )}
+          <Text style={[styles.xpText, theme.fonts.medium, { color: theme.colors.text }]}>
+            XP Earned: {technique.xp}
+          </Text>
+        </View>
+
+        {/* Finish & Earn XP Button */}
+        <TouchableOpacity
+          style={[styles.finishButton, { backgroundColor: theme.colors.primary }]}
+          onPress={handleFinishTechnique}
+        >
+          <Text style={[styles.finishButtonText, { color: theme.colors.background }]}>
+            {t("technique.finish")}
+          </Text>
+        </TouchableOpacity>
       </ScrollView>
     </SafeAreaView>
   );
@@ -70,11 +156,52 @@ const TechniqueDetailsScreen: React.FC = () => {
 const styles = StyleSheet.create({
   container: { flex: 1 },
   loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
-  content: { padding: 20 },
-  title: { fontSize: 20, fontWeight: "bold", marginBottom: 10 },
-  description: { fontSize: 16, marginBottom: 20 },
   loadingText: { marginTop: 10, fontSize: 16 },
   errorText: { marginTop: 10, fontSize: 16, textAlign: "center" },
+  backButtonContainer: {
+    paddingHorizontal: 16,
+    paddingVertical: 8,
+    alignItems: "flex-start",
+  },
+  backButton: {
+    backgroundColor: colors.primary,
+    padding: 10,
+    borderRadius: 30,
+    // Soft shadow for modern elevation
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 4,
+    elevation: 3,
+  },
+  content: {
+    padding: 20,
+    alignItems: "center",
+  },
+  card: {
+    width: "100%",
+    borderRadius: 20,
+    padding: 20,
+    borderWidth: 2,
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.3,
+    shadowRadius: 8,
+    elevation: 5,
+    marginBottom: 30,
+  },
+  techTitle: { fontSize: 28, marginBottom: 10, textAlign: "center" },
+  techOriginal: { fontSize: 20, fontStyle: "italic", marginBottom: 10, textAlign: "center" },
+  techDescription: { fontSize: 16, marginBottom: 20, lineHeight: 22, textAlign: "justify" },
+  videoContainer: { marginVertical: 20 },
+  xpText: { fontSize: 18, textAlign: "right", marginTop: 10 },
+  finishButton: {
+    width: "100%",
+    padding: 15,
+    borderRadius: 10,
+    alignItems: "center",
+  },
+  finishButtonText: { fontSize: 18, fontWeight: "700" },
+  backButtonText: { fontSize: 24 },
 });
 
 export default TechniqueDetailsScreen;
