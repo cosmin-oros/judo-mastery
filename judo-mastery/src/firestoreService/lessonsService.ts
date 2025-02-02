@@ -3,7 +3,9 @@ import { firestore } from "@/src/provider/auth/firebase";
 import { LessonType } from "../types/types";
 
 // Function to calculate the level based on XP
-const calculateLevel = (xp: number): { level: number; nextLevelXP: number } => {
+export const calculateLevel = (
+  xp: number
+): { level: number; nextLevelXP: number } => {
   const levelCaps = Array.from({ length: 20 }, (_, i) => 500 + 600 * i); // XP thresholds for levels 2-20
   let level = 1;
 

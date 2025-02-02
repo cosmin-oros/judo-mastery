@@ -1,6 +1,7 @@
-import { doc, getDoc, getDocs, collection } from "firebase/firestore";
+import { doc, getDoc, getDocs, collection, setDoc } from "firebase/firestore";
 import { firestore } from "@/src/provider/auth/firebase";
 import { TechniqueCategoryType, WazaType, TechniqueType } from "../types/types";
+import { calculateLevel } from "./lessonsService";
 
 // Fetch all technique categories (e.g., Nage Waza, Katame Waza)
 export const fetchTechniqueCategories = async (): Promise<
@@ -94,4 +95,51 @@ export const fetchTechniqueDetails = async (
     videoUrl: data.videoUrl || "",
     xp: data.xp || 0,
   } as TechniqueType;
+};
+
+/**
+ * Function to update user's technique progress.
+ * It increases the user XP by xpEarned, recalculates the level,
+ * and marks the technique as studied by adding its ID to techniques_completed.
+ */
+export const updateUserTechniqueProgress = async (
+  uid: string,
+  techniqueId: string,
+  xpEarned: number
+) => {
+  const userRef = doc(firestore, "users", uid);
+  const userDoc = await getDoc(userRef);
+
+  if (!userDoc.exists()) {
+    throw new Error("User not found.");
+  }
+
+  const userData = userDoc.data();
+  const currentXP = userData.xp || 0;
+  const techniquesCompleted = userData.techniques_completed || [];
+
+  // Check if the technique has already been completed.
+  if (techniquesCompleted.includes(techniqueId)) {
+    console.warn("Technique already completed. No XP added.");
+    return;
+  }
+
+  // Calculate new XP and level
+  const newXP = currentXP + xpEarned;
+  const { level: newLevel, nextLevelXP } = calculateLevel(newXP);
+
+  // Update Firestore with new XP, level, and completed techniques.
+  await setDoc(
+    userRef,
+    {
+      xp: newXP,
+      level: newLevel,
+      techniques_completed: [...techniquesCompleted, techniqueId],
+    },
+    { merge: true }
+  );
+
+  console.log(
+    `Updated user progress: XP=${newXP}, Level=${newLevel}, NextLevelXP=${nextLevelXP}`
+  );
 };
