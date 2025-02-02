@@ -192,7 +192,11 @@
   },
   "techniques": {
     "title": "Tehnici",
-    "xp": "XP:"
+    "xp": "XP:",
+    "finished-success": "Tehnica a fost finalizată cu succes!",
+    "congratulations": "Felicitări!",
+    "finished-error": "Eroare la finalizarea tehnicii.",
+    "try-again": "Vă rugăm să încercați din nou."
   },
   "lesson": {
     "error-fetching": "A apărut o eroare la încărcarea lecției. Te rugăm să încerci din nou.",

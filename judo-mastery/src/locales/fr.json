@@ -192,7 +192,11 @@
   },
   "techniques": {
     "title": "Techniques",
-    "xp": "XP:"
+    "xp": "XP:",
+    "finished-success": "Technique terminée avec succès!",
+    "congratulations": "Félicitations!",
+    "finished-error": "Erreur lors de la finalisation de la technique.",
+    "try-again": "Veuillez réessayer."
   },
   "lesson": {
     "error-fetching": "Une erreur est survenue lors du chargement de la leçon. Veuillez réessayer.",

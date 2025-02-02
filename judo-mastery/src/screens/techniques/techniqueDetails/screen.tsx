@@ -88,13 +88,13 @@ const TechniqueDetailsScreen: React.FC = () => {
       // Update local state so that the finish button is hidden and a checkmark is shown.
       setTechnique({ ...technique, studied: true });
       showAlert(
-        t("technique.finished-success"),
-        t("technique.congratulations"),
+        t("techniques.finished-success"),
+        t("techniques.congratulations"),
         () => replaceRoute("/(tabs)/techniques")
       );
     } catch (error) {
       console.error("Error updating technique progress:", error);
-      showAlert(t("technique.finished-error"), t("technique.try-again"));
+      showAlert(t("techniques.finished-error"), t("techniques.try-again"));
     } finally {
       setLoading(false);
     }
