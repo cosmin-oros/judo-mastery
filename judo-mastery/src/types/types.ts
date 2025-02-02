@@ -32,6 +32,8 @@ export type UserType = {
   goldMedals?: string; // Number of gold medals won
   silverMedals?: string; // Number of silver medals won
   bronzeMedals?: string; // Number of bronze medals won
+  lessons_completed?: string[]; // Array of completed lesson IDs (optional)
+  techniques_completed?: string[]; // Array of completed technique IDs (optional)
 };
 
 // Auth Context Type

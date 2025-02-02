@@ -122,7 +122,7 @@
     "title": "Profile",
     "defaultFirstName": "Guest",
     "statistics": "Statistics",
-    "tasks-completed": "Tasks Completed",
+    "lessons-completed": "Lessons Completed",
     "techniques-learned": "Techniques Learned",
     "daily-tasks": "Daily Tasks",
     "goals": "Goals",
@@ -189,6 +189,14 @@
     "xp": "{{xp}} XP",
     "completed": "Completed",
     "uncategorized": "Uncategorized"
+  },
+  "techniques": {
+    "title": "Techniques",
+    "xp": "XP:",
+    "finished-success": "Technique completed successfully!",
+    "congratulations": "Congratulations!",
+    "finished-error": "Error finishing technique.",
+    "try-again": "Please try again."
   },
   "lesson": {
     "error-fetching": "An error occurred while fetching the lesson. Please try again.",

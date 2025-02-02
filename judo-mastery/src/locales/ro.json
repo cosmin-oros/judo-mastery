@@ -122,7 +122,7 @@
     "title": "Profil",
     "defaultFirstName": "Vizitator",
     "statistics": "Statistici",
-    "tasks-completed": "Sarcini finalizate",
+    "lessons-completed": "Lecții Finalizate",
     "techniques-learned": "Tehnici învățate",
     "daily-tasks": "Sarcini zilnice",
     "goals": "Obiective",
@@ -189,6 +189,14 @@
     "xp": "{{xp}} XP",
     "completed": "Completat",
     "uncategorized": "Fără categorie"
+  },
+  "techniques": {
+    "title": "Tehnici",
+    "xp": "XP:",
+    "finished-success": "Tehnica a fost finalizată cu succes!",
+    "congratulations": "Felicitări!",
+    "finished-error": "Eroare la finalizarea tehnicii.",
+    "try-again": "Vă rugăm să încercați din nou."
   },
   "lesson": {
     "error-fetching": "A apărut o eroare la încărcarea lecției. Te rugăm să încerci din nou.",

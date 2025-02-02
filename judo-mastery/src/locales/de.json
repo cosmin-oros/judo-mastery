@@ -122,7 +122,7 @@
     "title": "Profil",
     "defaultFirstName": "Gast",
     "statistics": "Statistiken",
-    "tasks-completed": "Abgeschlossene Aufgaben",
+    "lessons-completed": "Abgeschlossene Lektionen",
     "techniques-learned": "Erlernte Techniken",
     "daily-tasks": "Tägliche Aufgaben",
     "goals": "Ziele",
@@ -189,6 +189,14 @@
     "xp": "{{xp}} XP",
     "completed": "Abgeschlossen",
     "uncategorized": "Unkategorisiert"
+  },
+  "techniques": {
+    "title": "Techniken",
+    "xp": "XP:",
+    "finished-success": "Technik erfolgreich abgeschlossen!",
+    "congratulations": "Herzlichen Glückwunsch!",
+    "finished-error": "Fehler beim Abschließen der Technik.",
+    "try-again": "Bitte versuche es erneut."
   },
   "lesson": {
     "error-fetching": "Beim Laden der Lektion ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",

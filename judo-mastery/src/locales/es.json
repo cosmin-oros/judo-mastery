@@ -122,7 +122,7 @@
     "title": "Perfil",
     "defaultFirstName": "Invitado",
     "statistics": "Estadísticas",
-    "tasks-completed": "Tareas completadas",
+    "lessons-completed": "Lecciones Completadas",
     "techniques-learned": "Técnicas aprendidas",
     "daily-tasks": "Tareas diarias",
     "goals": "Objetivos",
@@ -189,6 +189,14 @@
     "xp": "{{xp}} XP",
     "completed": "Completado",
     "uncategorized": "Sin categoría"
+  },
+  "techniques": {
+    "title": "Técnicas",
+    "xp": "XP:",
+    "finished-success": "¡Técnica completada con éxito!",
+    "congratulations": "¡Felicidades!",
+    "finished-error": "Error al finalizar la técnica.",
+    "try-again": "Por favor, inténtalo de nuevo."
   },
   "lesson": {
     "error-fetching": "Ocurrió un error al cargar la lección. Por favor, inténtelo de nuevo.",

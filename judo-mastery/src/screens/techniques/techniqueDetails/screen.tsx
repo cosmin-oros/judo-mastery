@@ -19,6 +19,8 @@ import { showAlert } from "@/src/utils/showAlert";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/src/theme/colors";
+import { doc, getDoc } from "firebase/firestore";
+import { firestore } from "@/src/provider/auth/firebase";
 
 const TechniqueDetailsScreen: React.FC = () => {
   const [technique, setTechnique] = useState<any | null>(null);
@@ -48,6 +50,25 @@ const TechniqueDetailsScreen: React.FC = () => {
     loadTechniqueDetails();
   }, [categoryId, wazaId, techniqueId]);
 
+  // Check if the user has already completed the technique.
+  useEffect(() => {
+    const loadUserTechniqueProgress = async () => {
+      if (user?.uid && technique) {
+        try {
+          const userRef = doc(firestore, "users", user.uid);
+          const userDoc = await getDoc(userRef);
+          const userData = userDoc.data();
+          if (userData?.techniques_completed?.includes(technique.id)) {
+            setTechnique((prev: any) => ({ ...prev, studied: true }));
+          }
+        } catch (error) {
+          console.error("Error loading user technique progress:", error);
+        }
+      }
+    };
+    loadUserTechniqueProgress();
+  }, [user, technique]);
+
   // Extract YouTube video ID from the videoUrl.
   let videoId = "";
   if (technique?.videoUrl) {
@@ -62,16 +83,18 @@ const TechniqueDetailsScreen: React.FC = () => {
     if (!user?.uid || !technique) return;
     setLoading(true);
     try {
-      // Update user progress (assumes updateUserTechniqueProgress is defined similar to lesson progress).
+      // Update user progress (marks technique as completed and awards XP)
       await updateUserTechniqueProgress(user.uid, technique.id, technique.xp);
+      // Update local state so that the finish button is hidden and a checkmark is shown.
+      setTechnique({ ...technique, studied: true });
       showAlert(
-        t("technique.finished-success"),
-        t("technique.congratulations"),
+        t("techniques.finished-success"),
+        t("techniques.congratulations"),
         () => replaceRoute("/(tabs)/techniques")
       );
     } catch (error) {
       console.error("Error updating technique progress:", error);
-      showAlert(t("technique.finished-error"), t("technique.try-again"));
+      showAlert(t("techniques.finished-error"), t("techniques.try-again"));
     } finally {
       setLoading(false);
     }
@@ -112,17 +135,25 @@ const TechniqueDetailsScreen: React.FC = () => {
       </View>
 
       <ScrollView contentContainerStyle={[styles.content, { paddingBottom: 40 }]}>
-        <View style={[
-          styles.card,
-          {
-            backgroundColor: theme.colors.card,
-            shadowColor: theme.colors.border,
-            borderColor: theme.colors.primary,
-          },
-        ]}>
-          <Text style={[styles.techTitle, theme.fonts.bold, { color: theme.colors.text }]}>
-            {technique.title.en}
-          </Text>
+        <View
+          style={[
+            styles.card,
+            {
+              backgroundColor: theme.colors.card,
+              shadowColor: theme.colors.border,
+              borderColor: theme.colors.primary,
+            },
+          ]}
+        >
+          <View style={styles.headerRow}>
+            <Text style={[styles.techTitle, theme.fonts.bold, { color: theme.colors.text }]}>
+              {technique.title.en}
+            </Text>
+            {/* If the technique is studied, show a checkmark */}
+            {technique.studied && (
+              <Ionicons name="checkmark-circle" size={28} color={theme.colors.primary} />
+            )}
+          </View>
           <Text style={[styles.techOriginal, theme.fonts.regular, { color: theme.colors.placeholder }]}>
             {technique.original}
           </Text>
@@ -135,19 +166,21 @@ const TechniqueDetailsScreen: React.FC = () => {
             </View>
           )}
           <Text style={[styles.xpText, theme.fonts.medium, { color: theme.colors.text }]}>
-            XP Earned: {technique.xp}
+            {t("techniques.xp")} {technique.xp}
           </Text>
         </View>
 
-        {/* Finish & Earn XP Button */}
-        <TouchableOpacity
-          style={[styles.finishButton, { backgroundColor: theme.colors.primary }]}
-          onPress={handleFinishTechnique}
-        >
-          <Text style={[styles.finishButtonText, { color: theme.colors.background }]}>
-            {t("technique.finish")}
-          </Text>
-        </TouchableOpacity>
+        {/* Only display the Finish button if the technique is not yet studied */}
+        {!technique.studied && (
+          <TouchableOpacity
+            style={[styles.finishButton, { backgroundColor: theme.colors.primary }]}
+            onPress={handleFinishTechnique}
+          >
+            <Text style={[styles.finishButtonText, { color: theme.colors.background }]}>
+              {t("lesson.finish")}
+            </Text>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   );
@@ -167,7 +200,6 @@ const styles = StyleSheet.create({
     backgroundColor: colors.primary,
     padding: 10,
     borderRadius: 30,
-    // Soft shadow for modern elevation
     shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
@@ -189,7 +221,12 @@ const styles = StyleSheet.create({
     elevation: 5,
     marginBottom: 30,
   },
-  techTitle: { fontSize: 28, marginBottom: 10, textAlign: "center" },
+  headerRow: {
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  techTitle: { fontSize: 28, marginBottom: 10, textAlign: "center", flex: 1 },
   techOriginal: { fontSize: 20, fontStyle: "italic", marginBottom: 10, textAlign: "center" },
   techDescription: { fontSize: 16, marginBottom: 20, lineHeight: 22, textAlign: "justify" },
   videoContainer: { marginVertical: 20 },
@@ -201,7 +238,6 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   finishButtonText: { fontSize: 18, fontWeight: "700" },
-  backButtonText: { fontSize: 24 },
 });
 
 export default TechniqueDetailsScreen;

@@ -18,16 +18,16 @@ const StatisticsSection: React.FC<StatisticsSectionProps> = ({ userData }) => {
         <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="checkmark-done-outline" size={30} color={theme.colors.primary} />
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {userData?.statistics?.tasks_completed || 0}
+            {userData?.lessons_completed?.length || 0}
           </Text>
           <Text style={[styles.statLabel, { color: theme.colors.text }]}>
-            {t("profile.tasks-completed")}
+            {t("profile.lessons-completed")}
           </Text>
         </View>
         <View style={[styles.statCard, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="school" size={30} color={theme.colors.primary} />
           <Text style={[styles.statValue, { color: theme.colors.text }]}>
-            {userData?.statistics?.techniques_learned || 0}
+            {userData?.techniques_completed?.length || 0}
           </Text>
           <Text style={[styles.statLabel, { color: theme.colors.text }]}>
             {t("profile.techniques-learned")}
