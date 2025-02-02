@@ -190,6 +190,10 @@
     "completed": "Abgeschlossen",
     "uncategorized": "Unkategorisiert"
   },
+  "techniques": {
+    "title": "Techniken",
+    "xp": "XP:"
+  },
   "lesson": {
     "error-fetching": "Beim Laden der Lektion ist ein Fehler aufgetreten. Bitte versuchen Sie es erneut.",
     "error-missing-data": "Lektionsdaten fehlen oder konnten nicht geladen werden.",

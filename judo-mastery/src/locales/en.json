@@ -190,6 +190,10 @@
     "completed": "Completed",
     "uncategorized": "Uncategorized"
   },
+  "techniques": {
+    "title": "Techniques",
+    "xp": "XP:"
+  },
   "lesson": {
     "error-fetching": "An error occurred while fetching the lesson. Please try again.",
     "error-missing-data": "Lesson data is missing or could not be loaded.",

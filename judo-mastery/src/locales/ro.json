@@ -190,6 +190,10 @@
     "completed": "Completat",
     "uncategorized": "Fără categorie"
   },
+  "techniques": {
+    "title": "Tehnici",
+    "xp": "XP:"
+  },
   "lesson": {
     "error-fetching": "A apărut o eroare la încărcarea lecției. Te rugăm să încerci din nou.",
     "error-missing-data": "Datele lecției lipsesc sau nu au putut fi încărcate.",

@@ -62,7 +62,7 @@ const TechniquesScreen: React.FC = () => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      <Header title="Techniques" />
+      <Header title={t("techniques.title")} />
       <FlatList
         data={categories}
         keyExtractor={(item) => item.id}

@@ -190,6 +190,10 @@
     "completed": "Terminé",
     "uncategorized": "Non catégorisé"
   },
+  "techniques": {
+    "title": "Techniques",
+    "xp": "XP:"
+  },
   "lesson": {
     "error-fetching": "Une erreur est survenue lors du chargement de la leçon. Veuillez réessayer.",
     "error-missing-data": "Les données de la leçon sont manquantes ou n'ont pas pu être chargées.",
