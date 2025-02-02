@@ -135,7 +135,7 @@ const TechniqueDetailsScreen: React.FC = () => {
             </View>
           )}
           <Text style={[styles.xpText, theme.fonts.medium, { color: theme.colors.text }]}>
-            XP Earned: {technique.xp}
+            {t("techniques.xp")} {technique.xp}
           </Text>
         </View>
 
@@ -145,7 +145,7 @@ const TechniqueDetailsScreen: React.FC = () => {
           onPress={handleFinishTechnique}
         >
           <Text style={[styles.finishButtonText, { color: theme.colors.background }]}>
-            {t("technique.finish")}
+            {t("lesson.finish")}
           </Text>
         </TouchableOpacity>
       </ScrollView>
