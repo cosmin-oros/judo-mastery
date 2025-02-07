@@ -1,10 +1,28 @@
 import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
+
+// Helper function to return the correct image source for an avatar ID
+const getAvatarSource = (avatarId: string) => {
+  switch (avatarId) {
+    case "1":
+      return require("../../../assets/images/avatar1.jpg");
+    case "2":
+      return require("../../../assets/images/avatar2.jpg");
+    case "3":
+      return require("../../../assets/images/avatar3.jpg");
+    case "4":
+      return require("../../../assets/images/avatar4.jpg");
+    case "5":
+      return require("../../../assets/images/avatar5.jpg");
+    default:
+      return require("../../../assets/images/avatar1.jpg");
+  }
+};
 
 const HomeScreen: React.FC = () => {
   const { theme } = useTheme();
@@ -32,7 +50,14 @@ const HomeScreen: React.FC = () => {
       {/* Header */}
       <View style={styles.header}>
         <View style={styles.profileInfo}>
-          <Ionicons name="person-circle-outline" size={50} color={theme.colors.primary} />
+          {user?.profilePhoto ? (
+            <Image
+              source={getAvatarSource(user.profilePhoto)}
+              style={styles.avatar}
+            />
+          ) : (
+            <Ionicons name="person-circle-outline" size={50} color={theme.colors.primary} />
+          )}
           <View style={styles.infoText}>
             <Text style={[styles.greeting, { color: theme.colors.text }]}>
               {t("home.greeting")}
@@ -120,7 +145,7 @@ const HomeScreen: React.FC = () => {
             </View>
           </View>
         </View>
-        {/* Dojos near you, other sections */}
+        {/* Additional sections such as "Dojos near you" could be added here */}
       </ScrollView>
     </View>
   );
@@ -142,6 +167,11 @@ const styles = StyleSheet.create({
   profileInfo: {
     flexDirection: "row",
     alignItems: "center",
+  },
+  avatar: {
+    width: 50,
+    height: 50,
+    borderRadius: 25,
   },
   infoText: {
     marginLeft: 10,
