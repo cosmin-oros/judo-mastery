@@ -125,7 +125,7 @@ const EditProfileScreen: React.FC = () => {
       const updatedUserData = {
         ...user,
         firstName,
-        lastName,
+        name: lastName,
         experience,
         beltRank,
         trainingFrequency: Number(trainingFrequency),
