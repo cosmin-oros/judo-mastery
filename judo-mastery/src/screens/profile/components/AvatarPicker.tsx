@@ -14,7 +14,7 @@ import { colors } from "@/src/theme/colors";
 
 type AvatarType = {
   id: string;
-  source: any; // Use appropriate type for your images (e.g. ImageSourcePropType)
+  source: any; // Ideally use ImageSourcePropType, but this works for now
 };
 
 type AvatarPickerProps = {
@@ -56,8 +56,13 @@ const AvatarPicker: React.FC<AvatarPickerProps> = ({
   );
 
   return (
-    <Modal visible={visible} transparent animationType="slide">
-      <View style={[styles.modalOverlay, { backgroundColor: "rgba(0,0,0,0.5)" }]}>
+    <Modal
+      visible={visible}
+      transparent
+      animationType="slide"
+      onRequestClose={onClose}
+    >
+      <View style={styles.modalOverlay}>
         <View style={[styles.modalContent, { backgroundColor: theme.colors.card }]}>
           <FlatList
             data={avatars}
@@ -78,6 +83,7 @@ const AvatarPicker: React.FC<AvatarPickerProps> = ({
 const styles = StyleSheet.create({
   modalOverlay: {
     flex: 1,
+    backgroundColor: "rgba(0,0,0,0.5)",
     justifyContent: "center",
     alignItems: "center",
   },
@@ -91,13 +97,16 @@ const styles = StyleSheet.create({
     alignItems: "center",
   },
   avatarContainer: {
+    width: 80,
+    height: 80,
     margin: 10,
-    borderRadius: 50,
+    borderRadius: 40, // half of width/height for a circle
     overflow: "hidden",
   },
   avatarImage: {
-    width: 80,
-    height: 80,
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover",
   },
   closeButton: {
     marginTop: 20,
