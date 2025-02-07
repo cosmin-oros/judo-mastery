@@ -48,6 +48,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           daily_tasks: [],
           icon: 1,
           level: 1,
+          profilePhoto: "1",
           name: additionalData.name || "",
           statistics: {
             tasks_completed: 0,
@@ -212,6 +213,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
+  const updateUser = (newUser: UserType) => {
+    setUser(newUser);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -220,6 +225,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signupWithEmailAndPassword,
         logout,
         getAuthToken,
+        updateUser
       }}
     >
       {children}

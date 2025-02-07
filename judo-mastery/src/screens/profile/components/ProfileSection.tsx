@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Image } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { BELT_COLORS, ProfileSectionProps } from "@/src/types/types";
@@ -24,6 +24,24 @@ const calculateXPDetails = (xp: number): { level: number; currentXP: number; nex
   return { level: 20, currentXP: 0, nextLevelXP: 0, progress: 100 };
 };
 
+// Helper function to return the correct image source for an avatar ID
+const getAvatarSource = (avatarId: string) => {
+  switch (avatarId) {
+    case "1":
+      return require("../../../../assets/images/avatar1.jpg");
+    case "2":
+      return require("../../../../assets/images/avatar2.jpg");
+    case "3":
+      return require("../../../../assets/images/avatar3.jpg");
+    case "4":
+      return require("../../../../assets/images/avatar4.jpg");
+    case "5":
+      return require("../../../../assets/images/avatar5.jpg");
+    default:
+      return require("../../../../assets/images/avatar1.jpg");
+  }
+};
+
 const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
   const { theme } = useTheme();
   const { t } = useTranslation();
@@ -39,7 +57,17 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
       >
         <Ionicons name="create-outline" size={24} color={theme.colors.primary} />
       </TouchableOpacity>
-      <Ionicons name="person-circle-outline" size={100} color={theme.colors.placeholder} />
+      
+      {/* Display the user's avatar instead of the default icon */}
+      <Image
+        source={
+          userData?.profilePhoto
+            ? getAvatarSource(userData.profilePhoto)
+            : require("../../../../assets/images/avatar1.jpg")
+        }
+        style={styles.avatarImage}
+      />
+      
       <Text style={[styles.username, { color: theme.colors.text }]}>
         {userData?.firstName || t("profile.default-first-name")}{" "}
         {userData?.name || t("profile.default-last-name")}
@@ -49,7 +77,8 @@ const ProfileSection: React.FC<ProfileSectionProps> = ({ userData }) => {
           style={[
             styles.belt,
             {
-              backgroundColor: BELT_COLORS[userData?.beltRank || "white"] || theme.colors.secondary,
+              backgroundColor:
+                BELT_COLORS[userData?.beltRank || "white"] || theme.colors.secondary,
               borderColor: theme.colors.text,
               borderWidth: 1,
             },
@@ -88,6 +117,11 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 10,
     right: 10,
+  },
+  avatarImage: {
+    width: 100,
+    height: 100,
+    borderRadius: 50,
   },
   beltContainer: {
     flexDirection: "row",
