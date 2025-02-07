@@ -1,4 +1,3 @@
-// AvatarPicker.tsx
 import React from "react";
 import {
   Modal,
@@ -14,7 +13,7 @@ import { colors } from "@/src/theme/colors";
 
 type AvatarType = {
   id: string;
-  source: any; // Ideally use ImageSourcePropType, but this works for now
+  source: any; // Ideally use ImageSourcePropType
 };
 
 type AvatarPickerProps = {
@@ -100,7 +99,7 @@ const styles = StyleSheet.create({
     width: 80,
     height: 80,
     margin: 10,
-    borderRadius: 40, // half of width/height for a circle
+    borderRadius: 40,
     overflow: "hidden",
   },
   avatarImage: {

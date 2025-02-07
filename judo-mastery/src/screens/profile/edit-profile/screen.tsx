@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  Image,
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
 import DropDownPicker from "react-native-dropdown-picker";
@@ -16,24 +17,45 @@ import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { saveUserDataToFirestore } from "@/src/firestoreService/userDataService";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { colors } from "@/src/theme/colors";
-import Header from "../../settings/components/Header";
 import EditHeader from "../components/EditHeader";
+import AvatarPicker from "../components/AvatarPicker";
+
+// Helper function to return the correct image source for an avatar ID
+const getAvatarSource = (avatarId: string) => {
+  switch (avatarId) {
+    case "1":
+      return require("../../../../assets/images/avatar1.jpg");
+    case "2":
+      return require("../../../../assets/images/avatar2.jpg");
+    case "3":
+      return require("../../../../assets/images/avatar3.jpg");
+    case "4":
+      return require("../../../../assets/images/avatar4.jpg");
+    case "5":
+      return require("../../../../assets/images/avatar5.jpg");
+    default:
+      return require("../../../../assets/images/avatar1.jpg");
+  }
+};
 
 const EditProfileScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const { user } = useAuth();
+  // Destructure updateUser from useAuth so we can update the context immediately
+  const { user, updateUser } = useAuth();
 
+  // Form state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [experience, setExperience] = useState("");
-  const [beltRank, setBeltRank] = useState("white");
+  // Update beltRank state type to the union expected by UserType
+  const [beltRank, setBeltRank] = useState<"white" | "yellow" | "orange" | "green" | "blue" | "brown" | "black">("white");
   const [trainingFrequency, setTrainingFrequency] = useState("");
   const [goals, setGoals] = useState("");
   const [trainingFocus, setTrainingFocus] = useState("throws");
   const [favoriteTechniques, setFavoriteTechniques] = useState("");
 
-  // Competition Section
+  // Competition Section state
   const [competitionsParticipated, setCompetitionsParticipated] = useState("");
   const [ippons, setIppons] = useState("");
   const [wazaAris, setWazaAris] = useState("");
@@ -45,19 +67,46 @@ const EditProfileScreen: React.FC = () => {
   const [openBeltRank, setOpenBeltRank] = useState(false);
   const [openTrainingFocus, setOpenTrainingFocus] = useState(false);
 
+  // Avatar selection state
+  const [selectedAvatar, setSelectedAvatar] = useState("1");
+  const [avatarPickerVisible, setAvatarPickerVisible] = useState(false);
+
+  // Pre-populate fields (including avatar) from Firestore user data
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || "");
+      // Assuming that user.name contains the last name
+      setLastName(user.name || "");
+      setExperience(user.experience || "");
+      setBeltRank(user.beltRank || "white");
+      setTrainingFrequency(user.trainingFrequency ? String(user.trainingFrequency) : "");
+      setGoals(user.goals || "");
+      setTrainingFocus(user.trainingFocus || "throws");
+      setFavoriteTechniques(user.favoriteTechniques || "");
+      setCompetitionsParticipated(user.competitionsParticipated || "");
+      setIppons(user.ippons || "");
+      setWazaAris(user.wazaAris || "");
+      setYukos(user.yukos || "");
+      setGoldMedals(user.goldMedals || "");
+      setSilverMedals(user.silverMedals || "");
+      setBronzeMedals(user.bronzeMedals || "");
+      setSelectedAvatar(user.profilePhoto || "1");
+    }
+  }, [user]);
+
   const validateInputs = () => {
     if (
       firstName === undefined ||
       lastName === undefined ||
-      experience === undefined || 
+      experience === undefined ||
       experience === null ||
-      competitionsParticipated === undefined || 
+      competitionsParticipated === undefined ||
       competitionsParticipated === null ||
-      trainingFrequency === undefined || 
+      trainingFrequency === undefined ||
       trainingFrequency === null ||
-      goals === undefined || 
+      goals === undefined ||
       goals === null ||
-      favoriteTechniques === undefined || 
+      favoriteTechniques === undefined ||
       favoriteTechniques === null
     ) {
       Alert.alert(
@@ -75,8 +124,8 @@ const EditProfileScreen: React.FC = () => {
     if (user) {
       const updatedUserData = {
         ...user,
-        firstName: firstName,
-        lastName: lastName,
+        firstName,
+        lastName,
         experience,
         beltRank,
         trainingFrequency: Number(trainingFrequency),
@@ -90,27 +139,51 @@ const EditProfileScreen: React.FC = () => {
         goldMedals,
         silverMedals,
         bronzeMedals,
+        profilePhoto: selectedAvatar,
       };
 
       try {
-        await saveUserDataToFirestore(updatedUserData); // Save to Firestore
-        Alert.alert(t("extra-user-data.saveSuccessTitle"), t("extra-user-data.saveSuccessMessage"));
+        await saveUserDataToFirestore(updatedUserData);
+        // Immediately update the Auth context with the new user data
+        updateUser(updatedUserData);
+        Alert.alert(
+          t("extra-user-data.saveSuccessTitle"),
+          t("extra-user-data.saveSuccessMessage")
+        );
         replaceRoute("/(tabs)/profile");
       } catch (error) {
-        Alert.alert(t("extra-user-data.saveErrorTitle"), t("extra-user-data.saveErrorMessage"));
+        Alert.alert(
+          t("extra-user-data.saveErrorTitle"),
+          t("extra-user-data.saveErrorMessage")
+        );
       }
     }
   };
 
   return (
     <View style={styles.screen}>
-      <EditHeader title={t('profile.editTitle')}/>
+      <EditHeader title={t("profile.editTitle")} />
       <ScrollView
         contentContainerStyle={[
           styles.container,
           { backgroundColor: theme.colors.background },
         ]}
       >
+        {/* Avatar Section */}
+        <TouchableOpacity
+          style={styles.avatarWrapper}
+          onPress={() => setAvatarPickerVisible(true)}
+        >
+          <Image
+            source={getAvatarSource(selectedAvatar)}
+            style={styles.avatarImageLarge}
+          />
+          <View style={styles.editIconOverlay}>
+            <Ionicons name="create-outline" size={24} color={colors.primary} />
+          </View>
+        </TouchableOpacity>
+
+        {/* Input Fields */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
@@ -138,7 +211,6 @@ const EditProfileScreen: React.FC = () => {
           {t("extra-user-data.competitionSection")}
         </Text>
 
-        {/* Experience */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="school" size={24} color={theme.colors.primary} />
           <TextInput
@@ -151,7 +223,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Competitions Participated */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <AntDesign name="Trophy" size={24} color={theme.colors.primary} />
           <TextInput
@@ -164,7 +235,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Ippons */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
@@ -177,7 +247,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Waza-Aris */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
@@ -190,7 +259,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Yukos */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
@@ -203,7 +271,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Gold Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors.primary} />
           <TextInput
@@ -216,7 +283,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Silver Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors["slate-500"]} />
           <TextInput
@@ -229,7 +295,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Bronze Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors["amber-500"]} />
           <TextInput
@@ -242,7 +307,6 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
-        {/* Belt Rank */}
         <Text style={[styles.label, { color: theme.colors.text }]}>
           {t("extra-user-data.beltRank")}
         </Text>
@@ -263,24 +327,16 @@ const EditProfileScreen: React.FC = () => {
           ]}
           setOpen={setOpenBeltRank}
           setValue={setBeltRank}
-          style={[
-            styles.picker,
-            { backgroundColor: theme.colors.card },
-          ]}
+          style={[styles.picker, { backgroundColor: theme.colors.card }]}
           dropDownContainerStyle={{
             backgroundColor: theme.colors.card,
           }}
           textStyle={{
-            color: theme.colors.text, 
+            color: theme.colors.text,
           }}
         />
-        {/* Training Frequency */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
-          <MaterialIcons
-            name="fitness-center"
-            size={24}
-            color={theme.colors.primary}
-          />
+          <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={trainingFrequency}
@@ -290,8 +346,6 @@ const EditProfileScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        {/* Goals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="flag" size={24} color={theme.colors.primary} />
           <TextInput
@@ -303,8 +357,6 @@ const EditProfileScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        {/* Training Focus */}
         <Text style={[styles.label, { color: theme.colors.text }]}>
           {t("extra-user-data.trainingFocus")}
         </Text>
@@ -323,11 +375,9 @@ const EditProfileScreen: React.FC = () => {
             backgroundColor: theme.colors.card,
           }}
           textStyle={{
-            color: theme.colors.text, 
+            color: theme.colors.text,
           }}
         />
-
-        {/* Favorite Techniques */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="stars" size={24} color={theme.colors.primary} />
           <TextInput
@@ -338,20 +388,41 @@ const EditProfileScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-        
         <TouchableOpacity
-            style={[
+          style={[
             styles.saveButton,
-            { backgroundColor: theme.colors.primary, flexDirection: "row", alignItems: "center" }
+            {
+              backgroundColor: theme.colors.primary,
+              flexDirection: "row",
+              alignItems: "center",
+            },
+          ]}
+          onPress={handleSaveProfile}
+        >
+          <Ionicons
+            name="checkmark-done-outline"
+            size={24}
+            color={theme.colors.background}
+          />
+          <Text
+            style={[
+              styles.saveButtonText,
+              { color: theme.colors.background, marginLeft: 8 },
             ]}
-            onPress={handleSaveProfile}
-            >
-            <Ionicons name="checkmark-done-outline" size={24} color={theme.colors.background} />
-            <Text style={[styles.saveButtonText, { color: theme.colors.background, marginLeft: 8 }]}>
+          >
             {t("extra-user-data.save")}
-            </Text>
+          </Text>
         </TouchableOpacity>
       </ScrollView>
+      <AvatarPicker
+        visible={avatarPickerVisible}
+        selectedAvatar={selectedAvatar}
+        onClose={() => setAvatarPickerVisible(false)}
+        onSelect={(avatarId) => {
+          setSelectedAvatar(avatarId);
+          setAvatarPickerVisible(false);
+        }}
+      />
     </View>
   );
 };
@@ -364,7 +435,7 @@ const styles = StyleSheet.create({
     flexGrow: 1,
     paddingHorizontal: 20,
     paddingBottom: 20,
-    paddingTop: '2%'
+    paddingTop: "2%",
   },
   title: {
     fontSize: 28,
@@ -404,17 +475,8 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     borderColor: "#ccc",
   },
-  saveButtonContainer: {
-    position: "absolute",
-    bottom: 0,
-    left: 0,
-    right: 0,
-    padding: 20,
-    backgroundColor: "white",
-  },
   saveButton: {
-    paddingVertical: 12,
-    paddingHorizontal: 20,
+    paddingVertical: 15,
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
@@ -423,6 +485,25 @@ const styles = StyleSheet.create({
   saveButtonText: {
     fontSize: 18,
     fontWeight: "600",
+  },
+  avatarWrapper: {
+    alignSelf: "center",
+    marginVertical: 20,
+  },
+  avatarImageLarge: {
+    width: 120,
+    height: 120,
+    borderRadius: 60,
+    borderWidth: 3,
+    borderColor: colors.primary,
+  },
+  editIconOverlay: {
+    position: "absolute",
+    bottom: 0,
+    right: 0,
+    backgroundColor: "rgba(255,255,255,0.8)",
+    borderRadius: 15,
+    padding: 2,
   },
 });
 
