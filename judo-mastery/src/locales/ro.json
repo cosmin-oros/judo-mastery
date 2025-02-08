@@ -210,5 +210,10 @@
     "progress": "Progres: {{current}} din {{total}}",
     "next-term": "Termenul următor",
     "finish": "Finalizează lecția"
+  },
+  "dojos": {
+    "nearbyTitle": "Dojo-uri de judo lângă tine",
+    "noDojosFound": "Nu s-au găsit dojo-uri de judo lângă tine.",
+    "title": "Dojo"
   }
 }

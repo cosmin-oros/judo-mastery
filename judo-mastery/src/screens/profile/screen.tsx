@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   StyleSheet,
   View,
+  RefreshControl,
 } from "react-native";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
@@ -25,23 +26,32 @@ const ProfileScreen: React.FC = () => {
   const { theme } = useTheme();
   const [userData, setUserData] = useState<UserType | null>(null);
   const [loading, setLoading] = useState<boolean>(true);
+  const [refreshing, setRefreshing] = useState<boolean>(false);
+
+  const fetchUserData = async () => {
+    if (user?.uid) {
+      try {
+        const data = await getUserDataFromFirestore(user.uid);
+        setUserData(data as UserType);
+      } catch (error) {
+        console.error("Error fetching user data:", error);
+      } finally {
+        setLoading(false);
+      }
+    } else {
+      setLoading(false);
+    }
+  };
 
   useEffect(() => {
-    const fetchUserData = async () => {
-      if (user?.uid) {
-        try {
-          const data = await getUserDataFromFirestore(user.uid);
-          setUserData(data as UserType);
-        } catch (error) {
-          console.error("Error fetching user data:", error);
-        } finally {
-          setLoading(false);
-        }
-      }
-    };
-
     fetchUserData();
   }, [user]);
+
+  const onRefresh = async () => {
+    setRefreshing(true);
+    await fetchUserData();
+    setRefreshing(false);
+  };
 
   if (loading) {
     return (
@@ -67,10 +77,19 @@ const ProfileScreen: React.FC = () => {
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Header title={t("profile.title")} />
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+          />
+        }
+      >
         <ProfileSection userData={userData} />
         <AchievementsSection userData={userData} />
-        <StatisticsSection userData={userData}/>
+        <StatisticsSection userData={userData} />
         <CompetitionStatsSection userData={userData} />
         <OtherStatsSection userData={userData} />
       </ScrollView>

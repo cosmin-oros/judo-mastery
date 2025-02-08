@@ -1,12 +1,20 @@
-import React from "react";
-import { View, Text, StyleSheet, ScrollView, TouchableOpacity, Image } from "react-native";
+import React, { useState } from "react";
+import { 
+  View, 
+  Text, 
+  StyleSheet, 
+  ScrollView, 
+  TouchableOpacity, 
+  Image, 
+  RefreshControl 
+} from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
+import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
 
-// Helper function to return the correct image source for an avatar ID
 const getAvatarSource = (avatarId: string) => {
   switch (avatarId) {
     case "1":
@@ -27,8 +35,10 @@ const getAvatarSource = (avatarId: string) => {
 const HomeScreen: React.FC = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
-  const { user } = useAuth();
+  const { user, updateUser } = useAuth();
+  const [refreshing, setRefreshing] = useState(false);
 
+  // Example data for daily tasks and events
   const dailyTasks = [
     { id: 1, title: t("home.tasks.stretchingRoutine"), completed: false, icon: "🧘" },
     { id: 2, title: t("home.tasks.pushups"), completed: true, icon: "💪" },
@@ -43,6 +53,28 @@ const HomeScreen: React.FC = () => {
     title: t("home.technique.title"),
     description: t("home.technique.description"),
     icon: "🎯",
+  };
+
+  // Function to refresh user data from Firestore
+  const onRefresh = async () => {
+    setRefreshing(true);
+    if (user) {
+      try {
+        const userDataFromFirestore = await getUserDataFromFirestore(user.uid);
+        if (userDataFromFirestore) {
+          // Create an updated user object; adjust fields as needed
+          const updatedUserData = {
+            ...userDataFromFirestore,
+            uid: user.uid,
+            email: userDataFromFirestore.email || null,
+          };
+          updateUser(updatedUserData);
+        }
+      } catch (error) {
+        console.error("Error refreshing user data:", error);
+      }
+    }
+    setRefreshing(false);
   };
 
   return (
@@ -78,7 +110,16 @@ const HomeScreen: React.FC = () => {
         </TouchableOpacity>
       </View>
 
-      <ScrollView contentContainerStyle={styles.content}>
+      <ScrollView
+        contentContainerStyle={styles.content}
+        refreshControl={
+          <RefreshControl
+            refreshing={refreshing}
+            onRefresh={onRefresh}
+            tintColor={theme.colors.primary}
+          />
+        }
+      >
         {/* Daily Tasks Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>

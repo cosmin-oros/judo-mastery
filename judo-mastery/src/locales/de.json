@@ -210,5 +210,10 @@
     "progress": "Fortschritt: {{current}} von {{total}}",
     "next-term": "Nächster Begriff",
     "finish": "Lektion beenden"
+  },
+  "dojos": {
+    "nearbyTitle": "Judo-Dojos in Ihrer Nähe",
+    "noDojosFound": "Keine Judo-Dojos in Ihrer Nähe gefunden.",
+    "title": "Dojo"
   }
 }

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   View,
   StyleSheet,
@@ -19,21 +19,42 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import { colors } from "@/src/theme/colors";
 import AvatarPicker from "../profile/components/AvatarPicker";
 
+// Helper function to return the correct image source for an avatar ID
+const getAvatarSource = (avatarId: string) => {
+  switch (avatarId) {
+    case "1":
+      return require("../../../assets/images/avatar1.jpg");
+    case "2":
+      return require("../../../assets/images/avatar2.jpg");
+    case "3":
+      return require("../../../assets/images/avatar3.jpg");
+    case "4":
+      return require("../../../assets/images/avatar4.jpg");
+    case "5":
+      return require("../../../assets/images/avatar5.jpg");
+    default:
+      return require("../../../assets/images/avatar1.jpg");
+  }
+};
+
 const ExtraUserDataScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  const { user } = useAuth();
+  // Destructure updateUser from useAuth for immediate context update
+  const { user, updateUser } = useAuth();
 
+  // Form state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [experience, setExperience] = useState("");
-  const [beltRank, setBeltRank] = useState("white");
+  // Narrow beltRank to allowed literal values
+  const [beltRank, setBeltRank] = useState<"white" | "yellow" | "orange" | "green" | "blue" | "brown" | "black">("white");
   const [trainingFrequency, setTrainingFrequency] = useState("");
   const [goals, setGoals] = useState("");
   const [trainingFocus, setTrainingFocus] = useState("throws");
   const [favoriteTechniques, setFavoriteTechniques] = useState("");
 
-  // Competition Section
+  // Competition Section state
   const [competitionsParticipated, setCompetitionsParticipated] = useState("");
   const [ippons, setIppons] = useState("");
   const [wazaAris, setWazaAris] = useState("");
@@ -48,6 +69,29 @@ const ExtraUserDataScreen: React.FC = () => {
   // Avatar selection state
   const [selectedAvatar, setSelectedAvatar] = useState("1");
   const [avatarPickerVisible, setAvatarPickerVisible] = useState(false);
+
+  // Pre-populate fields (including avatar) from Firestore user data
+  useEffect(() => {
+    if (user) {
+      setFirstName(user.firstName || "");
+      // Assuming that user.name holds the last name
+      setLastName(user.name || "");
+      setExperience(user.experience || "");
+      setBeltRank(user.beltRank || "white");
+      setTrainingFrequency(user.trainingFrequency ? String(user.trainingFrequency) : "");
+      setGoals(user.goals || "");
+      setTrainingFocus(user.trainingFocus || "throws");
+      setFavoriteTechniques(user.favoriteTechniques || "");
+      setCompetitionsParticipated(user.competitionsParticipated || "");
+      setIppons(user.ippons || "");
+      setWazaAris(user.wazaAris || "");
+      setYukos(user.yukos || "");
+      setGoldMedals(user.goldMedals || "");
+      setSilverMedals(user.silverMedals || "");
+      setBronzeMedals(user.bronzeMedals || "");
+      setSelectedAvatar(user.profilePhoto || "1");
+    }
+  }, [user]);
 
   const validateInputs = () => {
     if (
@@ -79,8 +123,8 @@ const ExtraUserDataScreen: React.FC = () => {
     if (user) {
       const updatedUserData = {
         ...user,
-        firstName: firstName,
-        lastName: lastName,
+        firstName,
+        name: lastName,
         experience,
         beltRank,
         trainingFrequency: Number(trainingFrequency),
@@ -94,11 +138,13 @@ const ExtraUserDataScreen: React.FC = () => {
         goldMedals,
         silverMedals,
         bronzeMedals,
-        profilePhoto: selectedAvatar, // Save the selected avatar identifier
+        profilePhoto: selectedAvatar,
       };
 
       try {
-        await saveUserDataToFirestore(updatedUserData); // Save to Firestore
+        await saveUserDataToFirestore(updatedUserData);
+        // Immediately update the Auth context with the new user data
+        updateUser(updatedUserData);
         Alert.alert(
           t("extra-user-data.saveSuccessTitle"),
           t("extra-user-data.saveSuccessMessage")
@@ -116,65 +162,24 @@ const ExtraUserDataScreen: React.FC = () => {
   return (
     <View style={styles.screen}>
       <ScrollView
-        contentContainerStyle={[
-          styles.container,
-          { backgroundColor: theme.colors.background },
-        ]}
+        contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}
       >
-        <TouchableOpacity
-          style={styles.skipButton}
-          onPress={() => replaceRoute("/(tabs)/home")}
-        >
-          <Ionicons
-            name="arrow-forward-circle"
-            size={32}
-            color={theme.colors.primary}
-          />
+        <TouchableOpacity style={styles.skipButton} onPress={() => replaceRoute("/(tabs)/home")}>
+          <Ionicons name="arrow-forward-circle" size={32} color={theme.colors.primary} />
         </TouchableOpacity>
-        <Text style={[styles.title, { color: theme.colors.text }]}>
-          {t("extra-user-data.title")}
-        </Text>
+        <Text style={[styles.title, { color: theme.colors.text }]}>{t("extra-user-data.title")}</Text>
 
         {/* Avatar Section */}
-        <TouchableOpacity
-          style={styles.avatarWrapper}
-          onPress={() => setAvatarPickerVisible(true)}
-        >
-          <Image
-            source={
-              selectedAvatar === "1"
-                ? require("../../../assets/images/avatar1.jpg")
-                : selectedAvatar === "2"
-                ? require("../../../assets/images/avatar2.jpg")
-                : selectedAvatar === "3"
-                ? require("../../../assets/images/avatar3.jpg")
-                : selectedAvatar === "4"
-                ? require("../../../assets/images/avatar4.jpg")
-                : require("../../../assets/images/avatar5.jpg")
-            }
-            style={styles.avatarImageLarge}
-          />
+        <TouchableOpacity style={styles.avatarWrapper} onPress={() => setAvatarPickerVisible(true)}>
+          <Image source={getAvatarSource(selectedAvatar)} style={styles.avatarImageLarge} />
           <View style={styles.editIconOverlay}>
-            <Ionicons
-              name="create-outline"
-              size={24}
-              color={colors.primary}
-            />
+            <Ionicons name="create-outline" size={24} color={colors.primary} />
           </View>
         </TouchableOpacity>
 
         {/* Input Fields */}
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <Ionicons
-            name="person-outline"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={firstName}
@@ -183,18 +188,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <Ionicons
-            name="person-outline"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={lastName}
@@ -205,21 +200,9 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Competition Section */}
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-          {t("extra-user-data.competitionSection")}
-        </Text>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="school"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t("extra-user-data.competitionSection")}</Text>
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="school" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={experience}
@@ -229,18 +212,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <AntDesign
-            name="Trophy"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <AntDesign name="Trophy" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={competitionsParticipated}
@@ -250,18 +223,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="sports-kabaddi"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={ippons}
@@ -271,18 +234,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="sports-kabaddi"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={wazaAris}
@@ -292,18 +245,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="sports-kabaddi"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={yukos}
@@ -313,18 +256,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <Ionicons
-            name="medal-outline"
-            size={24}
-            color={colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="medal-outline" size={24} color={colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={goldMedals}
@@ -334,18 +267,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <Ionicons
-            name="medal-outline"
-            size={24}
-            color={colors["slate-500"]}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="medal-outline" size={24} color={colors["slate-500"]} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={silverMedals}
@@ -355,18 +278,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <Ionicons
-            name="medal-outline"
-            size={24}
-            color={colors["amber-500"]}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <Ionicons name="medal-outline" size={24} color={colors["amber-500"]} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={bronzeMedals}
@@ -376,10 +289,7 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <Text style={[styles.label, { color: theme.colors.text }]}>
-          {t("extra-user-data.beltRank")}
-        </Text>
+        <Text style={[styles.label, { color: theme.colors.text }]}>{t("extra-user-data.beltRank")}</Text>
         <DropDownPicker
           open={openBeltRank}
           value={beltRank}
@@ -398,24 +308,11 @@ const ExtraUserDataScreen: React.FC = () => {
           setOpen={setOpenBeltRank}
           setValue={setBeltRank}
           style={[styles.picker, { backgroundColor: theme.colors.card }]}
-          dropDownContainerStyle={{
-            backgroundColor: theme.colors.card,
-          }}
-          textStyle={{
-            color: theme.colors.text,
-          }}
+          dropDownContainerStyle={{ backgroundColor: theme.colors.card }}
+          textStyle={{ color: theme.colors.text }}
         />
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="fitness-center"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={trainingFrequency}
@@ -425,18 +322,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="flag"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="flag" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={goals}
@@ -446,10 +333,7 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-
-        <Text style={[styles.label, { color: theme.colors.text }]}>
-          {t("extra-user-data.trainingFocus")}
-        </Text>
+        <Text style={[styles.label, { color: theme.colors.text }]}>{t("extra-user-data.trainingFocus")}</Text>
         <DropDownPicker
           open={openTrainingFocus}
           value={trainingFocus}
@@ -461,24 +345,11 @@ const ExtraUserDataScreen: React.FC = () => {
           setOpen={setOpenTrainingFocus}
           setValue={setTrainingFocus}
           style={[styles.picker, { backgroundColor: theme.colors.card }]}
-          dropDownContainerStyle={{
-            backgroundColor: theme.colors.card,
-          }}
-          textStyle={{
-            color: theme.colors.text,
-          }}
+          dropDownContainerStyle={{ backgroundColor: theme.colors.card }}
+          textStyle={{ color: theme.colors.text }}
         />
-        <View
-          style={[
-            styles.inputContainer,
-            { backgroundColor: theme.colors.card },
-          ]}
-        >
-          <MaterialIcons
-            name="stars"
-            size={24}
-            color={theme.colors.primary}
-          />
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="stars" size={24} color={theme.colors.primary} />
           <TextInput
             style={[styles.input, { color: theme.colors.text }]}
             value={favoriteTechniques}
@@ -490,19 +361,9 @@ const ExtraUserDataScreen: React.FC = () => {
       </ScrollView>
 
       {/* Save Button */}
-      <View
-        style={[
-          styles.saveButtonContainer,
-          { backgroundColor: theme.colors.background },
-        ]}
-      >
-        <TouchableOpacity
-          style={[styles.saveButton, { backgroundColor: theme.colors.primary }]}
-          onPress={handleSaveProfile}
-        >
-          <Text
-            style={[styles.saveButtonText, { color: theme.colors.background }]}
-          >
+      <View style={[styles.saveButtonContainer, { backgroundColor: theme.colors.background }]}>
+        <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.colors.primary }]} onPress={handleSaveProfile}>
+          <Text style={[styles.saveButtonText, { color: theme.colors.background }]}>
             {t("extra-user-data.save")}
           </Text>
         </TouchableOpacity>
@@ -583,6 +444,7 @@ const styles = StyleSheet.create({
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
+    marginTop: 20,
   },
   saveButtonText: {
     fontSize: 18,
