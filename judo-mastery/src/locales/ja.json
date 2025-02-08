@@ -210,5 +210,10 @@
     "progress": "進捗: {{current}} / {{total}}",
     "next-term": "次の用語",
     "finish": "レッスンを終了する"
+  },
+  "dojos": {
+    "nearbyTitle": "あなたの近くの柔道道場",
+    "noDojosFound": "あなたの近くに柔道道場は見つかりませんでした。",
+    "title": "道場"
   }
 }
