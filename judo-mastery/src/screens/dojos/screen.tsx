@@ -6,6 +6,7 @@ import {
   ActivityIndicator,
   Alert,
   ScrollView,
+  Button,
 } from "react-native";
 import MapView, { Marker } from "react-native-maps";
 import * as Location from "expo-location";
@@ -13,6 +14,8 @@ import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import "firebase/firestore";
 import { fetchDojos } from "@/src/firestoreService/dojosService";
+// Import the router hook (using expo-router here)
+import { useRouter } from "expo-router";
 
 // Define your Dojo type.
 type Dojo = {
@@ -26,6 +29,7 @@ type Dojo = {
 const DojosScreen: React.FC = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
+  const router = useRouter(); 
   const [location, setLocation] = useState<Location.LocationObjectCoords | null>(null);
   const [dojos, setDojos] = useState<Dojo[]>([]);
   const [loading, setLoading] = useState<boolean>(true);
@@ -118,6 +122,13 @@ const DojosScreen: React.FC = () => {
           ))
         )}
       </ScrollView>
+      {/* Button to navigate to the Add Dojo Request screen */}
+      <View style={styles.addButtonContainer}>
+        <Button
+          title={t("dojos.addDojoButton") || "Add Dojo"}
+          onPress={() => router.push("/(tabs)/dojos/add-dojo-request")}
+        />
+      </View>
     </View>
   );
 };
@@ -131,6 +142,10 @@ const styles = StyleSheet.create({
   listItem: { paddingVertical: 8, borderBottomWidth: 1, borderBottomColor: "#ddd" },
   dojoName: { fontSize: 16, fontWeight: "600" },
   dojoCoords: { fontSize: 12 },
+  addButtonContainer: {
+    padding: 15,
+    backgroundColor: "transparent",
+  },
 });
 
 export default DojosScreen;
