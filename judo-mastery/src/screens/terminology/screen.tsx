@@ -43,7 +43,9 @@ const TerminologyScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.loadingContainer}>
+      <SafeAreaView
+        style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}
+      >
         <ActivityIndicator size="large" color={theme.colors.primary} />
         <Text style={[styles.loadingText, { color: theme.colors.text }]}>
           {t("common.loading")}
@@ -74,11 +76,18 @@ const TerminologyScreen: React.FC = () => {
   const renderLessonCard = (lesson: LessonType, isCompleted: boolean) => (
     <TouchableOpacity
       key={lesson.id}
-      style={styles.lessonCard}
+      style={[
+        styles.lessonCard,
+        {
+          // Use theme.colors.border for shadow color
+          shadowColor: theme.colors.border,
+        },
+      ]}
       onPress={() => handleLessonPress(lesson)}
       disabled={isCompleted}
     >
       <LinearGradient
+        // If completed, fill with primary; otherwise fill with card color
         colors={
           isCompleted
             ? [theme.colors.primary, theme.colors.primary]
@@ -134,6 +143,8 @@ const TerminologyScreen: React.FC = () => {
   );
 };
 
+export default TerminologyScreen;
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { padding: 20 },
@@ -152,7 +163,7 @@ const styles = StyleSheet.create({
     marginRight: 15,
     borderRadius: 15,
     overflow: "hidden",
-    shadowColor: "#000",
+    // Use the theme's border color for shadows
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 6,
@@ -176,5 +187,3 @@ const styles = StyleSheet.create({
   lessonXP: { fontSize: 14, fontWeight: "500" },
   completedText: { fontSize: 14, fontWeight: "700", marginTop: 10 },
 });
-
-export default TerminologyScreen;

@@ -83,7 +83,9 @@ const LessonScreen: React.FC = () => {
 
   if (loading) {
     return (
-      <SafeAreaView style={styles.loadingContainer}>
+      <SafeAreaView
+        style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}
+      >
         <ActivityIndicator size="large" color={theme.colors.primary} />
         <Text style={[styles.loadingText, { color: theme.colors.text }]}>
           {t("common.loading")}
@@ -94,7 +96,9 @@ const LessonScreen: React.FC = () => {
 
   if (!lesson || terms.length === 0) {
     return (
-      <SafeAreaView style={styles.errorContainer}>
+      <SafeAreaView
+        style={[styles.errorContainer, { backgroundColor: theme.colors.background }]}
+      >
         <Text style={[styles.errorText, { color: theme.colors.text }]}>
           {t("lesson.error-missing-data")}
         </Text>
@@ -130,9 +134,7 @@ const LessonScreen: React.FC = () => {
   const currentTerm = terms[currentTermIndex];
 
   return (
-    <SafeAreaView
-      style={[styles.container, { backgroundColor: theme.colors.background }]}
-    >
+    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
       <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
         {/* Header */}
         <View style={styles.header}>
@@ -163,7 +165,15 @@ const LessonScreen: React.FC = () => {
         </View>
 
         {/* Current Term */}
-        <View style={styles.termContainer}>
+        <View
+          style={[
+            styles.termContainer,
+            {
+              backgroundColor: theme.colors.card,
+              shadowColor: theme.colors.border,
+            },
+          ]}
+        >
           <Text style={styles.termIcon}>{currentTerm.icon || "❓"}</Text>
           <Text style={[styles.termOriginal, { color: theme.colors.text }]}>
             {currentTerm.original}
@@ -203,9 +213,17 @@ const LessonScreen: React.FC = () => {
   );
 };
 
+export default LessonScreen;
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
   content: { flex: 1, padding: 20 },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: { marginTop: 10, fontSize: 16 },
   errorContainer: {
     flex: 1,
     justifyContent: "center",
@@ -213,12 +231,6 @@ const styles = StyleSheet.create({
     padding: 20,
   },
   errorText: { fontSize: 16, textAlign: "center" },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loadingText: { marginTop: 10, fontSize: 16 },
   header: {
     flexDirection: "row",
     alignItems: "center",
@@ -235,15 +247,12 @@ const styles = StyleSheet.create({
     fontSize: 28,
     fontWeight: "700",
     textAlign: "center",
-    // "flex: 1" is optional if you need more space for the title
   },
   progressContainer: { marginVertical: 20 },
   progressText: { marginTop: 10, fontSize: 14, textAlign: "center" },
   termContainer: {
     padding: 20,
-    backgroundColor: "#FFF",
     borderRadius: 10,
-    shadowColor: "#000",
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 5,
@@ -269,5 +278,3 @@ const styles = StyleSheet.create({
   },
   buttonText: { fontSize: 16, fontWeight: "700" },
 });
-
-export default LessonScreen;
