@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/src/theme/colors";
+import { useTechniques } from "@/src/provider/global/TechniquesProvider";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -30,27 +31,17 @@ interface Waza {
 }
 
 const WazaListScreen: React.FC = () => {
-  const [wazas, setWazas] = useState<Waza[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { theme } = useTheme();
-  const router = useRouter();
   const { categoryId, title } = useLocalSearchParams();
+  const { theme } = useTheme();
   const { t } = useTranslation();
+  const router = useRouter();
 
-  const loadWazas = useCallback(async () => {
-    try {
-      const data = await fetchWazas(categoryId as string);
-      setWazas(data);
-    } catch (error) {
-      console.error("Error fetching wazas:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [categoryId]);
+  // Grab categories from context
+  const { categories, loading } = useTechniques();
 
-  useEffect(() => {
-    loadWazas();
-  }, [loadWazas]);
+  // Find the category by ID, then get its wazas
+  const category = categories.find((c) => c.id === categoryId);
+  const wazas = category?.wazas || [];
 
   const handleWazaPress = (wazaId: string, wazaTitle: string) => {
     router.push({
@@ -59,81 +50,8 @@ const WazaListScreen: React.FC = () => {
     });
   };
 
-  // Back button handler (only icon, no text)
   const handleBackPress = () => {
     router.back();
-  };
-
-  // Animated scale for each card for a touch of interactivity
-  const renderWazaCard = ({ item }: { item: Waza }) => {
-    const scaleValue = new Animated.Value(1);
-
-    const onPressIn = () => {
-      Animated.spring(scaleValue, {
-        toValue: 0.97,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    const onPressOut = () => {
-      Animated.spring(scaleValue, {
-        toValue: 1,
-        friction: 3,
-        tension: 40,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    return (
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-        <TouchableOpacity
-          style={[
-            styles.card,
-            {
-              backgroundColor: theme.colors.card,
-              borderColor: theme.colors.primary,
-              shadowColor: theme.colors.border,
-              width: screenWidth * 0.95,
-            },
-          ]}
-          activeOpacity={0.9}
-          onPressIn={onPressIn}
-          onPressOut={onPressOut}
-          onPress={() => handleWazaPress(item.id, item.title.en)}
-        >
-          <View
-            style={[
-              styles.emojiContainer,
-              { backgroundColor: theme.colors.primary },
-            ]}
-          >
-            <Text style={[styles.emoji, { color: theme.colors.background }]}>
-              {item.emoji}
-            </Text>
-          </View>
-          <View style={styles.cardContent}>
-            <Text
-              style={[
-                styles.title,
-                theme.fonts.bold,
-                { color: theme.colors.text },
-              ]}
-            >
-              {item.title.en}
-            </Text>
-            <Text
-              style={[
-                styles.original,
-                theme.fonts.regular,
-                { color: theme.colors.placeholder },
-              ]}
-            >
-              {item.original}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </Animated.View>
-    );
   };
 
   if (loading) {
@@ -156,10 +74,7 @@ const WazaListScreen: React.FC = () => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      {/* Header displaying the title */}
       <Header title={title as string} />
-
-      {/* Back button (icon only) below header */}
       <View style={styles.backButtonContainer}>
         <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
           <Ionicons name="arrow-back" size={28} color={theme.colors.text} />
@@ -170,7 +85,76 @@ const WazaListScreen: React.FC = () => {
         data={wazas}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
-        renderItem={renderWazaCard}
+        renderItem={({ item }) => {
+          const scaleValue = new Animated.Value(1);
+
+          const onPressIn = () => {
+            Animated.spring(scaleValue, {
+              toValue: 0.97,
+              useNativeDriver: true,
+            }).start();
+          };
+
+          const onPressOut = () => {
+            Animated.spring(scaleValue, {
+              toValue: 1,
+              friction: 3,
+              tension: 40,
+              useNativeDriver: true,
+            }).start();
+          };
+
+          return (
+            <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+              <TouchableOpacity
+                style={[
+                  styles.card,
+                  {
+                    backgroundColor: theme.colors.card,
+                    borderColor: theme.colors.primary,
+                    shadowColor: theme.colors.border,
+                    width: screenWidth * 0.95,
+                  },
+                ]}
+                activeOpacity={0.9}
+                onPressIn={onPressIn}
+                onPressOut={onPressOut}
+                onPress={() => handleWazaPress(item.id, item.title.en)}
+              >
+                <View
+                  style={[
+                    styles.emojiContainer,
+                    { backgroundColor: theme.colors.primary },
+                  ]}
+                >
+                  <Text
+                    style={[styles.emoji, { color: theme.colors.background }]}
+                  >
+                    {item.emoji}
+                  </Text>
+                </View>
+                <View style={styles.cardContent}>
+                  <Text
+                    style={[
+                      styles.title,
+                      { color: theme.colors.text, fontWeight: "bold" },
+                    ]}
+                  >
+                    {item.title.en}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.original,
+                      { color: theme.colors.placeholder },
+                    ]}
+                  >
+                    {item.original}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
+          );
+        }}
       />
     </SafeAreaView>
   );

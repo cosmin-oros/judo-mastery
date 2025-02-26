@@ -17,6 +17,7 @@ import Header from "../components/Header";
 import { useTranslation } from "react-i18next";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/src/theme/colors";
+import { useTechniques } from "@/src/provider/global/TechniquesProvider";
 
 const screenWidth = Dimensions.get("window").width;
 
@@ -31,115 +32,28 @@ interface Technique {
 }
 
 const TechniqueListScreen: React.FC = () => {
-  const [techniques, setTechniques] = useState<Technique[]>([]);
-  const [loading, setLoading] = useState(true);
-  const { theme } = useTheme();
-  const router = useRouter();
   const { categoryId, wazaId, wazaTitle } = useLocalSearchParams();
+  const { theme } = useTheme();
   const { t } = useTranslation();
+  const router = useRouter();
 
-  // Fetch techniques for the selected waza
-  const loadTechniques = useCallback(async () => {
-    try {
-      const data = await fetchTechniquesForWaza(
-        categoryId as string,
-        wazaId as string
-      );
-      setTechniques(data);
-    } catch (error) {
-      console.error("Error fetching techniques:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, [categoryId, wazaId]);
+  // From context
+  const { categories, loading } = useTechniques();
 
-  useEffect(() => {
-    loadTechniques();
-  }, [loadTechniques]);
+  // Find the relevant category & waza
+  const category = categories.find((c) => c.id === categoryId);
+  const waza = category?.wazas.find((w) => w.id === wazaId);
+  const techniques = waza?.techniques || [];
 
-  // Navigate to the technique details screen when a technique is pressed
+  const handleBackPress = () => {
+    router.back();
+  };
+
   const handleTechniquePress = (techniqueId: string) => {
     router.push({
       pathname: "/(tabs)/techniques/techniqueDetails",
       params: { categoryId, wazaId, techniqueId },
     });
-  };
-
-  // Back button handler
-  const handleBackPress = () => {
-    router.back();
-  };
-
-  // Render a technique card with a scaling animation on press
-  const renderTechniqueCard = ({ item }: { item: Technique }) => {
-    const scaleValue = new Animated.Value(1);
-
-    const onPressIn = () => {
-      Animated.spring(scaleValue, {
-        toValue: 0.97,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    const onPressOut = () => {
-      Animated.spring(scaleValue, {
-        toValue: 1,
-        friction: 3,
-        tension: 40,
-        useNativeDriver: true,
-      }).start();
-    };
-
-    return (
-      <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
-        <TouchableOpacity
-          style={[
-            styles.card,
-            {
-              backgroundColor: theme.colors.card,
-              borderColor: theme.colors.primary,
-              shadowColor: theme.colors.border,
-              width: screenWidth * 0.95,
-            },
-          ]}
-          activeOpacity={0.9}
-          onPressIn={onPressIn}
-          onPressOut={onPressOut}
-          onPress={() => handleTechniquePress(item.id)}
-        >
-          <View
-            style={[
-              styles.emojiContainer,
-              { backgroundColor: theme.colors.primary },
-            ]}
-          >
-            <Text style={[styles.emoji, { color: theme.colors.background }]}>
-              {item.emoji}
-            </Text>
-          </View>
-          <View style={styles.cardContent}>
-            <Text
-              style={[
-                styles.title,
-                theme.fonts.bold,
-                { color: theme.colors.text },
-              ]}
-            >
-              {item.title.en}
-            </Text>
-            <Text
-              style={[
-                styles.original,
-                theme.fonts.regular,
-                { color: theme.colors.placeholder },
-              ]}
-            >
-              {item.original}
-            </Text>
-          </View>
-        </TouchableOpacity>
-      </Animated.View>
-    );
   };
 
   if (loading) {
@@ -162,10 +76,7 @@ const TechniqueListScreen: React.FC = () => {
     <SafeAreaView
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
-      {/* Header displaying the waza title */}
       <Header title={wazaTitle as string} />
-
-      {/* Back button (icon only) below header */}
       <View style={styles.backButtonContainer}>
         <TouchableOpacity onPress={handleBackPress} style={styles.backButton}>
           <Ionicons name="arrow-back" size={28} color={theme.colors.text} />
@@ -176,7 +87,76 @@ const TechniqueListScreen: React.FC = () => {
         data={techniques}
         keyExtractor={(item) => item.id}
         contentContainerStyle={styles.listContent}
-        renderItem={renderTechniqueCard}
+        renderItem={({ item }) => {
+          const scaleValue = new Animated.Value(1);
+
+          const onPressIn = () => {
+            Animated.spring(scaleValue, {
+              toValue: 0.97,
+              useNativeDriver: true,
+            }).start();
+          };
+
+          const onPressOut = () => {
+            Animated.spring(scaleValue, {
+              toValue: 1,
+              friction: 3,
+              tension: 40,
+              useNativeDriver: true,
+            }).start();
+          };
+
+          return (
+            <Animated.View style={{ transform: [{ scale: scaleValue }] }}>
+              <TouchableOpacity
+                style={[
+                  styles.card,
+                  {
+                    backgroundColor: theme.colors.card,
+                    borderColor: theme.colors.primary,
+                    shadowColor: theme.colors.border,
+                    width: screenWidth * 0.95,
+                  },
+                ]}
+                activeOpacity={0.9}
+                onPressIn={onPressIn}
+                onPressOut={onPressOut}
+                onPress={() => handleTechniquePress(item.id)}
+              >
+                <View
+                  style={[
+                    styles.emojiContainer,
+                    { backgroundColor: theme.colors.primary },
+                  ]}
+                >
+                  <Text
+                    style={[styles.emoji, { color: theme.colors.background }]}
+                  >
+                    {item.emoji}
+                  </Text>
+                </View>
+                <View style={styles.cardContent}>
+                  <Text
+                    style={[
+                      styles.title,
+                      { color: theme.colors.text, fontWeight: "bold" },
+                    ]}
+                  >
+                    {item.title.en}
+                  </Text>
+                  <Text
+                    style={[
+                      styles.original,
+                      { color: theme.colors.placeholder },
+                    ]}
+                  >
+                    {item.original}
+                  </Text>
+                </View>
+              </TouchableOpacity>
+            </Animated.View>
+          );
+        }}
       />
     </SafeAreaView>
   );

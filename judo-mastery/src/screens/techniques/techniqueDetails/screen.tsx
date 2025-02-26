@@ -4,89 +4,116 @@ import {
   Text,
   StyleSheet,
   ScrollView,
-  ActivityIndicator,
   View,
   TouchableOpacity,
+  ActivityIndicator,
 } from "react-native";
 import YoutubePlayer from "react-native-youtube-iframe";
 import { useLocalSearchParams, useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
-import { fetchTechniqueDetails, updateUserTechniqueProgress } from "@/src/firestoreService/techniquesService";
-import Header from "../components/Header";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
-import { showAlert } from "@/src/utils/showAlert";
-import { replaceRoute } from "@/src/utils/replaceRoute";
 import { Ionicons } from "@expo/vector-icons";
 import { colors } from "@/src/theme/colors";
 import { doc, getDoc } from "firebase/firestore";
 import { firestore } from "@/src/provider/auth/firebase";
+import { showAlert } from "@/src/utils/showAlert";
+import { replaceRoute } from "@/src/utils/replaceRoute";
+
+// Import your TechniquesProvider hook
+import { useTechniques } from "@/src/provider/global/TechniquesProvider";
+import { updateUserTechniqueProgress } from "@/src/firestoreService/techniquesService";
+
+// Reuse your custom Header
+import Header from "../components/Header";
 
 const TechniqueDetailsScreen: React.FC = () => {
-  const [technique, setTechnique] = useState<any | null>(null);
-  const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
-  const { categoryId, wazaId, techniqueId } = useLocalSearchParams();
   const { t } = useTranslation();
   const router = useRouter();
   const { user } = useAuth();
 
-  // Load technique details when the screen mounts.
-  useEffect(() => {
-    const loadTechniqueDetails = async () => {
-      try {
-        const data = await fetchTechniqueDetails(
-          categoryId as string,
-          wazaId as string,
-          techniqueId as string
-        );
-        setTechnique(data);
-      } catch (error) {
-        console.error("Error fetching technique details:", error);
-      } finally {
-        setLoading(false);
-      }
-    };
-    loadTechniqueDetails();
-  }, [categoryId, wazaId, techniqueId]);
+  // Get IDs from route params
+  const { categoryId, wazaId, techniqueId } = useLocalSearchParams<{
+    categoryId: string;
+    wazaId: string;
+    techniqueId: string;
+  }>();
 
-  // Check if the user has already completed the technique.
+  // Pull the entire technique data from the provider
+  const { categories, loading: techniquesLoading } = useTechniques();
+
+  // Local state to track if the user has studied this technique
+  const [studied, setStudied] = useState(false);
+  // Local state for showing a spinner while updating progress
+  const [finishing, setFinishing] = useState(false);
+
+  // Find the matching technique in your nested data
+  const category = categories.find((c) => c.id === categoryId);
+  const waza = category?.wazas.find((w) => w.id === wazaId);
+  const technique = waza?.techniques.find((tech) => tech.id === techniqueId);
+
+  // Once the technique is found, check if the user has completed it
   useEffect(() => {
-    const loadUserTechniqueProgress = async () => {
+    const checkUserTechniqueProgress = async () => {
       if (user?.uid && technique) {
         try {
           const userRef = doc(firestore, "users", user.uid);
           const userDoc = await getDoc(userRef);
           const userData = userDoc.data();
+          // If userData has an array 'techniques_completed' and includes this technique ID
           if (userData?.techniques_completed?.includes(technique.id)) {
-            setTechnique((prev: any) => ({ ...prev, studied: true }));
+            setStudied(true);
           }
         } catch (error) {
           console.error("Error loading user technique progress:", error);
         }
       }
     };
-    loadUserTechniqueProgress();
+    checkUserTechniqueProgress();
   }, [user, technique]);
 
-  // Extract YouTube video ID from the videoUrl.
+  // If the TechniquesProvider is still loading, show a spinner
+  if (techniquesLoading || finishing) {
+    return (
+      <SafeAreaView
+        style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}
+      >
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>
+          {t("common.loading")}
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
+  // If no technique is found (invalid ID, etc.)
+  if (!technique) {
+    return (
+      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+        <Text style={[styles.errorText, { color: theme.colors.text }]}>
+          {t("technique.error-loading")}
+        </Text>
+      </SafeAreaView>
+    );
+  }
+
+  // Extract YouTube video ID if present
   let videoId = "";
-  if (technique?.videoUrl) {
-    const urlParts = technique.videoUrl.split("v=");
-    if (urlParts.length > 1) {
-      videoId = urlParts[1].split("&")[0];
+  if (technique.videoUrl && technique.videoUrl.includes("v=")) {
+    const parts = technique.videoUrl.split("v=");
+    if (parts[1]) {
+      videoId = parts[1].split("&")[0];
     }
   }
 
-  // Handler for finishing the technique.
+  // Handler for awarding XP & marking technique as completed
   const handleFinishTechnique = async () => {
-    if (!user?.uid || !technique) return;
-    setLoading(true);
+    if (!user?.uid) return;
+    setFinishing(true);
     try {
-      // Update user progress (marks technique as completed and awards XP)
       await updateUserTechniqueProgress(user.uid, technique.id, technique.xp);
-      // Update local state so that the finish button is hidden and a checkmark is shown.
-      setTechnique({ ...technique, studied: true });
+      setStudied(true);
       showAlert(
         t("techniques.finished-success"),
         t("techniques.congratulations"),
@@ -96,35 +123,18 @@ const TechniqueDetailsScreen: React.FC = () => {
       console.error("Error updating technique progress:", error);
       showAlert(t("techniques.finished-error"), t("techniques.try-again"));
     } finally {
-      setLoading(false);
+      setFinishing(false);
     }
   };
 
-  // Single Back button handler.
+  // Go back one screen
   const handleBackPress = () => {
     router.back();
   };
 
-  if (loading) {
-    return (
-      <SafeAreaView style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
-        <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t("common.loading")}</Text>
-      </SafeAreaView>
-    );
-  }
-
-  if (!technique) {
-    return (
-      <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-        <Text style={[styles.errorText, { color: theme.colors.text }]}>{t("technique.error-loading")}</Text>
-      </SafeAreaView>
-    );
-  }
-
   return (
     <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {/* Header showing the technique title */}
+      {/* Header showing the technique's name */}
       <Header title={technique.title.en} />
 
       {/* Back button below header */}
@@ -145,33 +155,37 @@ const TechniqueDetailsScreen: React.FC = () => {
             },
           ]}
         >
+          {/* Title row + studied checkmark */}
           <View style={styles.headerRow}>
-            <Text style={[styles.techTitle, theme.fonts.bold, { color: theme.colors.text }]}>
+            <Text style={[styles.techTitle, { color: theme.colors.text }]}>
               {technique.title.en}
             </Text>
-            {/* If the technique is studied, show a checkmark */}
-            {technique.studied && (
+            {studied && (
               <Ionicons name="checkmark-circle" size={28} color={theme.colors.primary} />
             )}
           </View>
-          <Text style={[styles.techOriginal, theme.fonts.regular, { color: theme.colors.placeholder }]}>
+
+          <Text style={[styles.techOriginal, { color: theme.colors.placeholder }]}>
             {technique.original}
           </Text>
-          <Text style={[styles.techDescription, theme.fonts.regular, { color: theme.colors.text }]}>
+          <Text style={[styles.techDescription, { color: theme.colors.text }]}>
             {technique.description.en}
           </Text>
+
+          {/* Video if we found a YouTube ID */}
           {videoId !== "" && (
             <View style={styles.videoContainer}>
               <YoutubePlayer height={200} videoId={videoId} />
             </View>
           )}
-          <Text style={[styles.xpText, theme.fonts.medium, { color: theme.colors.text }]}>
+
+          <Text style={[styles.xpText, { color: theme.colors.text }]}>
             {t("techniques.xp")} {technique.xp}
           </Text>
         </View>
 
-        {/* Only display the Finish button if the technique is not yet studied */}
-        {!technique.studied && (
+        {/* Finish button if not studied yet */}
+        {!studied && (
           <TouchableOpacity
             style={[styles.finishButton, { backgroundColor: theme.colors.primary }]}
             onPress={handleFinishTechnique}
@@ -186,9 +200,15 @@ const TechniqueDetailsScreen: React.FC = () => {
   );
 };
 
+export default TechniqueDetailsScreen;
+
 const styles = StyleSheet.create({
   container: { flex: 1 },
-  loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
   loadingText: { marginTop: 10, fontSize: 16 },
   errorText: { marginTop: 10, fontSize: 16, textAlign: "center" },
   backButtonContainer: {
@@ -225,12 +245,33 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
+    marginBottom: 10,
   },
-  techTitle: { fontSize: 28, marginBottom: 10, textAlign: "center", flex: 1 },
-  techOriginal: { fontSize: 20, fontStyle: "italic", marginBottom: 10, textAlign: "center" },
-  techDescription: { fontSize: 16, marginBottom: 20, lineHeight: 22, textAlign: "justify" },
+  techTitle: {
+    fontSize: 28,
+    fontWeight: "700",
+    textAlign: "center",
+    flex: 1,
+  },
+  techOriginal: {
+    fontSize: 20,
+    fontStyle: "italic",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  techDescription: {
+    fontSize: 16,
+    marginBottom: 20,
+    lineHeight: 22,
+    textAlign: "justify",
+  },
   videoContainer: { marginVertical: 20 },
-  xpText: { fontSize: 18, textAlign: "right", marginTop: 10 },
+  xpText: {
+    fontSize: 18,
+    textAlign: "right",
+    marginTop: 10,
+    fontWeight: "500",
+  },
   finishButton: {
     width: "100%",
     padding: 15,
@@ -239,5 +280,3 @@ const styles = StyleSheet.create({
   },
   finishButtonText: { fontSize: 18, fontWeight: "700" },
 });
-
-export default TechniqueDetailsScreen;

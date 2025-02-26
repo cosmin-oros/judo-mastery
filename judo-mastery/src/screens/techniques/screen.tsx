@@ -1,4 +1,4 @@
-import React, { useState, useEffect, useCallback } from "react";
+import React, { useMemo } from "react";
 import {
   SafeAreaView,
   FlatList,
@@ -8,32 +8,20 @@ import {
 } from "react-native";
 import { useRouter } from "expo-router";
 import { useTheme } from "@/src/theme/ThemeProvider";
-import { fetchTechniqueCategories } from "@/src/firestoreService/techniquesService";
-import Header from "./components/Header";
 import { useTranslation } from "react-i18next";
+import Header from "./components/Header";
 import CategoryCard from "./components/CategoryCard";
 
+// Import our new provider hook
+import { useTechniques } from "@/src/provider/global/TechniquesProvider";
+
 const TechniquesScreen: React.FC = () => {
-  const [categories, setCategories] = useState<any[]>([]);
-  const [loading, setLoading] = useState(true);
   const { theme } = useTheme();
-  const router = useRouter();
   const { t } = useTranslation();
+  const router = useRouter();
 
-  const loadCategories = useCallback(async () => {
-    try {
-      const data = await fetchTechniqueCategories();
-      setCategories(data);
-    } catch (error) {
-      console.error("Error fetching categories:", error);
-    } finally {
-      setLoading(false);
-    }
-  }, []);
-
-  useEffect(() => {
-    loadCategories();
-  }, [loadCategories]);
+  // Get categories + loading from context
+  const { categories, loading } = useTechniques();
 
   const handleCategoryPress = (categoryId: string, title: string) => {
     router.push({
@@ -63,6 +51,7 @@ const TechniquesScreen: React.FC = () => {
       style={[styles.container, { backgroundColor: theme.colors.background }]}
     >
       <Header title={t("techniques.title")} />
+
       <FlatList
         data={categories}
         keyExtractor={(item) => item.id}
@@ -80,12 +69,10 @@ const TechniquesScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
+  container: { flex: 1 },
   listContent: {
     paddingVertical: 20,
-    alignItems: "center", // Center the cards horizontally
+    alignItems: "center",
   },
   loadingContainer: {
     flex: 1,
