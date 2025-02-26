@@ -124,3 +124,62 @@ export const getTermFromFirestore = async (
     icon: data.icon || "", // Default to an empty string if no icon is provided
   } as TermType;
 };
+
+/**
+ * Fetches all lessons and their associated terms from Firestore.
+ */
+export const fetchLessonsWithTermsFromFirestore = async (): Promise<
+  LessonType[]
+> => {
+  // 1. Fetch all lessons
+  const lessonsSnapshot = await getDocs(collection(firestore, "lessons"));
+
+  // Convert to an array of LessonType
+  const lessonsData: LessonType[] = lessonsSnapshot.docs.map((doc) => {
+    const data = doc.data();
+    return {
+      id: doc.id,
+      title: data.title || { en: "Untitled" },
+      xp: data.xp || 0,
+      category: data.category || "uncategorized",
+      // This is just an array of term IDs for now
+      terminology: data.terminology || [],
+      // We'll add a "terms" field after we fetch them
+      terms: [],
+    } as LessonType;
+  });
+
+  // 2. Gather all termIds used by all lessons
+  const allTermIds = new Set<string>();
+  lessonsData.forEach((lesson) => {
+    lesson.terminology.forEach((termId) => {
+      allTermIds.add(termId);
+    });
+  });
+
+  // 3. Fetch all terms from Firestore
+  const termsSnapshot = await getDocs(collection(firestore, "terminology"));
+  const termsMap = new Map<string, TermType>();
+
+  termsSnapshot.docs.forEach((doc) => {
+    const data = doc.data();
+    const term: TermType = {
+      id: doc.id,
+      original: data.original || "Unknown Term",
+      translated: data.translated || {},
+      description: data.description || {},
+      icon: data.icon || "❓",
+    };
+    termsMap.set(doc.id, term);
+  });
+
+  // 4. Attach the full term objects to each lesson
+  //    (lessonsData.terms = array of TermType)
+  lessonsData.forEach((lesson) => {
+    lesson.terms = lesson.terminology
+      .map((termId) => termsMap.get(termId))
+      .filter(Boolean) as TermType[];
+  });
+
+  return lessonsData;
+};

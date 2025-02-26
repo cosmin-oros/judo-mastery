@@ -12,12 +12,14 @@ import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { updateUserLessonProgress } from "@/src/firestoreService/lessonsService";
-import { getLessonFromFirestore, getTermFromFirestore } from "@/src/firestoreService/lessonsService";
 import { useLocalSearchParams } from "expo-router";
 import * as Progress from "react-native-progress";
 import { showAlert } from "@/src/utils/showAlert";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { LessonType, TermType } from "@/src/types/types";
+import { useLessons } from "@/src/provider/global/LessonsProvider";
+import { Ionicons } from "@expo/vector-icons";
+import { router } from "expo-router";
 
 const LessonScreen: React.FC = () => {
   const { theme } = useTheme();
@@ -27,51 +29,49 @@ const LessonScreen: React.FC = () => {
     lessonData?: string;
     lessonId?: string;
   }>();
+  const { lessons } = useLessons();
 
   const [lesson, setLesson] = useState<LessonType | null>(null);
   const [terms, setTerms] = useState<TermType[]>([]);
   const [currentTermIndex, setCurrentTermIndex] = useState(0);
   const [loading, setLoading] = useState(true);
 
-  const fadeAnim = useState(new Animated.Value(0))[0]; // Animation for fade-in effect
+  // Animation for fade-in effect
+  const fadeAnim = useState(new Animated.Value(0))[0];
 
   useEffect(() => {
-    const fetchLessonAndTerms = async () => {
-      try {
-        let fetchedLesson: LessonType | null = null;
+    const loadLesson = () => {
+      let foundLesson: LessonType | null = null;
 
-        if (lessonData) {
-          const parsedLesson = JSON.parse(lessonData);
-          if (parsedLesson && typeof parsedLesson === "object") {
-            fetchedLesson = parsedLesson as LessonType;
-          } else {
-            console.error("Invalid lessonData format:", lessonData);
+      // If lessonData is passed in the params, parse it
+      if (lessonData) {
+        try {
+          const parsed = JSON.parse(lessonData);
+          if (parsed && typeof parsed === "object") {
+            foundLesson = parsed as LessonType;
           }
-        } else if (lessonId) {
-          fetchedLesson = await getLessonFromFirestore(lessonId);
+        } catch (error) {
+          console.error("Error parsing lessonData:", error);
         }
-
-        if (fetchedLesson) {
-          setLesson(fetchedLesson);
-
-          // Fetch associated terms
-          const termPromises = fetchedLesson.terminology.map((termId) => getTermFromFirestore(termId));
-          const fetchedTerms = await Promise.all(termPromises);
-          setTerms(fetchedTerms as TermType[]);
-        } else {
-          console.error("Lesson not found for the provided ID or data.");
-        }
-      } catch (error) {
-        console.error("Error loading lesson or terms:", error);
-        showAlert(t("lesson.error-fetching"));
-      } finally {
-        setLoading(false);
-        fadeIn(); // Trigger fade-in animation
       }
+      // Otherwise, find the lesson in the provider by lessonId
+      else if (lessonId) {
+        foundLesson = lessons.find((l) => l.id === lessonId) || null;
+      }
+
+      if (foundLesson) {
+        setLesson(foundLesson);
+        // We already have the actual term objects in foundLesson.terms
+        setTerms(foundLesson.terms);
+      } else {
+        console.error("Lesson not found in provider.");
+      }
+      setLoading(false);
+      fadeIn();
     };
 
-    fetchLessonAndTerms();
-  }, [lessonData, lessonId]);
+    loadLesson();
+  }, [lessonData, lessonId, lessons]);
 
   const fadeIn = () => {
     Animated.timing(fadeAnim, {
@@ -111,7 +111,6 @@ const LessonScreen: React.FC = () => {
   const handleFinishLesson = async () => {
     if (!user?.uid) return;
     setLoading(true);
-
     try {
       await updateUserLessonProgress(user.uid, lesson.id, lesson.xp);
       showAlert(
@@ -131,10 +130,15 @@ const LessonScreen: React.FC = () => {
   const currentTerm = terms[currentTermIndex];
 
   return (
-    <SafeAreaView style={[styles.container, { backgroundColor: theme.colors.background }]}>
+    <SafeAreaView
+      style={[styles.container, { backgroundColor: theme.colors.background }]}
+    >
       <Animated.View style={[styles.content, { opacity: fadeAnim }]}>
         {/* Header */}
         <View style={styles.header}>
+          <TouchableOpacity style={styles.backButton} onPress={() => router.back()}>
+            <Ionicons name="arrow-back" size={24} color={theme.colors.text} />
+          </TouchableOpacity>
           <Text style={[styles.title, { color: theme.colors.text }]}>
             {lesson.title[t("language")] || lesson.title.en}
           </Text>
@@ -151,13 +155,16 @@ const LessonScreen: React.FC = () => {
             height={10}
           />
           <Text style={[styles.progressText, { color: theme.colors.text }]}>
-            {t("lesson.progress", { current: currentTermIndex + 1, total: terms.length })}
+            {t("lesson.progress", {
+              current: currentTermIndex + 1,
+              total: terms.length,
+            })}
           </Text>
         </View>
 
         {/* Current Term */}
         <View style={styles.termContainer}>
-          <Text style={[styles.termIcon]}>{currentTerm.icon || "❓"}</Text>
+          <Text style={styles.termIcon}>{currentTerm.icon || "❓"}</Text>
           <Text style={[styles.termOriginal, { color: theme.colors.text }]}>
             {currentTerm.original}
           </Text>
@@ -197,48 +204,41 @@ const LessonScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    flex: 1,
-    padding: 20,
-  },
+  container: { flex: 1 },
+  content: { flex: 1, padding: 20 },
   errorContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
     padding: 20,
   },
-  errorText: {
-    fontSize: 16,
-    textAlign: "center",
-  },
+  errorText: { fontSize: 16, textAlign: "center" },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-  },
+  loadingText: { marginTop: 10, fontSize: 16 },
   header: {
-    paddingBottom: 20,
+    flexDirection: "row",
     alignItems: "center",
+    justifyContent: "center", // centers the title horizontally
+    marginBottom: 20,
+  },
+  backButton: {
+    position: "absolute",
+    left: 0,
+    paddingLeft: 10,
+    paddingVertical: 5,
   },
   title: {
     fontSize: 28,
     fontWeight: "700",
-  },
-  progressContainer: {
-    marginVertical: 20,
-  },
-  progressText: {
-    marginTop: 10,
-    fontSize: 14,
     textAlign: "center",
+    // "flex: 1" is optional if you need more space for the title
   },
+  progressContainer: { marginVertical: 20 },
+  progressText: { marginTop: 10, fontSize: 14, textAlign: "center" },
   termContainer: {
     padding: 20,
     backgroundColor: "#FFF",
@@ -250,29 +250,11 @@ const styles = StyleSheet.create({
     elevation: 5,
     alignItems: "center",
   },
-  termIcon: {
-    fontSize: 48,
-    marginBottom: 10,
-  },
-  termOriginal: {
-    fontSize: 26,
-    fontWeight: "700",
-    marginBottom: 10,
-  },
-  termTranslated: {
-    fontSize: 22,
-    fontWeight: "600",
-    marginBottom: 10,
-  },
-  termDescription: {
-    fontSize: 16,
-    lineHeight: 22,
-    textAlign: "center",
-  },
-  navigationContainer: {
-    marginTop: 20,
-    alignItems: "center",
-  },
+  termIcon: { fontSize: 48, marginBottom: 10 },
+  termOriginal: { fontSize: 26, fontWeight: "700", marginBottom: 10 },
+  termTranslated: { fontSize: 22, fontWeight: "600", marginBottom: 10 },
+  termDescription: { fontSize: 16, lineHeight: 22, textAlign: "center" },
+  navigationContainer: { marginTop: 20, alignItems: "center" },
   nextButton: {
     width: "100%",
     padding: 15,
@@ -285,10 +267,7 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     alignItems: "center",
   },
-  buttonText: {
-    fontSize: 16,
-    fontWeight: "700",
-  },
+  buttonText: { fontSize: 16, fontWeight: "700" },
 });
 
 export default LessonScreen;

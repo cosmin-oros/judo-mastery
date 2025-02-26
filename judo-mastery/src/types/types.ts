@@ -154,6 +154,7 @@ export interface LessonType {
   xp: number;
   category: string;
   terminology: string[];
+  terms: TermType[];
 }
 
 export interface TermType {

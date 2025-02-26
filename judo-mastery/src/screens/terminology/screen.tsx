@@ -13,55 +13,33 @@ import { LinearGradient } from "expo-linear-gradient";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
-import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
-import { fetchLessonsFromFirestore } from "@/src/firestoreService/lessonsService";
-import { LessonType } from "@/src/types/types";
+import { useLessons } from "@/src/provider/global/LessonsProvider";
 import { Ionicons } from "@expo/vector-icons";
 import Header from "./components/Header";
 import { router } from "expo-router";
+import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
+import { LessonType } from "@/src/types/types";
 
 const TerminologyScreen: React.FC = () => {
   const { theme } = useTheme();
   const { t, i18n } = useTranslation();
   const { user } = useAuth();
-
-  const [lessons, setLessons] = useState<LessonType[]>([]);
+  const { lessons, loading } = useLessons();
   const [userData, setUserData] = useState<any>(null);
-  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
-    const initializeData = async () => {
-      try {
-        const lessonsData = await fetchLessonsFromFirestore();
-        setLessons(lessonsData);
-
-        if (user?.uid) {
-          const userData = await getUserDataFromFirestore(user.uid);
-          setUserData(userData);
+    const loadUserData = async () => {
+      if (user?.uid) {
+        try {
+          const data = await getUserDataFromFirestore(user.uid);
+          setUserData(data);
+        } catch (error) {
+          console.error("Error loading user data:", error);
         }
-      } catch (error) {
-        console.error("Error loading data:", error);
-      } finally {
-        setLoading(false);
       }
     };
-
-    initializeData();
+    loadUserData();
   }, [user]);
-
-  const handleLessonPress = (lesson: LessonType) => {
-    console.log(lesson)
-    if(lesson.id) {
-      router.push({
-        pathname: "/(tabs)/terminology/lesson",
-        params: {
-          lessonData: JSON.stringify(lesson),
-          lessonId: lesson.id, // Ensure the lessonId is included as fallback
-        },
-      });
-    }
-    
-  };
 
   if (loading) {
     return (
@@ -74,11 +52,24 @@ const TerminologyScreen: React.FC = () => {
     );
   }
 
+  // Group lessons by category
   const groupedLessons = lessons.reduce((acc, lesson) => {
     acc[lesson.category] = acc[lesson.category] || [];
     acc[lesson.category].push(lesson);
     return acc;
   }, {} as Record<string, LessonType[]>);
+
+  const handleLessonPress = (lesson: LessonType) => {
+    if (lesson.id) {
+      router.push({
+        pathname: "/(tabs)/terminology/lesson",
+        params: {
+          lessonData: JSON.stringify(lesson),
+          lessonId: lesson.id,
+        },
+      });
+    }
+  };
 
   const renderLessonCard = (lesson: LessonType, isCompleted: boolean) => (
     <TouchableOpacity
@@ -144,32 +135,17 @@ const TerminologyScreen: React.FC = () => {
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  content: {
-    padding: 20,
-  },
+  container: { flex: 1 },
+  content: { padding: 20 },
   loadingContainer: {
     flex: 1,
     justifyContent: "center",
     alignItems: "center",
   },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-  },
-  categorySection: {
-    marginBottom: 30,
-  },
-  categoryTitle: {
-    fontSize: 22,
-    fontWeight: "700",
-    marginBottom: 15,
-  },
-  lessonRow: {
-    paddingLeft: 10,
-  },
+  loadingText: { marginTop: 10, fontSize: 16 },
+  categorySection: { marginBottom: 30 },
+  categoryTitle: { fontSize: 22, fontWeight: "700", marginBottom: 15 },
+  lessonRow: { paddingLeft: 10 },
   lessonCard: {
     width: 160,
     height: 220,
@@ -181,7 +157,7 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.1,
     shadowRadius: 6,
     elevation: 6,
-    marginVertical: 10
+    marginVertical: 10,
   },
   gradient: {
     flex: 1,
@@ -190,25 +166,15 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     borderRadius: 15,
   },
-  lessonIcon: {
-    marginBottom: 10,
-  },
+  lessonIcon: { marginBottom: 10 },
   lessonTitle: {
     fontSize: 16,
     fontWeight: "600",
     textAlign: "center",
     marginBottom: 10,
   },
-  lessonXP: {
-    fontSize: 14,
-    fontWeight: "500",
-    color: "#FFF",
-  },
-  completedText: {
-    fontSize: 14,
-    fontWeight: "700",
-    marginTop: 10,
-  },
+  lessonXP: { fontSize: 14, fontWeight: "500" },
+  completedText: { fontSize: 14, fontWeight: "700", marginTop: 10 },
 });
 
 export default TerminologyScreen;
