@@ -7,6 +7,7 @@ import i18n from "@/src/i18n";
 import { ThemeProvider, useTheme } from "@/src/theme/ThemeProvider";
 import { lightTheme } from "@/src/theme/themes";
 import { LessonsProvider } from "@/src/provider/global/LessonsProvider";
+import { TechniquesProvider } from "@/src/provider/global/TechniquesProvider";
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,8 +33,10 @@ export default function RootLayout() {
     <ThemeProvider>
       <AuthProvider>
         <LessonsProvider>
-          <ThemedStatusBar />
-          <Stack screenOptions={{ headerShown: false }} />
+          <TechniquesProvider>
+            <ThemedStatusBar />
+            <Stack screenOptions={{ headerShown: false }} />
+          </TechniquesProvider>
         </LessonsProvider>
       </AuthProvider>
     </ThemeProvider>
