@@ -1,20 +1,25 @@
-import React, { useState } from "react";
-import { 
-  View, 
-  Text, 
-  StyleSheet, 
-  ScrollView, 
-  TouchableOpacity, 
-  Image, 
-  RefreshControl 
+import React, { useEffect, useState, useCallback } from "react";
+import {
+  View,
+  Text,
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Image,
+  RefreshControl,
+  ActivityIndicator,
 } from "react-native";
 import { Ionicons } from "@expo/vector-icons";
 import { useTheme } from "@/src/theme/ThemeProvider";
-import { replaceRoute } from "@/src/utils/replaceRoute";
 import { useTranslation } from "react-i18next";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
 import { getUserDataFromFirestore } from "@/src/firestoreService/userDataService";
+import { useLessons } from "@/src/provider/global/LessonsProvider";
+import { useTechniques } from "@/src/provider/global/TechniquesProvider";
+import { LessonType, TechniqueType, BELT_COLORS } from "@/src/types/types";
+import { router } from "expo-router";
 
+/** Local helper to get avatar image by ID */
 const getAvatarSource = (avatarId: string) => {
   switch (avatarId) {
     case "1":
@@ -32,50 +37,147 @@ const getAvatarSource = (avatarId: string) => {
   }
 };
 
+/** Some random Judo quotes. Add or replace as you like. */
+const judoQuotes = [
+  "Judo is the way to the most effective use of both physical and spiritual strength. – Jigoro Kano",
+  "The aim of judo is to utilize mental and physical strength most effectively. – Jigoro Kano",
+  "Judo teaches us to look for the best possible course of action, whatever the individual circumstances. – Jigoro Kano",
+  "In judo, one should first learn through practice and then seek an intellectual understanding of what has been learned. – Jigoro Kano",
+  "Don’t fear the man who has practiced 10,000 throws once, but the man who has practiced one throw 10,000 times. – Variation of Bruce Lee’s quote"
+];
+
 const HomeScreen: React.FC = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const { user, updateUser } = useAuth();
+
+  // Lessons and Techniques from context providers
+  const { lessons, loading: lessonsLoading, refreshLessons } = useLessons();
+  const { categories, loading: techniquesLoading, refresh: refreshTechniques } = useTechniques();
+
   const [refreshing, setRefreshing] = useState(false);
+  const [randomTechnique, setRandomTechnique] = useState<TechniqueType | null>(null);
+  const [nextLesson, setNextLesson] = useState<LessonType | null>(null);
+  const [dailyQuote, setDailyQuote] = useState<string>("");
 
-  // Example data for daily tasks and events
-  const dailyTasks = [
-    { id: 1, title: t("home.tasks.stretchingRoutine"), completed: false, icon: "🧘" },
-    { id: 2, title: t("home.tasks.pushups"), completed: true, icon: "💪" },
-  ];
+  /**
+   * Once techniques are loaded, pick a random one for "Technique of the Day"
+   */
+  useEffect(() => {
+    if (!techniquesLoading && categories.length > 0) {
+      const allTechniques: TechniqueType[] = [];
+      categories.forEach((cat) => {
+        cat.wazas.forEach((waza) => {
+          waza.techniques.forEach((tech) => {
+            allTechniques.push(tech);
+          });
+        });
+      });
 
-  const events = [
-    { id: 1, title: t("home.events.localCompetition"), date: "2023-11-15", icon: "🏆" },
-    { id: 2, title: t("home.events.trainingSession"), date: "2023-11-20", icon: "🥋" },
-  ];
+      if (allTechniques.length > 0) {
+        const randomIndex = Math.floor(Math.random() * allTechniques.length);
+        setRandomTechnique(allTechniques[randomIndex]);
+      }
+    }
+  }, [categories, techniquesLoading]);
 
-  const techniqueOfTheDay = {
-    title: t("home.technique.title"),
-    description: t("home.technique.description"),
-    icon: "🎯",
-  };
+  /**
+   * Once lessons are loaded, pick the first incomplete lesson as "Next Lesson"
+   */
+  useEffect(() => {
+    if (!lessonsLoading && lessons.length > 0 && user?.lessons_completed) {
+      const incomplete = lessons.filter(
+        (l) => !user.lessons_completed?.includes(l.id)
+      );
+      setNextLesson(incomplete.length > 0 ? incomplete[0] : null);
+    }
+  }, [lessons, lessonsLoading, user]);
 
-  // Function to refresh user data from Firestore
-  const onRefresh = async () => {
+  /**
+   * Pick a random daily judo quote
+   */
+  useEffect(() => {
+    if (judoQuotes.length > 0) {
+      const randIndex = Math.floor(Math.random() * judoQuotes.length);
+      setDailyQuote(judoQuotes[randIndex]);
+    }
+  }, []);
+
+  /**
+   * Pull-to-refresh:
+   *  - refresh user data
+   *  - refresh lessons
+   *  - refresh techniques
+   */
+  const onRefresh = useCallback(async () => {
     setRefreshing(true);
-    if (user) {
-      try {
+    try {
+      if (user?.uid) {
         const userDataFromFirestore = await getUserDataFromFirestore(user.uid);
         if (userDataFromFirestore) {
-          // Create an updated user object; adjust fields as needed
-          const updatedUserData = {
+          updateUser({
             ...userDataFromFirestore,
             uid: user.uid,
             email: userDataFromFirestore.email || null,
-          };
-          updateUser(updatedUserData);
+          });
         }
-      } catch (error) {
-        console.error("Error refreshing user data:", error);
       }
+      await refreshLessons();
+      await refreshTechniques();
+
+      // Re-randomize the technique and quote if you want a fresh pick on each refresh
+      // Or keep them stable for the day if you prefer
+      if (categories.length > 0) {
+        const allTechniques: TechniqueType[] = [];
+        categories.forEach((cat) => {
+          cat.wazas.forEach((waza) => {
+            waza.techniques.forEach((tech) => {
+              allTechniques.push(tech);
+            });
+          });
+        });
+        if (allTechniques.length > 0) {
+          const randomIndex = Math.floor(Math.random() * allTechniques.length);
+          setRandomTechnique(allTechniques[randomIndex]);
+        }
+      }
+      if (judoQuotes.length > 0) {
+        const randIndex = Math.floor(Math.random() * judoQuotes.length);
+        setDailyQuote(judoQuotes[randIndex]);
+      }
+    } catch (error) {
+      console.error("Error refreshing data:", error);
     }
     setRefreshing(false);
+  }, [user, updateUser, refreshLessons, refreshTechniques, categories]);
+
+  // If providers are still loading, show spinner
+  if (techniquesLoading || lessonsLoading) {
+    return (
+      <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
+        <ActivityIndicator size="large" color={theme.colors.primary} />
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>
+          {t("common.loading")}
+        </Text>
+      </View>
+    );
+  }
+
+  /**
+   * Helper to navigate to the next lesson using expo-router's push
+   */
+  const goToLesson = (lesson: LessonType) => {
+    router.push({
+      pathname: "/(tabs)/terminology/lesson",
+      params: {
+        lessonData: JSON.stringify(lesson),
+        lessonId: lesson.id,
+      },
+    });
   };
+
+  // Get belt color from user data
+  const beltColor = user?.beltRank ? BELT_COLORS[user.beltRank] : theme.colors.placeholder;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
@@ -104,7 +206,7 @@ const HomeScreen: React.FC = () => {
         </View>
         <TouchableOpacity
           style={styles.settingsIcon}
-          onPress={() => replaceRoute("/settings")}
+          onPress={() => router.push("/settings")}
         >
           <Ionicons name="settings-outline" size={28} color={theme.colors.text} />
         </TouchableOpacity>
@@ -120,53 +222,73 @@ const HomeScreen: React.FC = () => {
           />
         }
       >
-        {/* Daily Tasks Section */}
+        {/* Belt Rank Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            {t("home.dailyTasks")}
+            {t("home.yourBeltRank")}
           </Text>
-          {dailyTasks.map((task) => (
-            <View
-              key={task.id}
-              style={[
-                styles.card,
-                { backgroundColor: task.completed ? theme.colors.primary : theme.colors.card },
-              ]}
-            >
-              <Text style={styles.cardIcon}>{task.icon}</Text>
-              <Text
-                style={[
-                  styles.cardText,
-                  { color: task.completed ? theme.colors.background : theme.colors.text },
-                ]}
-              >
-                {task.title}
+          <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
+            <Ionicons
+              name="ribbon-outline"
+              size={30}
+              color={theme.colors.primary}
+              style={styles.cardIcon}
+            />
+            <View>
+              <Text style={[styles.cardText, { color: theme.colors.text }]}>
+                {user?.beltRank || t("profile.noBeltRank")}
               </Text>
+              <View
+                style={[
+                  styles.beltStrip,
+                  {
+                    backgroundColor: beltColor,
+                    borderColor: theme.colors.text,
+                  },
+                ]}
+              />
             </View>
-          ))}
+          </View>
         </View>
 
-        {/* Events Section */}
+        {/* Next Lesson Section */}
         <View style={styles.section}>
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            {t("home.eventsTitle")}
+            {t("home.nextLesson")}
           </Text>
-          {events.map((event) => (
-            <View
-              key={event.id}
+          {nextLesson ? (
+            <TouchableOpacity
               style={[styles.card, { backgroundColor: theme.colors.card }]}
+              onPress={() => goToLesson(nextLesson)}
             >
-              <Text style={styles.cardIcon}>{event.icon}</Text>
+              <Ionicons
+                name="book-outline"
+                size={30}
+                color={theme.colors.primary}
+                style={styles.cardIcon}
+              />
               <View>
                 <Text style={[styles.cardText, { color: theme.colors.text }]}>
-                  {event.title}
+                  {nextLesson.title?.en || "Untitled"}
                 </Text>
-                <Text style={[styles.cardDate, { color: theme.colors.placeholder }]}>
-                  {event.date}
+                <Text style={[styles.cardDescription, { color: theme.colors.placeholder }]}>
+                  {t("home.xpWorth", { xp: nextLesson.xp })}
                 </Text>
               </View>
+            </TouchableOpacity>
+          ) : (
+            <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
+              <Ionicons
+                name="checkmark-circle"
+                size={30}
+                color={theme.colors.primary}
+                style={styles.cardIcon}
+              />
+              <Text style={[styles.cardText, { color: theme.colors.text }]}>
+                {t("home.noNextLesson")}
+              </Text>
             </View>
-          ))}
+          )}
         </View>
 
         {/* Technique of the Day Section */}
@@ -174,27 +296,65 @@ const HomeScreen: React.FC = () => {
           <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
             {t("home.techniqueOfTheDay")}
           </Text>
-          <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
-            <Text style={styles.cardIcon}>{techniqueOfTheDay.icon}</Text>
-            <View>
+          {randomTechnique ? (
+            <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
+              <Text style={styles.cardIcon}>🥋</Text>
+              <View>
+                <Text style={[styles.cardText, { color: theme.colors.text }]}>
+                  {randomTechnique.title.en}
+                </Text>
+                <Text style={[styles.cardDescription, { color: theme.colors.placeholder }]}>
+                  {randomTechnique.original}
+                </Text>
+              </View>
+            </View>
+          ) : (
+            <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
               <Text style={[styles.cardText, { color: theme.colors.text }]}>
-                {techniqueOfTheDay.title}
-              </Text>
-              <Text style={[styles.cardDescription, { color: theme.colors.placeholder }]}>
-                {techniqueOfTheDay.description}
+                {t("home.noTechniquesFound")}
               </Text>
             </View>
+          )}
+        </View>
+
+        {/* Daily Judo Quote Section */}
+        <View style={styles.section}>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+            {t("home.dailyJudoQuote")}
+          </Text>
+          <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
+            <Ionicons
+              name="chatbubble-ellipses-outline"
+              size={30}
+              color={theme.colors.primary}
+              style={styles.cardIcon}
+            />
+            <Text style={[styles.quoteText, { color: theme.colors.text }]}>
+              {dailyQuote}
+            </Text>
           </View>
         </View>
-        {/* Additional sections such as "Dojos near you" could be added here */}
+
+        {/* You could add more sections here, e.g. 'Local Dojos', 'Upcoming Tournaments', etc. */}
       </ScrollView>
     </View>
   );
 };
 
+export default HomeScreen;
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
+  },
+  loadingContainer: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  loadingText: {
+    marginTop: 10,
+    fontSize: 16,
   },
   header: {
     flexDirection: "row",
@@ -259,14 +419,20 @@ const styles = StyleSheet.create({
     fontSize: 16,
     fontWeight: "600",
   },
-  cardDate: {
-    fontSize: 14,
-    marginTop: 5,
-  },
   cardDescription: {
     fontSize: 14,
     marginTop: 5,
   },
+  beltStrip: {
+    width: 80,
+    height: 8,
+    marginTop: 5,
+    borderWidth: 1,
+    borderRadius: 4,
+  },
+  quoteText: {
+    flex: 1,
+    fontSize: 14,
+    fontStyle: "italic",
+  },
 });
-
-export default HomeScreen;
