@@ -10,7 +10,6 @@ import {
   Image,
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
-import DropDownPicker from "react-native-dropdown-picker";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
@@ -19,7 +18,24 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import { colors } from "@/src/theme/colors";
 import AvatarPicker from "../profile/components/AvatarPicker";
 
-// Helper function to return the correct image source for an avatar ID
+/** The belt types we support (no purple). */
+type BeltType =
+  | "white"
+  | "yellow"
+  | "orange"
+  | "green"
+  | "blue"
+  | "brown"
+  | "black"
+  | "red"
+  | "red-and-white";
+
+/** Belt option interface for the modal. */
+interface BeltOption {
+  value: BeltType;
+}
+
+/** Return the correct image source for an avatar ID */
 const getAvatarSource = (avatarId: string) => {
   switch (avatarId) {
     case "1":
@@ -37,24 +53,149 @@ const getAvatarSource = (avatarId: string) => {
   }
 };
 
+/** Belt options with no purple */
+const beltOptions: BeltOption[] = [
+  { value: "white" },
+  { value: "yellow" },
+  { value: "orange" },
+  { value: "green" },
+  { value: "blue" },
+  { value: "brown" },
+  { value: "black" },
+  { value: "red-and-white" },
+  { value: "red" },
+];
+
+/** 
+ * Return a style object for the belt preview circle.
+ * For "red-and-white", we do a half red, half white approach. 
+ * Otherwise, fill the circle with a color. 
+ */
+function getBeltPreviewStyle(belt: BeltType) {
+  switch (belt) {
+    case "white":
+      return { backgroundColor: "#FFFFFF" };
+    case "yellow":
+      return { backgroundColor: "#FFD700" };
+    case "orange":
+      return { backgroundColor: "#FFA500" };
+    case "green":
+      return { backgroundColor: "#008000" };
+    case "blue":
+      return { backgroundColor: "#0000FF" };
+    case "brown":
+      return { backgroundColor: "#8B4513" };
+    case "black":
+      return { backgroundColor: "#000000" };
+    case "red":
+      return { backgroundColor: "#FF0000" };
+    case "red-and-white":
+      // We'll handle half/half separately in the UI.
+      return {};
+    default:
+      return { backgroundColor: "#CCC" };
+  }
+}
+
+/** BeltModal – a two-column color swatch picker. */
+const BeltModal: React.FC<{
+  visible: boolean;
+  beltOptions: BeltOption[];
+  onSelect: (belt: BeltType) => void;
+  onClose: () => void;
+}> = ({ visible, beltOptions, onSelect, onClose }) => {
+  const { theme } = useTheme();
+
+  /** Single belt circle item */
+  const BeltCircle: React.FC<{ belt: BeltType }> = ({ belt }) => {
+    if (belt === "red-and-white") {
+      return (
+        <View style={modalStyles.redWhiteContainer}>
+          <View style={[modalStyles.redWhiteHalf, modalStyles.leftHalf]} />
+          <View style={[modalStyles.redWhiteHalf, modalStyles.rightHalf]} />
+        </View>
+      );
+    }
+    let circleColor = "#ccc";
+    switch (belt) {
+      case "white":
+        circleColor = "#FFFFFF";
+        break;
+      case "yellow":
+        circleColor = "#FFD700";
+        break;
+      case "orange":
+        circleColor = "#FFA500";
+        break;
+      case "green":
+        circleColor = "#008000";
+        break;
+      case "blue":
+        circleColor = "#0000FF";
+        break;
+      case "brown":
+        circleColor = "#8B4513";
+        break;
+      case "black":
+        circleColor = "#000000";
+        break;
+      case "red":
+        circleColor = "#FF0000";
+        break;
+    }
+    return <View style={[modalStyles.circle, { backgroundColor: circleColor }]} />;
+  };
+
+  if (!visible) return null;
+
+  return (
+    <View style={modalStyles.overlay}>
+      <View style={[modalStyles.container, { backgroundColor: theme.colors.card }]}>
+        <Text style={[modalStyles.modalTitle, { color: theme.colors.text }]}>
+          Select Belt
+        </Text>
+        <View style={modalStyles.gridContainer}>
+          {beltOptions.map((option) => (
+            <TouchableOpacity
+              key={option.value}
+              style={modalStyles.gridItem}
+              onPress={() => {
+                onSelect(option.value);
+                onClose();
+              }}
+            >
+              <BeltCircle belt={option.value} />
+            </TouchableOpacity>
+          ))}
+        </View>
+        <TouchableOpacity style={modalStyles.closeButton} onPress={onClose}>
+          <Ionicons
+            name="close-circle"
+            size={30}
+            color={theme.colors.primary}
+          />
+        </TouchableOpacity>
+      </View>
+    </View>
+  );
+};
+
 const ExtraUserDataScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  // Destructure updateUser from useAuth for immediate context update
   const { user, updateUser } = useAuth();
 
   // Form state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [experience, setExperience] = useState("");
-  // Narrow beltRank to allowed literal values
-  const [beltRank, setBeltRank] = useState<"white" | "yellow" | "orange" | "green" | "blue" | "brown" | "black">("white");
+  const [beltRank, setBeltRank] = useState<BeltType>("white");
   const [trainingFrequency, setTrainingFrequency] = useState("");
   const [goals, setGoals] = useState("");
   const [trainingFocus, setTrainingFocus] = useState("throws");
   const [favoriteTechniques, setFavoriteTechniques] = useState("");
 
-  // Competition Section state
+  // Competition Section
   const [competitionsParticipated, setCompetitionsParticipated] = useState("");
   const [ippons, setIppons] = useState("");
   const [wazaAris, setWazaAris] = useState("");
@@ -63,21 +204,19 @@ const ExtraUserDataScreen: React.FC = () => {
   const [silverMedals, setSilverMedals] = useState("");
   const [bronzeMedals, setBronzeMedals] = useState("");
 
-  const [openBeltRank, setOpenBeltRank] = useState(false);
-  const [openTrainingFocus, setOpenTrainingFocus] = useState(false);
-
-  // Avatar selection state
+  // Avatar selection
   const [selectedAvatar, setSelectedAvatar] = useState("1");
   const [avatarPickerVisible, setAvatarPickerVisible] = useState(false);
 
-  // Pre-populate fields (including avatar) from Firestore user data
+  // Belt modal
+  const [beltModalVisible, setBeltModalVisible] = useState(false);
+
   useEffect(() => {
     if (user) {
       setFirstName(user.firstName || "");
-      // Assuming that user.name holds the last name
       setLastName(user.name || "");
       setExperience(user.experience || "");
-      setBeltRank(user.beltRank || "white");
+      setBeltRank((user.beltRank as BeltType) || "white");
       setTrainingFrequency(user.trainingFrequency ? String(user.trainingFrequency) : "");
       setGoals(user.goals || "");
       setTrainingFocus(user.trainingFocus || "throws");
@@ -95,18 +234,16 @@ const ExtraUserDataScreen: React.FC = () => {
 
   const validateInputs = () => {
     if (
-      firstName === undefined ||
-      lastName === undefined ||
+      !firstName ||
+      !lastName ||
       experience === undefined ||
       experience === null ||
       competitionsParticipated === undefined ||
       competitionsParticipated === null ||
       trainingFrequency === undefined ||
       trainingFrequency === null ||
-      goals === undefined ||
-      goals === null ||
-      favoriteTechniques === undefined ||
-      favoriteTechniques === null
+      !goals ||
+      !favoriteTechniques
     ) {
       Alert.alert(
         t("extra-user-data.validationTitle"),
@@ -143,7 +280,6 @@ const ExtraUserDataScreen: React.FC = () => {
 
       try {
         await saveUserDataToFirestore(updatedUserData);
-        // Immediately update the Auth context with the new user data
         updateUser(updatedUserData);
         Alert.alert(
           t("extra-user-data.saveSuccessTitle"),
@@ -159,25 +295,39 @@ const ExtraUserDataScreen: React.FC = () => {
     }
   };
 
+  const skipProfile = () => {
+    replaceRoute("/(tabs)/home");
+  };
+
   return (
     <View style={styles.screen}>
       <ScrollView
-        contentContainerStyle={[styles.container, { backgroundColor: theme.colors.background }]}
+        contentContainerStyle={[
+          styles.container,
+          { backgroundColor: theme.colors.background },
+        ]}
       >
-        <TouchableOpacity style={styles.skipButton} onPress={() => replaceRoute("/(tabs)/home")}>
+        {/* Skip button */}
+        <TouchableOpacity style={styles.skipButton} onPress={skipProfile}>
           <Ionicons name="arrow-forward-circle" size={32} color={theme.colors.primary} />
         </TouchableOpacity>
-        <Text style={[styles.title, { color: theme.colors.text }]}>{t("extra-user-data.title")}</Text>
+
+        <Text style={[styles.title, { color: theme.colors.text }]}>
+          {t("extra-user-data.title")}
+        </Text>
 
         {/* Avatar Section */}
-        <TouchableOpacity style={styles.avatarWrapper} onPress={() => setAvatarPickerVisible(true)}>
+        <TouchableOpacity
+          style={styles.avatarWrapper}
+          onPress={() => setAvatarPickerVisible(true)}
+        >
           <Image source={getAvatarSource(selectedAvatar)} style={styles.avatarImageLarge} />
           <View style={styles.editIconOverlay}>
             <Ionicons name="create-outline" size={24} color={colors.primary} />
           </View>
         </TouchableOpacity>
 
-        {/* Input Fields */}
+        {/* First Name */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
@@ -188,6 +338,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
+        {/* Last Name */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
@@ -200,7 +352,11 @@ const ExtraUserDataScreen: React.FC = () => {
         </View>
 
         {/* Competition Section */}
-        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t("extra-user-data.competitionSection")}</Text>
+        <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
+          {t("extra-user-data.competitionSection")}
+        </Text>
+
+        {/* Experience */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="school" size={24} color={theme.colors.primary} />
           <TextInput
@@ -212,6 +368,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
+        {/* Competitions, ippons, wazaAris, yukos, medals... */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <AntDesign name="Trophy" size={24} color={theme.colors.primary} />
           <TextInput
@@ -256,6 +414,7 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors.primary} />
           <TextInput
@@ -289,28 +448,31 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-        <Text style={[styles.label, { color: theme.colors.text }]}>{t("extra-user-data.beltRank")}</Text>
-        <DropDownPicker
-          open={openBeltRank}
-          value={beltRank}
-          items={[
-            { label: t("extra-user-data.white"), value: "white" },
-            { label: t("extra-user-data.yellow"), value: "yellow" },
-            { label: t("extra-user-data.orange"), value: "orange" },
-            { label: t("extra-user-data.green"), value: "green" },
-            { label: t("extra-user-data.blue"), value: "blue" },
-            { label: t("extra-user-data.purple"), value: "purple" },
-            { label: t("extra-user-data.brown"), value: "brown" },
-            { label: t("extra-user-data.black"), value: "black" },
-            { label: t("extra-user-data.red-and-white"), value: "red-and-white" },
-            { label: t("extra-user-data.red"), value: "red" },
+
+        {/* Belt Rank with color swatch modal */}
+        <Text style={[styles.label, { color: theme.colors.text }]}>
+          {t("extra-user-data.beltRank")}
+        </Text>
+        <TouchableOpacity
+          style={[
+            styles.inputContainer,
+            { backgroundColor: theme.colors.card, alignItems: "center" },
           ]}
-          setOpen={setOpenBeltRank}
-          setValue={setBeltRank}
-          style={[styles.picker, { backgroundColor: theme.colors.card }]}
-          dropDownContainerStyle={{ backgroundColor: theme.colors.card }}
-          textStyle={{ color: theme.colors.text }}
-        />
+          onPress={() => setBeltModalVisible(true)}
+        >
+          <Ionicons name="medal-outline" size={24} color={theme.colors.primary} />
+          {/* If red-and-white, half/half. Otherwise, fill. */}
+          {beltRank === "red-and-white" ? (
+            <View style={styles.redWhitePreview}>
+              <View style={[styles.redWhiteHalfPreview, styles.leftHalf]} />
+              <View style={[styles.redWhiteHalfPreview, styles.rightHalf]} />
+            </View>
+          ) : (
+            <View style={[styles.beltSwatchPreview, getBeltPreviewStyle(beltRank)]} />
+          )}
+        </TouchableOpacity>
+
+        {/* Training Frequency */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
           <TextInput
@@ -322,6 +484,8 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
+        {/* Goals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="flag" size={24} color={theme.colors.primary} />
           <TextInput
@@ -333,21 +497,26 @@ const ExtraUserDataScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
-        <Text style={[styles.label, { color: theme.colors.text }]}>{t("extra-user-data.trainingFocus")}</Text>
-        <DropDownPicker
-          open={openTrainingFocus}
-          value={trainingFocus}
-          items={[
-            { label: t("extra-user-data.throws"), value: "throws" },
-            { label: t("extra-user-data.grappling"), value: "grappling" },
-            { label: t("extra-user-data.groundwork"), value: "groundwork" },
-          ]}
-          setOpen={setOpenTrainingFocus}
-          setValue={setTrainingFocus}
-          style={[styles.picker, { backgroundColor: theme.colors.card }]}
-          dropDownContainerStyle={{ backgroundColor: theme.colors.card }}
-          textStyle={{ color: theme.colors.text }}
-        />
+
+        {/* Training Focus */}
+        <Text style={[styles.label, { color: theme.colors.text }]}>
+          {t("extra-user-data.trainingFocus")}
+        </Text>
+        {/* If you wish to keep a text-based approach for trainingFocus, 
+            you can keep or remove your original code here. 
+            We omit it for brevity or you can re-add a simple text input. */}
+        <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
+          <MaterialIcons name="stars" size={24} color={theme.colors.primary} />
+          <TextInput
+            style={[styles.input, { color: theme.colors.text }]}
+            value={trainingFocus}
+            onChangeText={setTrainingFocus}
+            placeholder={t("extra-user-data.trainingFocus")}
+            placeholderTextColor={theme.colors.placeholder}
+          />
+        </View>
+
+        {/* Favorite Techniques */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="stars" size={24} color={theme.colors.primary} />
           <TextInput
@@ -362,7 +531,10 @@ const ExtraUserDataScreen: React.FC = () => {
 
       {/* Save Button */}
       <View style={[styles.saveButtonContainer, { backgroundColor: theme.colors.background }]}>
-        <TouchableOpacity style={[styles.saveButton, { backgroundColor: theme.colors.primary }]} onPress={handleSaveProfile}>
+        <TouchableOpacity
+          style={[styles.saveButton, { backgroundColor: theme.colors.primary }]}
+          onPress={handleSaveProfile}
+        >
           <Text style={[styles.saveButtonText, { color: theme.colors.background }]}>
             {t("extra-user-data.save")}
           </Text>
@@ -379,10 +551,21 @@ const ExtraUserDataScreen: React.FC = () => {
           setAvatarPickerVisible(false);
         }}
       />
+
+      {/* Belt Modal (two-column color swatch) */}
+      <BeltModal
+        visible={beltModalVisible}
+        beltOptions={beltOptions}
+        onSelect={(b) => setBeltRank(b)}
+        onClose={() => setBeltModalVisible(false)}
+      />
     </View>
   );
 };
 
+export default ExtraUserDataScreen;
+
+/** Additional styling for the belt color approach */
 const styles = StyleSheet.create({
   screen: {
     flex: 1,
@@ -418,18 +601,12 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     paddingHorizontal: 10,
     backgroundColor: "#f9f9f9",
+    height: 50,
   },
   input: {
     flex: 1,
-    height: 50,
     fontSize: 16,
     marginLeft: 10,
-  },
-  picker: {
-    height: 50,
-    marginBottom: 15,
-    borderRadius: 12,
-    borderColor: "#ccc",
   },
   saveButtonContainer: {
     position: "absolute",
@@ -437,14 +614,12 @@ const styles = StyleSheet.create({
     left: 0,
     right: 0,
     padding: 20,
-    backgroundColor: "white",
   },
   saveButton: {
     paddingVertical: 15,
     borderRadius: 18,
     alignItems: "center",
     justifyContent: "center",
-    marginTop: 20,
   },
   saveButtonText: {
     fontSize: 18,
@@ -475,6 +650,95 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 2,
   },
+
+  // Belt color preview in the main UI
+  beltSwatchPreview: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 10,
+    backgroundColor: "#CCC",
+  },
+  redWhitePreview: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 10,
+    overflow: "hidden",
+    position: "relative",
+  },
+  redWhiteHalfPreview: {
+    position: "absolute",
+    width: "50%",
+    height: "100%",
+  },
+  leftHalf: {
+    left: 0,
+    backgroundColor: "#FF0000",
+  },
+  rightHalf: {
+    right: 0,
+    backgroundColor: "#FFFFFF",
+  },
 });
 
-export default ExtraUserDataScreen;
+/** BeltModal styling for the two-column color swatch layout. */
+const modalStyles = StyleSheet.create({
+  overlay: {
+    ...StyleSheet.absoluteFillObject,
+    backgroundColor: "rgba(0,0,0,0.4)",
+    justifyContent: "center",
+    alignItems: "center",
+  },
+  container: {
+    width: "80%",
+    maxHeight: "60%",
+    borderRadius: 12,
+    paddingVertical: 20,
+    paddingHorizontal: 10,
+  },
+  modalTitle: {
+    fontSize: 20,
+    fontWeight: "600",
+    marginBottom: 10,
+    textAlign: "center",
+  },
+  gridContainer: {
+    flexDirection: "row",
+    flexWrap: "wrap",
+    justifyContent: "space-around",
+  },
+  gridItem: {
+    margin: 10,
+    alignItems: "center",
+  },
+  redWhiteContainer: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    overflow: "hidden",
+    position: "relative",
+  },
+  redWhiteHalf: {
+    position: "absolute",
+    width: "50%",
+    height: "100%",
+  },
+  leftHalf: {
+    left: 0,
+    backgroundColor: "#FF0000",
+  },
+  rightHalf: {
+    right: 0,
+    backgroundColor: "#FFFFFF",
+  },
+  circle: {
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+  },
+  closeButton: {
+    alignSelf: "center",
+    marginTop: 15,
+  },
+});

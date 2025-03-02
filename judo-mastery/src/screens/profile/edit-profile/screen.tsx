@@ -10,7 +10,6 @@ import {
   Image,
 } from "react-native";
 import { MaterialIcons, AntDesign, Ionicons } from "@expo/vector-icons";
-import DropDownPicker from "react-native-dropdown-picker";
 import { useTranslation } from "react-i18next";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
@@ -19,8 +18,10 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import { colors } from "@/src/theme/colors";
 import EditHeader from "../components/EditHeader";
 import AvatarPicker from "../components/AvatarPicker";
+import BeltModal, { BeltOption, BeltType } from "../components/BeltModal";
+import DropDownPicker from "react-native-dropdown-picker";
 
-// Helper function to return the correct image source for an avatar ID
+/** Return the correct image source for an avatar ID */
 const getAvatarSource = (avatarId: string) => {
   switch (avatarId) {
     case "1":
@@ -38,24 +39,66 @@ const getAvatarSource = (avatarId: string) => {
   }
 };
 
+/** Belt options with no purple */
+const beltOptions: BeltOption[] = [
+  { value: "white" },
+  { value: "yellow" },
+  { value: "orange" },
+  { value: "green" },
+  { value: "blue" },
+  { value: "brown" },
+  { value: "black" },
+  { value: "red-and-white" },
+  { value: "red" },
+];
+
+/**
+ * Return a style object for the preview circle in the main screen.
+ * For "red-and-white", we do a half red, half white approach. 
+ * Otherwise, fill the circle with the appropriate color.
+ */
+function getBeltPreviewStyle(belt: BeltType) {
+  switch (belt) {
+    case "white":
+      return { backgroundColor: "#FFFFFF" };
+    case "yellow":
+      return { backgroundColor: "#FFD700" };
+    case "orange":
+      return { backgroundColor: "#FFA500" };
+    case "green":
+      return { backgroundColor: "#008000" };
+    case "blue":
+      return { backgroundColor: "#0000FF" };
+    case "brown":
+      return { backgroundColor: "#8B4513" };
+    case "black":
+      return { backgroundColor: "#000000" };
+    case "red":
+      return { backgroundColor: "#FF0000" };
+    case "red-and-white":
+      // We'll return a 'special' style to handle half/half in the UI
+      return {};
+    default:
+      return { backgroundColor: "#CCC" };
+  }
+}
+
 const EditProfileScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme } = useTheme();
-  // Destructure updateUser from useAuth so we can update the context immediately
   const { user, updateUser } = useAuth();
 
   // Form state
   const [firstName, setFirstName] = useState("");
   const [lastName, setLastName] = useState("");
   const [experience, setExperience] = useState("");
-  // Update beltRank state type to the union expected by UserType
-  const [beltRank, setBeltRank] = useState<"white" | "yellow" | "orange" | "green" | "blue" | "brown" | "black">("white");
+  const [beltRank, setBeltRank] = useState<BeltType>("white");
   const [trainingFrequency, setTrainingFrequency] = useState("");
   const [goals, setGoals] = useState("");
   const [trainingFocus, setTrainingFocus] = useState("throws");
   const [favoriteTechniques, setFavoriteTechniques] = useState("");
 
-  // Competition Section state
+  // Competition Section
   const [competitionsParticipated, setCompetitionsParticipated] = useState("");
   const [ippons, setIppons] = useState("");
   const [wazaAris, setWazaAris] = useState("");
@@ -64,18 +107,20 @@ const EditProfileScreen: React.FC = () => {
   const [silverMedals, setSilverMedals] = useState("");
   const [bronzeMedals, setBronzeMedals] = useState("");
 
-  const [openBeltRank, setOpenBeltRank] = useState(false);
-  const [openTrainingFocus, setOpenTrainingFocus] = useState(false);
-
-  // Avatar selection state
+  // Avatar
   const [selectedAvatar, setSelectedAvatar] = useState("1");
   const [avatarPickerVisible, setAvatarPickerVisible] = useState(false);
 
-  // Pre-populate fields (including avatar) from Firestore user data
+  // Belt modal
+  const [beltModalVisible, setBeltModalVisible] = useState(false);
+
+  // DropDownPicker for training focus
+  const [openTrainingFocus, setOpenTrainingFocus] = useState(false);
+
+  /** Pre-populate fields from Firestore user data */
   useEffect(() => {
     if (user) {
       setFirstName(user.firstName || "");
-      // Assuming that user.name contains the last name
       setLastName(user.name || "");
       setExperience(user.experience || "");
       setBeltRank(user.beltRank || "white");
@@ -96,18 +141,16 @@ const EditProfileScreen: React.FC = () => {
 
   const validateInputs = () => {
     if (
-      firstName === undefined ||
-      lastName === undefined ||
+      !firstName ||
+      !lastName ||
       experience === undefined ||
       experience === null ||
       competitionsParticipated === undefined ||
       competitionsParticipated === null ||
       trainingFrequency === undefined ||
       trainingFrequency === null ||
-      goals === undefined ||
-      goals === null ||
-      favoriteTechniques === undefined ||
-      favoriteTechniques === null
+      !goals ||
+      !favoriteTechniques
     ) {
       Alert.alert(
         t("extra-user-data.validationTitle"),
@@ -144,7 +187,6 @@ const EditProfileScreen: React.FC = () => {
 
       try {
         await saveUserDataToFirestore(updatedUserData);
-        // Immediately update the Auth context with the new user data
         updateUser(updatedUserData);
         Alert.alert(
           t("extra-user-data.saveSuccessTitle"),
@@ -164,6 +206,7 @@ const EditProfileScreen: React.FC = () => {
     <View style={styles.screen}>
       <EditHeader title={t("profile.editTitle")} />
       <ScrollView
+        nestedScrollEnabled
         contentContainerStyle={[
           styles.container,
           { backgroundColor: theme.colors.background },
@@ -183,7 +226,7 @@ const EditProfileScreen: React.FC = () => {
           </View>
         </TouchableOpacity>
 
-        {/* Input Fields */}
+        {/* First Name */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
@@ -195,6 +238,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Last Name */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="person-outline" size={24} color={theme.colors.primary} />
           <TextInput
@@ -211,6 +255,7 @@ const EditProfileScreen: React.FC = () => {
           {t("extra-user-data.competitionSection")}
         </Text>
 
+        {/* Experience */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="school" size={24} color={theme.colors.primary} />
           <TextInput
@@ -223,6 +268,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Competitions Participated */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <AntDesign name="Trophy" size={24} color={theme.colors.primary} />
           <TextInput
@@ -235,6 +281,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Ippons */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
@@ -247,6 +294,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Waza Aris */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
@@ -259,6 +307,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Yukos */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="sports-kabaddi" size={24} color={theme.colors.primary} />
           <TextInput
@@ -271,6 +320,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Gold Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors.primary} />
           <TextInput
@@ -283,6 +333,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Silver Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors["slate-500"]} />
           <TextInput
@@ -295,6 +346,7 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Bronze Medals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <Ionicons name="medal-outline" size={24} color={colors["amber-500"]} />
           <TextInput
@@ -307,34 +359,35 @@ const EditProfileScreen: React.FC = () => {
           />
         </View>
 
+        {/* Belt Rank (2-column color swatch modal) */}
         <Text style={[styles.label, { color: theme.colors.text }]}>
           {t("extra-user-data.beltRank")}
         </Text>
-        <DropDownPicker
-          open={openBeltRank}
-          value={beltRank}
-          items={[
-            { label: t("extra-user-data.white"), value: "white" },
-            { label: t("extra-user-data.yellow"), value: "yellow" },
-            { label: t("extra-user-data.orange"), value: "orange" },
-            { label: t("extra-user-data.green"), value: "green" },
-            { label: t("extra-user-data.blue"), value: "blue" },
-            { label: t("extra-user-data.purple"), value: "purple" },
-            { label: t("extra-user-data.brown"), value: "brown" },
-            { label: t("extra-user-data.black"), value: "black" },
-            { label: t("extra-user-data.red-and-white"), value: "red-and-white" },
-            { label: t("extra-user-data.red"), value: "red" },
+        <TouchableOpacity
+          style={[
+            styles.inputContainer,
+            { backgroundColor: theme.colors.card, alignItems: "center" },
           ]}
-          setOpen={setOpenBeltRank}
-          setValue={setBeltRank}
-          style={[styles.picker, { backgroundColor: theme.colors.card }]}
-          dropDownContainerStyle={{
-            backgroundColor: theme.colors.card,
-          }}
-          textStyle={{
-            color: theme.colors.text,
-          }}
-        />
+          onPress={() => setBeltModalVisible(true)}
+        >
+          <Ionicons name="medal-outline" size={24} color={theme.colors.primary} />
+          {/* If beltRank is red-and-white, do a half circle. Otherwise fill the circle. */}
+          {beltRank === "red-and-white" ? (
+            <View style={styles.redWhitePreview}>
+              <View style={[styles.redWhiteHalfPreview, styles.leftHalf]} />
+              <View style={[styles.redWhiteHalfPreview, styles.rightHalf]} />
+            </View>
+          ) : (
+            <View
+              style={[
+                styles.beltSwatchPreview,
+                getBeltPreviewStyle(beltRank),
+              ]}
+            />
+          )}
+        </TouchableOpacity>
+
+        {/* Training Frequency */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="fitness-center" size={24} color={theme.colors.primary} />
           <TextInput
@@ -346,6 +399,8 @@ const EditProfileScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
+        {/* Goals */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="flag" size={24} color={theme.colors.primary} />
           <TextInput
@@ -357,6 +412,8 @@ const EditProfileScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
+        {/* Training Focus (DropDownPicker) */}
         <Text style={[styles.label, { color: theme.colors.text }]}>
           {t("extra-user-data.trainingFocus")}
         </Text>
@@ -373,11 +430,14 @@ const EditProfileScreen: React.FC = () => {
           style={[styles.picker, { backgroundColor: theme.colors.card }]}
           dropDownContainerStyle={{
             backgroundColor: theme.colors.card,
+            zIndex: 2000,
           }}
           textStyle={{
             color: theme.colors.text,
           }}
         />
+
+        {/* Favorite Techniques */}
         <View style={[styles.inputContainer, { backgroundColor: theme.colors.card }]}>
           <MaterialIcons name="stars" size={24} color={theme.colors.primary} />
           <TextInput
@@ -388,6 +448,8 @@ const EditProfileScreen: React.FC = () => {
             placeholderTextColor={theme.colors.placeholder}
           />
         </View>
+
+        {/* Save Button */}
         <TouchableOpacity
           style={[
             styles.saveButton,
@@ -399,21 +461,14 @@ const EditProfileScreen: React.FC = () => {
           ]}
           onPress={handleSaveProfile}
         >
-          <Ionicons
-            name="checkmark-done-outline"
-            size={24}
-            color={theme.colors.background}
-          />
-          <Text
-            style={[
-              styles.saveButtonText,
-              { color: theme.colors.background, marginLeft: 8 },
-            ]}
-          >
+          <Ionicons name="checkmark-done-outline" size={24} color={theme.colors.background} />
+          <Text style={[styles.saveButtonText, { color: theme.colors.background, marginLeft: 8 }]}>
             {t("extra-user-data.save")}
           </Text>
         </TouchableOpacity>
       </ScrollView>
+
+      {/* Avatar Picker */}
       <AvatarPicker
         visible={avatarPickerVisible}
         selectedAvatar={selectedAvatar}
@@ -423,9 +478,19 @@ const EditProfileScreen: React.FC = () => {
           setAvatarPickerVisible(false);
         }}
       />
+
+      {/* Belt Modal */}
+      <BeltModal
+        visible={beltModalVisible}
+        beltOptions={beltOptions}
+        onSelect={(belt: BeltType) => setBeltRank(belt)}
+        onClose={() => setBeltModalVisible(false)}
+      />
     </View>
   );
 };
+
+export default EditProfileScreen;
 
 const styles = StyleSheet.create({
   screen: {
@@ -436,12 +501,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: 20,
     paddingBottom: 20,
     paddingTop: "2%",
-  },
-  title: {
-    fontSize: 28,
-    fontWeight: "600",
-    textAlign: "center",
-    marginBottom: 20,
   },
   sectionTitle: {
     fontSize: 22,
@@ -461,11 +520,10 @@ const styles = StyleSheet.create({
     borderRadius: 12,
     marginBottom: 15,
     paddingHorizontal: 10,
-    backgroundColor: "#f9f9f9",
+    height: 50,
   },
   input: {
     flex: 1,
-    height: 50,
     fontSize: 16,
     marginLeft: 10,
   },
@@ -474,17 +532,6 @@ const styles = StyleSheet.create({
     marginBottom: 15,
     borderRadius: 12,
     borderColor: "#ccc",
-  },
-  saveButton: {
-    paddingVertical: 15,
-    borderRadius: 18,
-    alignItems: "center",
-    justifyContent: "center",
-    marginTop: 20,
-  },
-  saveButtonText: {
-    fontSize: 18,
-    fontWeight: "600",
   },
   avatarWrapper: {
     alignSelf: "center",
@@ -505,6 +552,44 @@ const styles = StyleSheet.create({
     borderRadius: 15,
     padding: 2,
   },
-});
+  saveButton: {
+    paddingVertical: 15,
+    borderRadius: 18,
+    justifyContent: "center",
+    marginTop: 20,
+  },
+  saveButtonText: {
+    fontSize: 18,
+    fontWeight: "600",
+  },
 
-export default EditProfileScreen;
+  // Belt preview in the main screen
+  beltSwatchPreview: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 10,
+    backgroundColor: "#CCC", // fallback
+  },
+  redWhitePreview: {
+    width: 30,
+    height: 30,
+    borderRadius: 15,
+    marginLeft: 10,
+    overflow: "hidden",
+    position: "relative",
+  },
+  redWhiteHalfPreview: {
+    position: "absolute",
+    width: "50%",
+    height: "100%",
+  },
+  leftHalf: {
+    left: 0,
+    backgroundColor: "#FF0000",
+  },
+  rightHalf: {
+    right: 0,
+    backgroundColor: "#FFFFFF",
+  },
+});

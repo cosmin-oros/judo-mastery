@@ -13,7 +13,16 @@ export type UserType = {
   name?: string; // User's full name or last name (optional)
   idToken?: string; // Firebase ID token (optional)
   achievements?: string[]; // Array of achievement IDs (optional)
-  beltRank?: keyof typeof BELT_COLORS; // User's belt rank
+  beltRank?:
+    | "black"
+    | "white"
+    | "yellow"
+    | "orange"
+    | "green"
+    | "blue"
+    | "brown"
+    | "red-and-white"
+    | "red"; // Updated belt rank type
   daily_tasks?: string[]; // Array of task IDs (optional)
   icon?: number; // Icon identifier (optional)
   level?: number; // User's level
@@ -54,12 +63,14 @@ export type AuthContextType = {
 // Belt Colors Enum
 export const BELT_COLORS = {
   white: "#FFFFFF",
-  yellow: "#F7DC6F",
-  orange: "#F39C12",
-  green: "#28B463",
-  blue: "#2980B9",
-  brown: "#A0522D",
+  yellow: "#FFFF00",
+  orange: "#FFA500",
+  green: "#008000",
+  blue: "#0000FF",
+  brown: "#A52A2A",
   black: "#000000",
+  "red-and-white": "#FF9999", // or a custom approach for 2-tone
+  red: "#FF0000",
 };
 
 // Theme Type
