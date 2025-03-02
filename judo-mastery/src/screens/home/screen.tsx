@@ -19,7 +19,7 @@ import { useTechniques } from "@/src/provider/global/TechniquesProvider";
 import { LessonType, TechniqueType, BELT_COLORS } from "@/src/types/types";
 import { router } from "expo-router";
 
-/** Local helper to get avatar image by ID */
+/** Get avatar image source based on the provided avatarId */
 const getAvatarSource = (avatarId: string) => {
   switch (avatarId) {
     case "1":
@@ -37,21 +37,50 @@ const getAvatarSource = (avatarId: string) => {
   }
 };
 
-/** Some random Judo quotes. Add or replace as you like. */
-const judoQuotes = [
-  "Judo is the way to the most effective use of both physical and spiritual strength. – Jigoro Kano",
-  "The aim of judo is to utilize mental and physical strength most effectively. – Jigoro Kano",
-  "Judo teaches us to look for the best possible course of action, whatever the individual circumstances. – Jigoro Kano",
-  "In judo, one should first learn through practice and then seek an intellectual understanding of what has been learned. – Jigoro Kano",
-  "Don’t fear the man who has practiced 10,000 throws once, but the man who has practiced one throw 10,000 times. – Variation of Bruce Lee’s quote"
-];
+/** Next Lesson Card Component */
+const NextLessonCard: React.FC<{
+  lesson: LessonType;
+  onPress: () => void;
+  t: any;
+  theme: any;
+}> = ({ lesson, onPress, t, theme }) => {
+  return (
+    <TouchableOpacity
+      style={[styles.card, { backgroundColor: theme.colors.card }]}
+      onPress={onPress}
+    >
+      <Ionicons
+        name="book-outline"
+        size={36}
+        color={theme.colors.primary}
+        style={styles.cardIcon}
+      />
+      <View>
+        <Text style={[styles.cardText, { color: theme.colors.text, fontSize: 18 }]}>
+          {lesson.title?.en || "Untitled"}
+        </Text>
+        <Text
+          style={[styles.cardDescription, { color: theme.colors.placeholder, fontSize: 16 }]}
+        >
+          {t("home.xpWorth", { xp: lesson.xp })}
+        </Text>
+      </View>
+    </TouchableOpacity>
+  );
+};
 
+/** Belt Indicator Component – simple colored bar with smaller width */
+const BeltIndicator: React.FC<{ beltColor: string; theme: any }> = ({ beltColor, theme }) => {
+  return (
+    <View style={[styles.beltIndicator, { backgroundColor: beltColor }]} />
+  );
+};
+
+/** HomeScreen Component */
 const HomeScreen: React.FC = () => {
   const { theme } = useTheme();
   const { t } = useTranslation();
   const { user, updateUser } = useAuth();
-
-  // Lessons and Techniques from context providers
   const { lessons, loading: lessonsLoading, refreshLessons } = useLessons();
   const { categories, loading: techniquesLoading, refresh: refreshTechniques } = useTechniques();
 
@@ -60,20 +89,15 @@ const HomeScreen: React.FC = () => {
   const [nextLesson, setNextLesson] = useState<LessonType | null>(null);
   const [dailyQuote, setDailyQuote] = useState<string>("");
 
-  /**
-   * Once techniques are loaded, pick a random one for "Technique of the Day"
-   */
+  // Pick a random technique for "Technique of the Day"
   useEffect(() => {
     if (!techniquesLoading && categories.length > 0) {
       const allTechniques: TechniqueType[] = [];
       categories.forEach((cat) => {
         cat.wazas.forEach((waza) => {
-          waza.techniques.forEach((tech) => {
-            allTechniques.push(tech);
-          });
+          waza.techniques.forEach((tech) => allTechniques.push(tech));
         });
       });
-
       if (allTechniques.length > 0) {
         const randomIndex = Math.floor(Math.random() * allTechniques.length);
         setRandomTechnique(allTechniques[randomIndex]);
@@ -81,34 +105,34 @@ const HomeScreen: React.FC = () => {
     }
   }, [categories, techniquesLoading]);
 
-  /**
-   * Once lessons are loaded, pick the first incomplete lesson as "Next Lesson"
-   */
+  // Determine the next lesson
   useEffect(() => {
-    if (!lessonsLoading && lessons.length > 0 && user?.lessons_completed) {
-      const incomplete = lessons.filter(
-        (l) => !user.lessons_completed?.includes(l.id)
-      );
-      setNextLesson(incomplete.length > 0 ? incomplete[0] : null);
+    if (!lessonsLoading && lessons.length > 0) {
+      const completedLessons = user?.lessons_completed || [];
+      const incomplete = lessons.filter((l) => !completedLessons.includes(l.id));
+      setNextLesson(incomplete.length > 0 ? incomplete[0] : lessons[0]);
     }
   }, [lessons, lessonsLoading, user]);
 
-  /**
-   * Pick a random daily judo quote
-   */
-  useEffect(() => {
-    if (judoQuotes.length > 0) {
-      const randIndex = Math.floor(Math.random() * judoQuotes.length);
-      setDailyQuote(judoQuotes[randIndex]);
+  // Fetch daily quote
+  const fetchDailyQuote = async () => {
+    try {
+      const response = await fetch("https://zenquotes.io/api/random");
+      const data = await response.json();
+      if (data && data[0] && data[0].q && data[0].a) {
+        setDailyQuote(`${data[0].q} — ${data[0].a}`);
+      }
+    } catch (error) {
+      console.error("Error fetching daily quote:", error);
+      setDailyQuote(t("home.defaultQuote"));
     }
+  };
+
+  useEffect(() => {
+    fetchDailyQuote();
   }, []);
 
-  /**
-   * Pull-to-refresh:
-   *  - refresh user data
-   *  - refresh lessons
-   *  - refresh techniques
-   */
+  // Pull-to-refresh handler
   const onRefresh = useCallback(async () => {
     setRefreshing(true);
     try {
@@ -122,18 +146,13 @@ const HomeScreen: React.FC = () => {
           });
         }
       }
-      await refreshLessons();
-      await refreshTechniques();
+      await Promise.all([refreshLessons(), refreshTechniques()]);
 
-      // Re-randomize the technique and quote if you want a fresh pick on each refresh
-      // Or keep them stable for the day if you prefer
       if (categories.length > 0) {
         const allTechniques: TechniqueType[] = [];
         categories.forEach((cat) => {
           cat.wazas.forEach((waza) => {
-            waza.techniques.forEach((tech) => {
-              allTechniques.push(tech);
-            });
+            waza.techniques.forEach((tech) => allTechniques.push(tech));
           });
         });
         if (allTechniques.length > 0) {
@@ -141,31 +160,22 @@ const HomeScreen: React.FC = () => {
           setRandomTechnique(allTechniques[randomIndex]);
         }
       }
-      if (judoQuotes.length > 0) {
-        const randIndex = Math.floor(Math.random() * judoQuotes.length);
-        setDailyQuote(judoQuotes[randIndex]);
-      }
+      fetchDailyQuote();
     } catch (error) {
       console.error("Error refreshing data:", error);
     }
     setRefreshing(false);
-  }, [user, updateUser, refreshLessons, refreshTechniques, categories]);
+  }, [user, updateUser, refreshLessons, refreshTechniques, categories, t]);
 
-  // If providers are still loading, show spinner
   if (techniquesLoading || lessonsLoading) {
     return (
       <View style={[styles.loadingContainer, { backgroundColor: theme.colors.background }]}>
         <ActivityIndicator size="large" color={theme.colors.primary} />
-        <Text style={[styles.loadingText, { color: theme.colors.text }]}>
-          {t("common.loading")}
-        </Text>
+        <Text style={[styles.loadingText, { color: theme.colors.text }]}>{t("common.loading")}</Text>
       </View>
     );
   }
 
-  /**
-   * Helper to navigate to the next lesson using expo-router's push
-   */
   const goToLesson = (lesson: LessonType) => {
     router.push({
       pathname: "/(tabs)/terminology/lesson",
@@ -176,32 +186,34 @@ const HomeScreen: React.FC = () => {
     });
   };
 
-  // Get belt color from user data
   const beltColor = user?.beltRank ? BELT_COLORS[user.beltRank] : theme.colors.placeholder;
 
   return (
     <View style={[styles.container, { backgroundColor: theme.colors.background }]}>
-      {/* Header */}
+      {/* Header with profile and belt integration */}
       <View style={styles.header}>
         <View style={styles.profileInfo}>
           {user?.profilePhoto ? (
             <Image
               source={getAvatarSource(user.profilePhoto)}
-              style={styles.avatar}
+              style={[
+                styles.avatar,
+                { borderWidth: 4, borderColor: beltColor }, // belt border around avatar
+              ]}
             />
           ) : (
-            <Ionicons name="person-circle-outline" size={50} color={theme.colors.primary} />
+            <Ionicons name="person-circle-outline" size={60} color={theme.colors.primary} />
           )}
           <View style={styles.infoText}>
-            <Text style={[styles.greeting, { color: theme.colors.text }]}>
-              {t("home.greeting")}
-            </Text>
+            <Text style={[styles.greeting, { color: theme.colors.text }]}>{t("home.greeting")}</Text>
             <Text style={[styles.name, { color: theme.colors.text }]}>
               {user?.firstName || t("profile.defaultFirstName")}
             </Text>
             <Text style={[styles.level, { color: theme.colors.placeholder }]}>
               {t("profile.level")}: {user?.level || 1}
             </Text>
+            {/* Simple belt indicator as a colored bar with reduced width */}
+            <BeltIndicator beltColor={beltColor} theme={theme} />
           </View>
         </View>
         <TouchableOpacity
@@ -215,127 +227,67 @@ const HomeScreen: React.FC = () => {
       <ScrollView
         contentContainerStyle={styles.content}
         refreshControl={
-          <RefreshControl
-            refreshing={refreshing}
-            onRefresh={onRefresh}
-            tintColor={theme.colors.primary}
-          />
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} tintColor={theme.colors.primary} />
         }
       >
-        {/* Belt Rank Section */}
-        <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            {t("home.yourBeltRank")}
-          </Text>
-          <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
-            <Ionicons
-              name="ribbon-outline"
-              size={30}
-              color={theme.colors.primary}
-              style={styles.cardIcon}
-            />
-            <View>
-              <Text style={[styles.cardText, { color: theme.colors.text }]}>
-                {user?.beltRank || t("profile.noBeltRank")}
-              </Text>
-              <View
-                style={[
-                  styles.beltStrip,
-                  {
-                    backgroundColor: beltColor,
-                    borderColor: theme.colors.text,
-                  },
-                ]}
-              />
-            </View>
-          </View>
-        </View>
-
         {/* Next Lesson Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            {t("home.nextLesson")}
-          </Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t("home.nextLesson")}</Text>
           {nextLesson ? (
-            <TouchableOpacity
-              style={[styles.card, { backgroundColor: theme.colors.card }]}
+            <NextLessonCard
+              lesson={nextLesson}
               onPress={() => goToLesson(nextLesson)}
-            >
-              <Ionicons
-                name="book-outline"
-                size={30}
-                color={theme.colors.primary}
-                style={styles.cardIcon}
-              />
-              <View>
-                <Text style={[styles.cardText, { color: theme.colors.text }]}>
-                  {nextLesson.title?.en || "Untitled"}
-                </Text>
-                <Text style={[styles.cardDescription, { color: theme.colors.placeholder }]}>
-                  {t("home.xpWorth", { xp: nextLesson.xp })}
-                </Text>
-              </View>
-            </TouchableOpacity>
+              t={t}
+              theme={theme}
+            />
           ) : (
             <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
               <Ionicons
                 name="checkmark-circle"
-                size={30}
+                size={36}
                 color={theme.colors.primary}
                 style={styles.cardIcon}
               />
-              <Text style={[styles.cardText, { color: theme.colors.text }]}>
-                {t("home.noNextLesson")}
-              </Text>
+              <Text style={[styles.cardText, { color: theme.colors.text }]}>{t("home.noNextLesson")}</Text>
             </View>
           )}
         </View>
 
         {/* Technique of the Day Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            {t("home.techniqueOfTheDay")}
-          </Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t("home.techniqueOfTheDay")}</Text>
           {randomTechnique ? (
             <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
               <Text style={styles.cardIcon}>🥋</Text>
               <View>
-                <Text style={[styles.cardText, { color: theme.colors.text }]}>
+                <Text style={[styles.cardText, { color: theme.colors.text, fontSize: 18 }]}>
                   {randomTechnique.title.en}
                 </Text>
-                <Text style={[styles.cardDescription, { color: theme.colors.placeholder }]}>
+                <Text style={[styles.cardDescription, { color: theme.colors.placeholder, fontSize: 16 }]}>
                   {randomTechnique.original}
                 </Text>
               </View>
             </View>
           ) : (
             <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
-              <Text style={[styles.cardText, { color: theme.colors.text }]}>
-                {t("home.noTechniquesFound")}
-              </Text>
+              <Text style={[styles.cardText, { color: theme.colors.text }]}>{t("home.noTechniquesFound")}</Text>
             </View>
           )}
         </View>
 
-        {/* Daily Judo Quote Section */}
+        {/* Daily Quote Section */}
         <View style={styles.section}>
-          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>
-            {t("home.dailyJudoQuote")}
-          </Text>
+          <Text style={[styles.sectionTitle, { color: theme.colors.text }]}>{t("home.dailyQuote")}</Text>
           <View style={[styles.card, { backgroundColor: theme.colors.card }]}>
             <Ionicons
               name="chatbubble-ellipses-outline"
-              size={30}
+              size={36}
               color={theme.colors.primary}
               style={styles.cardIcon}
             />
-            <Text style={[styles.quoteText, { color: theme.colors.text }]}>
-              {dailyQuote}
-            </Text>
+            <Text style={[styles.quoteText, { color: theme.colors.text }]}>{dailyQuote}</Text>
           </View>
         </View>
-
-        {/* You could add more sections here, e.g. 'Local Dojos', 'Upcoming Tournaments', etc. */}
       </ScrollView>
     </View>
   );
@@ -344,95 +296,48 @@ const HomeScreen: React.FC = () => {
 export default HomeScreen;
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-  },
-  loadingContainer: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  loadingText: {
-    marginTop: 10,
-    fontSize: 16,
-  },
+  container: { flex: 1 },
+  loadingContainer: { flex: 1, justifyContent: "center", alignItems: "center" },
+  loadingText: { marginTop: 10, fontSize: 18 },
   header: {
     flexDirection: "row",
     justifyContent: "space-between",
     alignItems: "center",
     paddingHorizontal: 20,
-    paddingTop: "5%",
-    paddingBottom: "5%",
-    backgroundColor: "transparent",
+    paddingTop: "8%",
+    paddingBottom: "8%",
   },
-  profileInfo: {
-    flexDirection: "row",
-    alignItems: "center",
-  },
-  avatar: {
-    width: 50,
-    height: 50,
-    borderRadius: 25,
-  },
-  infoText: {
-    marginLeft: 10,
-  },
-  greeting: {
-    fontSize: 14,
-    fontWeight: "600",
-  },
-  name: {
-    fontSize: 18,
-    fontWeight: "700",
-  },
-  level: {
-    fontSize: 14,
-    fontWeight: "500",
-  },
-  settingsIcon: {
-    padding: 10,
-  },
-  content: {
-    paddingHorizontal: 20,
-    paddingBottom: 20,
-  },
-  section: {
-    marginBottom: 20,
-  },
-  sectionTitle: {
-    fontSize: 20,
-    fontWeight: "600",
-    marginBottom: 10,
-  },
+  profileInfo: { flexDirection: "row", alignItems: "center" },
+  avatar: { width: 60, height: 60, borderRadius: 30 },
+  infoText: { marginLeft: 12 }, // removed flex: 1 here
+  greeting: { fontSize: 16 },
+  name: { fontSize: 22, fontWeight: "700" },
+  level: { fontSize: 16 },
+  settingsIcon: { padding: 10 },
+  content: { paddingHorizontal: 20, paddingBottom: 30 },
+  section: { marginBottom: 25 },
+  sectionTitle: { fontSize: 22, fontWeight: "600", marginBottom: 15 },
   card: {
     flexDirection: "row",
     alignItems: "center",
-    padding: 15,
-    borderRadius: 10,
-    marginBottom: 10,
+    paddingVertical: 20,
+    paddingHorizontal: 20,
+    borderRadius: 12,
+    marginBottom: 15,
+    shadowColor: "#000",
+    shadowOffset: { width: 0, height: 4 },
+    shadowOpacity: 0.1,
+    shadowRadius: 8,
+    elevation: 4,
   },
-  cardIcon: {
-    fontSize: 30,
-    marginRight: 15,
-  },
-  cardText: {
-    fontSize: 16,
-    fontWeight: "600",
-  },
-  cardDescription: {
-    fontSize: 14,
-    marginTop: 5,
-  },
-  beltStrip: {
-    width: 80,
-    height: 8,
-    marginTop: 5,
-    borderWidth: 1,
-    borderRadius: 4,
-  },
-  quoteText: {
-    flex: 1,
-    fontSize: 14,
-    fontStyle: "italic",
+  cardIcon: { fontSize: 36, marginRight: 15 },
+  cardText: { fontSize: 18, fontWeight: "600" },
+  cardDescription: { fontSize: 16, marginTop: 4 },
+  quoteText: { flex: 1, fontSize: 16, fontStyle: "italic", marginLeft: 10 },
+  beltIndicator: {
+    height: 6,
+    width: "40%",
+    borderRadius: 3,
+    marginTop: 8,
   },
 });
