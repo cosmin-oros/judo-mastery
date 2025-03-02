@@ -58,22 +58,15 @@
   },
   "home": {
     "title": "ホーム",
-    "dailyTasks": "毎日のタスク",
-    "greeting": "お帰りなさい",
-    "tasks": {
-      "stretchingRoutine": "ストレッチルーティン",
-      "pushups": "腕立て伏せ10回"
-    },
-    "eventsTitle": "イベント",
-    "events": {
-      "localCompetition": "ローカル柔道大会",
-      "trainingSession": "トレーニングセッション"
-    },
-    "techniqueOfTheDay": "今日の技",
-    "technique": {
-      "title": "背負い投げ",
-      "description": "相手を効率的に倒すための肩投げ技です。"
-    }
+    "dailyTasks": "日課",
+    "greeting": "おかえりなさい",
+    "nextLesson": "次のレッスン",
+    "noNextLesson": "利用可能な次のレッスンはありません",
+    "xpWorth": "{{xp}} XP",
+    "techniqueOfTheDay": "今日のテクニック",
+    "noTechniquesFound": "テクニックが見つかりません",
+    "dailyQuote": "今日の名言",
+    "defaultQuote": "前向きに、トレーニングを続けよう！"
   },
   "language-selection": {
     "title": "言語を選択",

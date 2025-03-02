@@ -60,20 +60,13 @@
     "title": "Inicio",
     "dailyTasks": "Tareas Diarias",
     "greeting": "Bienvenido de nuevo",
-    "tasks": {
-      "stretchingRoutine": "Rutina de Estiramientos",
-      "pushups": "10 Flexiones"
-    },
-    "eventsTitle": "Eventos",
-    "events": {
-      "localCompetition": "Competencia de Judo Local",
-      "trainingSession": "Sesión de Entrenamiento"
-    },
+    "nextLesson": "Próxima Lección",
+    "noNextLesson": "No hay ninguna lección próxima disponible",
+    "xpWorth": "{{xp}} XP",
     "techniqueOfTheDay": "Técnica del Día",
-    "technique": {
-      "title": "Seoi Nage",
-      "description": "Una técnica de lanzamiento por el hombro para derribar eficientemente a un oponente."
-    }
+    "noTechniquesFound": "No se encontraron técnicas",
+    "dailyQuote": "Cita Diaria",
+    "defaultQuote": "¡Mantente positivo y sigue entrenando!"
   },
   "language-selection": {
     "title": "Selecciona idioma",

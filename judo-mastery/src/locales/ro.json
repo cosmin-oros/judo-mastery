@@ -59,21 +59,14 @@
   "home": {
     "title": "Acasă",
     "dailyTasks": "Sarcini zilnice",
-    "greeting": "Bine ai revenit",
-    "tasks": {
-      "stretchingRoutine": "Rutina de întindere",
-      "pushups": "10 Flotări"
-    },
-    "eventsTitle": "Evenimente",
-    "events": {
-      "localCompetition": "Competiție locală de Judo",
-      "trainingSession": "Sesiune de antrenament"
-    },
+    "greeting": "Bine te-am regăsit",
+    "nextLesson": "Lecția următoare",
+    "noNextLesson": "Nu există nicio lecție următoare disponibilă",
+    "xpWorth": "{{xp}} XP",
     "techniqueOfTheDay": "Tehnica zilei",
-    "technique": {
-      "title": "Seoi Nage",
-      "description": "O tehnică de aruncare pe umăr pentru a doborî eficient un adversar."
-    }
+    "noTechniquesFound": "Nu au fost găsite tehnici",
+    "dailyQuote": "Citat zilnic",
+    "defaultQuote": "Rămâi pozitiv și continuă să te antrenezi!"
   },
   "language-selection": {
     "title": "Selectează limba",

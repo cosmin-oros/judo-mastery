@@ -60,20 +60,13 @@
     "title": "Home",
     "dailyTasks": "Daily Tasks",
     "greeting": "Welcome back",
-    "tasks": {
-      "stretchingRoutine": "Stretching Routine",
-      "pushups": "10 Push-ups"
-    },
-    "eventsTitle": "Events",
-    "events": {
-      "localCompetition": "Local Judo Competition",
-      "trainingSession": "Training Session"
-    },
+    "nextLesson": "Next Lesson",
+    "noNextLesson": "No next lesson available",
+    "xpWorth": "{{xp}} XP",
     "techniqueOfTheDay": "Technique of the Day",
-    "technique": {
-      "title": "Seoi Nage",
-      "description": "A shoulder throw technique to efficiently take down an opponent."
-    }
+    "noTechniquesFound": "No techniques found",
+    "dailyQuote": "Daily Quote",
+    "defaultQuote": "Stay positive and keep training!"
   },
   "language-selection": {
     "title": "Select Language",

@@ -60,20 +60,13 @@
     "title": "Startseite",
     "dailyTasks": "Tägliche Aufgaben",
     "greeting": "Willkommen zurück",
-    "tasks": {
-      "stretchingRoutine": "Dehnroutine",
-      "pushups": "10 Liegestütze"
-    },
-    "eventsTitle": "Veranstaltungen",
-    "events": {
-      "localCompetition": "Lokaler Judo-Wettbewerb",
-      "trainingSession": "Trainingseinheit"
-    },
+    "nextLesson": "Nächste Lektion",
+    "noNextLesson": "Keine nächste Lektion verfügbar",
+    "xpWorth": "{{xp}} XP",
     "techniqueOfTheDay": "Technik des Tages",
-    "technique": {
-      "title": "Seoi Nage",
-      "description": "Eine Schulterwurf-Technik, um einen Gegner effizient zu Boden zu bringen."
-    }
+    "noTechniquesFound": "Keine Techniken gefunden",
+    "dailyQuote": "Tägliches Zitat",
+    "defaultQuote": "Bleib positiv und trainiere weiter!"
   },
   "language-selection": {
     "title": "Sprache auswählen",
