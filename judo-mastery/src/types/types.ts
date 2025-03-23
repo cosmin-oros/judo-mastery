@@ -44,6 +44,7 @@ export type UserType = {
   lessons_completed?: string[]; // Array of completed lesson IDs (optional)
   techniques_completed?: string[]; // Array of completed technique IDs (optional)
   profilePhoto?: string;
+  push_token?: string;
 };
 
 // Auth Context Type

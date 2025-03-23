@@ -15,18 +15,131 @@ import { handleSessionExpired } from "@/src/utils/sessionExpired";
 import {
   getUserDataFromFirestore,
   saveUserDataToFirestore,
+  updateUserPushToken,
 } from "@/src/firestoreService/userDataService";
 import { BELT_COLORS } from "@/src/types/types";
+import * as Notifications from "expo-notifications";
+import { Platform } from "react-native";
+import * as Device from "expo-device";
+import Constants from "expo-constants";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
+
+// Predefined study notifications
+const STUDY_NOTIFICATIONS = [
+  {
+    title: "Judo Tip",
+    body: "Review your techniques today to improve your form!",
+  },
+  {
+    title: "Reminder",
+    body: "Don't forget to complete your lesson for extra XP!",
+  },
+  {
+    title: "Quick Drill",
+    body: "Spend 10 minutes on terminology practice today!",
+  },
+  {
+    title: "Stay Sharp",
+    body: "A quick review of yesterday's lesson can boost your retention.",
+  },
+];
+
+// Schedule two random notifications per day (between 9 AM and 9 PM)
+const scheduleDailyNotifications = async () => {
+  const now = new Date();
+  const startHour = 9;
+  const endHour = 21;
+
+  const getRandomTimeForToday = () => {
+    const hour = Math.floor(Math.random() * (endHour - startHour)) + startHour;
+    const minute = Math.floor(Math.random() * 60);
+    const scheduledDate = new Date(now);
+    scheduledDate.setHours(hour, minute, 0, 0);
+    if (scheduledDate <= now) {
+      scheduledDate.setDate(scheduledDate.getDate() + 1);
+    }
+    return scheduledDate;
+  };
+
+  const getTwoRandomNotifications = () => {
+    const copy = [...STUDY_NOTIFICATIONS];
+    for (let i = copy.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [copy[i], copy[j]] = [copy[j], copy[i]];
+    }
+    return copy.slice(0, 2);
+  };
+
+  const twoNotifications = getTwoRandomNotifications();
+
+  for (const notification of twoNotifications) {
+    const scheduledDate = getRandomTimeForToday();
+    const secondsUntilTrigger = Math.floor(
+      (scheduledDate.getTime() - now.getTime()) / 1000
+    );
+
+    await Notifications.scheduleNotificationAsync({
+      content: {
+        title: notification.title,
+        body: notification.body,
+        sound: true,
+      },
+      // For time interval triggers, include type: "timeInterval"
+      trigger: { seconds: secondsUntilTrigger, repeats: false, type: "timeInterval" },
+    });
+
+    console.log(
+      `Scheduled "${notification.title}" in ${secondsUntilTrigger} seconds at ${scheduledDate}`
+    );
+  }
+};
+
+Notifications.setNotificationHandler({
+  handleNotification: async () => ({
+    shouldPlaySound: false,
+    shouldShowAlert: true,
+    shouldSetBadge: false,
+  }),
+});
+
+// Register for push notifications and get the token
+async function registerForPushNotificationsAsync() {
+  let token;
+  if (Device.isDevice) {
+    const { status: existingStatus } = await Notifications.getPermissionsAsync();
+    let finalStatus = existingStatus;
+    if (existingStatus !== "granted") {
+      const { status } = await Notifications.requestPermissionsAsync();
+      finalStatus = status;
+    }
+    if (finalStatus !== "granted") {
+      alert("Failed to get push token for push notifications");
+      return;
+    }
+    token = await Notifications.getExpoPushTokenAsync({
+      projectId: Constants.expoConfig?.extra?.eas.projectId,
+    });
+  } else {
+    alert("Must use a physical device for Push notifications");
+  }
+  
+  if (Platform.OS === "android") {
+    await Notifications.setNotificationChannelAsync("default", {
+      name: "default",
+      importance: Notifications.AndroidImportance.MAX,
+      vibrationPattern: [0, 250, 250, 250],
+      lightColor: "#FF231F7C",
+    });
+  }
+  return token;
+}
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
   const [user, setUser] = useState<UserType | null>(null);
   const { t } = useTranslation();
 
-  /**
-   * Sign up a new user with email and password and save their details to Firestore
-   */
+  // SIGN UP
   const signupWithEmailAndPassword = async (
     email: string,
     password: string,
@@ -34,11 +147,9 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
   ) => {
     try {
       const userCredential = await createUserWithEmailAndPassword(auth, email, password);
-
       if (userCredential) {
         const firebaseUser = userCredential.user;
         const idToken = await getIdToken(firebaseUser);
-
         const userData: UserType = {
           uid: firebaseUser.uid,
           email: firebaseUser.email || null,
@@ -57,7 +168,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           },
           ...additionalData,
         };
-
         await saveUserDataToFirestore(userData);
         setUser(userData);
         replaceRoute("/language-selection");
@@ -70,17 +180,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  /**
-   * Log in a user with email and password
-   */
+  // LOG IN
   const loginWithEmailAndPassword = async (email: string, password: string) => {
     try {
       const userCredential = await signInWithEmailAndPassword(auth, email, password);
-
       if (userCredential) {
         const firebaseUser = userCredential.user;
         const idToken = await getIdToken(firebaseUser);
-
         await fetchUserData(firebaseUser.uid, idToken);
       } else {
         console.error("Failed to log in");
@@ -91,9 +197,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  /**
-   * Log out the current user
-   */
+  // LOG OUT
   const logout = async () => {
     try {
       await signOut(auth);
@@ -104,13 +208,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  /**
-   * Fetch user data from Firestore and set it in the context
-   */
+  // Fetch user data from Firestore and navigate accordingly
   const fetchUserData = async (uid: string, idToken: string) => {
     try {
       const userDataFromFirestore = await getUserDataFromFirestore(uid);
-
       if (userDataFromFirestore) {
         const userData: UserType = {
           ...userDataFromFirestore,
@@ -118,7 +219,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
           email: userDataFromFirestore.email || null,
           idToken,
         };
-
         setUser(userData);
         replaceRoute("/(tabs)/home");
       } else {
@@ -133,9 +233,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     }
   };
 
-  /**
-   * Get the ID token of the currently logged-in user
-   */
+  // Get the current user's ID token
   const getAuthToken = async (): Promise<string | null> => {
     if (auth.currentUser) {
       try {
@@ -151,27 +249,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     return null;
   };
 
-  /**
-   * Handle Firebase authentication state changes
-   */
-  useEffect(() => {
-    const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
-      if (firebaseUser) {
-        const idToken = await getIdToken(firebaseUser);
-
-        await fetchUserData(firebaseUser.uid, idToken);
-      } else {
-        setUser(null);
-        await handleSessionExpired();
-      }
-    });
-
-    return unsubscribe;
-  }, []);
-
-  /**
-   * Handle authentication errors and show alerts
-   */
+  // Handle authentication errors and display alerts
   const handleError = (error: any, errorKeyPrefix: string) => {
     switch (error.code) {
       case "auth/email-already-in-use":
@@ -217,6 +295,52 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     setUser(newUser);
   };
 
+  // Listen for auth state changes and register for push notifications if a user is signed in
+  useEffect(() => {
+    const registerNotificationsAndSchedule = async (firebaseUser: FirebaseUser) => {
+      try {
+        const idToken = await getIdToken(firebaseUser);
+        await fetchUserData(firebaseUser.uid, idToken);
+
+        // Register for push notifications and obtain token
+        const token = await registerForPushNotificationsAsync();
+        if (token && token.data) {
+          // Update push token in Firestore if necessary
+          if (!user?.push_token || user.push_token !== token.data) {
+            await updateUserPushToken(firebaseUser.uid, token.data);
+          }
+        }
+
+        // Schedule two random study reminders per day
+        await scheduleDailyNotifications();
+      } catch (error) {
+        console.error("Error in notification registration/scheduling:", error);
+      }
+    };
+
+    const unsubscribe = auth.onAuthStateChanged(async (firebaseUser) => {
+      if (firebaseUser) {
+        await registerNotificationsAndSchedule(firebaseUser);
+      } else {
+        setUser(null);
+        await handleSessionExpired();
+      }
+    });
+
+    // Optional: Listen for notification responses
+    const notificationResponseListener = Notifications.addNotificationResponseReceivedListener(
+      (response) => {
+        console.log("Notification pressed:", response);
+        replaceRoute("/pushNotifications");
+      }
+    );
+
+    return () => {
+      unsubscribe();
+      notificationResponseListener.remove();
+    };
+  }, []);
+
   return (
     <AuthContext.Provider
       value={{
@@ -225,7 +349,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         signupWithEmailAndPassword,
         logout,
         getAuthToken,
-        updateUser
+        updateUser,
       }}
     >
       {children}
@@ -234,7 +358,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 };
 
 /**
- * Custom hook for accessing the Auth context
+ * Custom hook to access Auth context
  */
 export const useAuth = () => {
   const context = useContext(AuthContext);

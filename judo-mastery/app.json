@@ -9,14 +9,19 @@
     "userInterfaceStyle": "automatic",
     "newArchEnabled": true,
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "This app uses notifications to remind you to study.",
+        "UIBackgroundModes": ["fetch", "remote-notification"]
+      }
     },
     "android": {
       "adaptiveIcon": {
         "foregroundImage": "./assets/images/adaptive-icon.png",
         "backgroundColor": "#ffffff"
       },
-      "package": "com.cosminorosdev.judomastery"
+      "package": "com.cosminorosdev.judomastery",
+      "permissions": ["NOTIFICATIONS"]
     },
     "web": {
       "bundler": "metro",

@@ -22,3 +22,15 @@ export const getUserDataFromFirestore = async (uid: string) => {
   const userDoc = await getDoc(userRef);
   return userDoc.exists() ? userDoc.data() : null;
 };
+
+// Update the user's push token in Firestore
+export const updateUserPushToken = async (uid: string, pushToken: string) => {
+  try {
+    const userRef = doc(firestore, "users", uid);
+    await setDoc(userRef, { push_token: pushToken }, { merge: true });
+    console.log(`Updated push token for user ${uid}`);
+  } catch (error) {
+    console.error("Error updating push token: ", error);
+    throw error;
+  }
+};
