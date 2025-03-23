@@ -150,6 +150,8 @@
   },
   "settings": {
     "title": "設定",
+    "feedbackTitle": "フィードバック",
+    "feedbackMessage": "フィードバックについては、cosminorosdev@gmail.comにご連絡ください。",
     "darkMode": "ダークモード",
     "notifications": "通知",
     "language": "言語",

@@ -150,6 +150,8 @@
   },
   "settings": {
     "title": "Setări",
+    "feedbackTitle": "Feedback",
+    "feedbackMessage": "Pentru feedback, contactați cosminorosdev@gmail.com",
     "darkMode": "Mod Întunecat",
     "notifications": "Notificări",
     "language": "Limbă",

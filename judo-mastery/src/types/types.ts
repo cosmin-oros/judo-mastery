@@ -57,6 +57,7 @@ export type AuthContextType = {
     additionalData?: Partial<UserType>
   ) => Promise<void>;
   logout: () => Promise<void>;
+  deleteAccount: () => Promise<void>;
   getAuthToken: () => Promise<string | null>;
   updateUser: (newUser: UserType) => void;
 };

@@ -150,6 +150,8 @@
   },
   "settings": {
     "title": "Paramètres",
+    "feedbackTitle": "Commentaires",
+    "feedbackMessage": "Pour tout commentaire, contactez cosminorosdev@gmail.com",
     "darkMode": "Mode Sombre",
     "notifications": "Notifications",
     "language": "Langue",

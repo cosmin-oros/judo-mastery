@@ -150,6 +150,8 @@
   },
   "settings": {
     "title": "Settings",
+    "feedbackTitle": "Feedback",
+    "feedbackMessage": "For feedback, contact cosminorosdev@gmail.com",
     "darkMode": "Dark Mode",
     "notifications": "Notifications",
     "language": "Language",

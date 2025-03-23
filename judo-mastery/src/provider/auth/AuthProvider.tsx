@@ -6,7 +6,7 @@ import {
   createUserWithEmailAndPassword,
   User as FirebaseUser,
 } from "firebase/auth";
-import { auth } from "./firebase";
+import { auth, firestore } from "./firebase";
 import { AuthContextType, UserType } from "../../types/types";
 import { replaceRoute } from "@/src/utils/replaceRoute";
 import { showAlert } from "@/src/utils/showAlert";
@@ -22,6 +22,7 @@ import * as Notifications from "expo-notifications";
 import { Platform } from "react-native";
 import * as Device from "expo-device";
 import Constants from "expo-constants";
+import { doc, deleteDoc } from "firebase/firestore";
 
 const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
@@ -342,6 +343,25 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
     };
   }, []);
 
+  const deleteAccount = async (): Promise<void> => {
+    // Check for current user
+    const currentFirebaseUser = auth.currentUser;
+    if (!currentFirebaseUser || !user?.uid) {
+      throw new Error("No user is currently authenticated.");
+    }
+
+    // A) Delete Firestore doc
+    const userRef = doc(firestore, "users", user.uid);
+    await deleteDoc(userRef);
+
+    // B) Delete from Firebase Auth
+    // This might require re-authentication if last sign-in was long ago
+    await currentFirebaseUser.delete();
+
+    // Clear local user state
+    setUser(null);
+  };
+
   return (
     <AuthContext.Provider
       value={{
@@ -351,6 +371,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         logout,
         getAuthToken,
         updateUser,
+        deleteAccount
       }}
     >
       {children}

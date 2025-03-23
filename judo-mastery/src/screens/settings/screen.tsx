@@ -7,22 +7,23 @@ import { replaceRoute } from "@/src/utils/replaceRoute";
 import Header from "./components/Header";
 import Option from "./components/Option";
 import NavigationOptions from "./components/NavigationOptions";
-import { SettingsNavigationOption, UserType } from "@/src/types/types";
+import { SettingsNavigationOption } from "@/src/types/types";
 import { Ionicons } from "@expo/vector-icons";
 import { darkTheme } from "@/src/theme/themes";
 import { showAlert } from "@/src/utils/showAlert";
 import { useAuth } from "@/src/provider/auth/AuthProvider";
-import { saveUserDataToFirestore } from "@/src/firestoreService/userDataService";
 
 const SettingsScreen: React.FC = () => {
   const { t } = useTranslation();
   const { theme, toggleTheme } = useTheme();
   const [isDarkMode, setIsDarkMode] = useState(theme === darkTheme);
   const [notificationsEnabled, setNotificationsEnabled] = useState(true);
-  const { user, logout } = useAuth();
+
+  // 1) Pull in the user object and the deleteAccount function
+  const { user, logout, deleteAccount } = useAuth();
 
   useEffect(() => {
-    // Check initial notification permissions on component mount
+    // Check initial notification permissions on mount
     const checkNotificationPermissions = async () => {
       const { status } = await Notifications.getPermissionsAsync();
       if (status !== "granted") {
@@ -32,114 +33,83 @@ const SettingsScreen: React.FC = () => {
     checkNotificationPermissions();
   }, []);
 
+  // Toggle Dark Mode
   const toggleDarkMode = () => {
     setIsDarkMode(!isDarkMode);
     toggleTheme();
   };
 
+  // Toggle Notifications
   const toggleNotifications = async () => {
     if (!notificationsEnabled) {
-      // Request notification permissions
       const { status } = await Notifications.requestPermissionsAsync();
       if (status !== "granted") {
-        Alert.alert(
-          t("settings.notifications"),
-          t("settings.enableNotificationPermission"),
-        );
+        Alert.alert(t("settings.notifications"), t("settings.enableNotificationPermission"));
         return;
       }
-      // Enable notifications
       setNotificationsEnabled(true);
       Alert.alert(t("settings.notifications"), t("settings.notificationsEnabled"));
     } else {
-      // Disable notifications
       setNotificationsEnabled(false);
       Alert.alert(t("settings.notifications"), t("settings.notificationsDisabled"));
     }
   };
 
-  const handleRateApp = () => {
-    // ! implement when the app will be on the market
-    showAlert("Rate App", "Still in development");
-  };
-
+  // Privacy Policy
   const handlePrivacyPolicy = () => {
-    // ! replace with actual one and use i18n
-    Linking.openURL("https://your-privacy-policy-url.com").catch(() => {
-      showAlert("Privacy Policy", "Unable to open the privacy policy.");
+    const privacyUrl = "https://www.freeprivacypolicy.com/live/c6286749-afcf-4df3-bc12-f99b25d7e46e";
+    Linking.openURL(privacyUrl).catch(() => {
+      showAlert("Privacy Policy", "Unable to open the privacy policy link.");
     });
   };
 
-  const handleShareApp = () => {
-    // ! implement when the app will be on the market
-    showAlert("Share App", "Still in development");
-  };
-
+  // Feedback
   const handleFeedback = () => {
-    // ! implement when the app will be on the market
-    showAlert("Feedback", "Still in development");
+    showAlert(t("settings.feedbackTitle"), t("settings.feedbackMessage"));
   };
 
-  const handleHelpCenter = () => {
-    // ! replace with actual one and use i18n
-    Linking.openURL("https://your-help-center-url.com").catch(() => {
-      showAlert("Help Center", "Unable to open the help center.");
-    });
-  };
-
+  // Reset Account
   const handleResetAccount = () => {
-
     if (!user?.uid) {
       showAlert(t("settings.errorTitle"), t("settings.userNotAuthenticated"));
       return;
     }
 
-    const defaultUserData: Partial<UserType> = {
-      achievements: [],
-      beltRank: "white",
-      daily_tasks: [],
-      icon: 1,
-      level: 1,
-      statistics: {
-        tasks_completed: 0,
-        techniques_learned: 0,
-        xp: 0,
-      },
-      experience: "",
-      trainingFrequency: 0,
-      goals: "",
-      trainingFocus: "",
-      favoriteTechniques: "",
-      competitionsParticipated: "",
-      ippons: "0",
-      wazaAris: "0",
-      yukos: "0",
-      goldMedals: "0",
-      silverMedals: "0",
-      bronzeMedals: "0",
-    };
-
-    showAlert(
+    Alert.alert(
       t("settings.resetAccountTitle"),
       t("settings.resetAccountMessage"),
-      async () => {
-        try {
-          await saveUserDataToFirestore({ ...user, ...defaultUserData });
-          showAlert(
-            t("settings.resetAccountSuccessTitle"),
-            t("settings.resetAccountSuccessMessage")
-          );
-        } catch (error) {
-          console.error("Error resetting account:", error);
-          showAlert(
-            t("settings.resetAccountErrorTitle"),
-            t("settings.resetAccountErrorMessage")
-          );
-        }
-      }
+      [
+        {
+          text: t("common.cancel"),
+          style: "cancel",
+        },
+        {
+          text: t("common.ok"),
+          onPress: async () => {
+            try {
+              // Call deleteAccount from AuthProvider
+              await deleteAccount();
+              showAlert(
+                t("settings.resetAccountSuccessTitle"),
+                t("settings.resetAccountSuccessMessage")
+              );
+              // Optionally, you can also navigate or logout here
+              // e.g., await logout();
+            } catch (error) {
+              console.error("Error resetting account:", error);
+              showAlert(
+                t("settings.resetAccountErrorTitle"),
+                t("settings.resetAccountErrorMessage")
+              );
+            }
+          },
+        },
+      ],
+      { cancelable: true }
     );
   };
 
+  // Logout
   const handleLogout = () => {
     Alert.alert(
       t("settings.logoutTitle"),
@@ -166,6 +136,7 @@ const SettingsScreen: React.FC = () => {
     );
   };
 
+  // Navigation Options
   const navigationOptions: SettingsNavigationOption[] = [
     {
       label: t("settings.language"),
@@ -173,29 +144,14 @@ const SettingsScreen: React.FC = () => {
       route: "/settings/settings-language-selection",
     },
     {
-      label: t("settings.rateApp"),
-      icon: "star-outline" as keyof typeof Ionicons.glyphMap,
-      action: handleRateApp,
-    },
-    {
       label: t("settings.privacyPolicy"),
       icon: "document-text-outline" as keyof typeof Ionicons.glyphMap,
       action: handlePrivacyPolicy,
     },
     {
-      label: t("settings.shareApp"),
-      icon: "share-outline" as keyof typeof Ionicons.glyphMap,
-      action: handleShareApp,
-    },
-    {
       label: t("settings.feedback"),
       icon: "chatbubble-outline" as keyof typeof Ionicons.glyphMap,
       action: handleFeedback,
-    },
-    {
-      label: t("settings.helpCenter"),
-      icon: "help-circle-outline" as keyof typeof Ionicons.glyphMap,
-      action: handleHelpCenter,
     },
     {
       label: t("settings.resetAccount"),
@@ -214,6 +170,7 @@ const SettingsScreen: React.FC = () => {
       <Header title={t("settings.title")} />
 
       <ScrollView contentContainerStyle={styles.container}>
+        {/* Dark Mode Toggle */}
         <Option
           icon="moon"
           label={t("settings.darkMode")}
@@ -221,6 +178,8 @@ const SettingsScreen: React.FC = () => {
           switchValue={isDarkMode}
           onSwitchToggle={toggleDarkMode}
         />
+
+        {/* Notifications Toggle */}
         <Option
           icon="notifications-outline"
           label={t("settings.notifications")}
@@ -228,8 +187,11 @@ const SettingsScreen: React.FC = () => {
           switchValue={notificationsEnabled}
           onSwitchToggle={toggleNotifications}
         />
+
+        {/* Navigation Options */}
         <NavigationOptions options={navigationOptions} onNavigate={replaceRoute} />
 
+        {/* Version Label */}
         <Text style={[styles.versionText, { color: theme.colors.text }]}>
           {t("settings.appVersion", { version: "1.0.0" })}
         </Text>
@@ -237,6 +199,8 @@ const SettingsScreen: React.FC = () => {
     </View>
   );
 };
+
+export default SettingsScreen;
 
 const styles = StyleSheet.create({
   screen: {
@@ -253,5 +217,3 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
 });
-
-export default SettingsScreen;
