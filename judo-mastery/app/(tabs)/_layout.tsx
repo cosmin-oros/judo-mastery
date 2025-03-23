@@ -3,7 +3,7 @@ import FontAwesome from "@expo/vector-icons/FontAwesome";
 import { useTheme } from "@/src/theme/ThemeProvider";
 import { useTranslation } from "react-i18next";
 import { StyleSheet } from "react-native";
-import { MaterialIcons } from "@expo/vector-icons";
+import { Ionicons, MaterialIcons } from "@expo/vector-icons";
 
 const Layout = () => {
   const { theme } = useTheme();
@@ -69,12 +69,12 @@ const Layout = () => {
           }}
         />
         <Tabs.Screen
-          name="dojos"
+          name="leaderboard"
           options={{
-            title: t("dojos.title"),
-            tabBarLabel: t("dojos.title"),
+            title: t("leaderboard.title"),
+            tabBarLabel: t("leaderboard.title"),
             tabBarIcon: ({ color, size }) => (
-              <MaterialIcons name="temple-buddhist" size={size || 25} color={color} />
+              <Ionicons name="trophy-outline" size={size || 25} color={color} />            
             ),
           }}
         />

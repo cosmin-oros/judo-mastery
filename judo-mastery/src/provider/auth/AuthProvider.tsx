@@ -86,6 +86,7 @@ const scheduleDailyNotifications = async () => {
         sound: true,
       },
       // For time interval triggers, include type: "timeInterval"
+      // @ts-ignore
       trigger: { seconds: secondsUntilTrigger, repeats: false, type: "timeInterval" },
     });
 

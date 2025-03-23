@@ -68,6 +68,11 @@
     "dailyQuote": "Tägliches Zitat",
     "defaultQuote": "Bleib positiv und trainiere weiter!"
   },
+  "leaderboard": {
+    "title": "Bestenliste",
+    "level": "Stufe",
+    "xp": "XP"
+  },
   "language-selection": {
     "title": "Sprache auswählen",
     "next-step": "Nächster Schritt"

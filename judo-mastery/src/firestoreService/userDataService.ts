@@ -1,5 +1,15 @@
-import { doc, setDoc, getDoc } from "firebase/firestore";
+import {
+  doc,
+  setDoc,
+  getDoc,
+  collection,
+  getDocs,
+  limit,
+  orderBy,
+  query,
+} from "firebase/firestore";
 import { firestore } from "@/src/provider/auth/firebase";
+import { UserType } from "../types/types";
 
 // Save user data to Firestore
 export const saveUserDataToFirestore = async (userData: any) => {
@@ -33,4 +43,42 @@ export const updateUserPushToken = async (uid: string, pushToken: string) => {
     console.error("Error updating push token: ", error);
     throw error;
   }
+};
+
+/**
+ * Fetch top 10 users sorted by level desc, then xp desc,
+ * but only return the fields needed for the leaderboard.
+ */
+export const fetchTopUsersByLevelAndXP = async (): Promise<
+  Pick<
+    UserType,
+    "uid" | "level" | "xp" | "beltRank" | "profilePhoto" | "name" | "firstName"
+  >[]
+> => {
+  const usersRef = collection(firestore, "users");
+  const q = query(
+    usersRef,
+    orderBy("level", "desc"),
+    orderBy("xp", "desc"),
+    limit(10)
+  );
+
+  const snapshot = await getDocs(q);
+
+  // Map each doc to only the fields we care about.
+  const topUsers = snapshot.docs.map((doc) => {
+    const data = doc.data();
+
+    return {
+      uid: doc.id,
+      level: data.level ?? 1,
+      xp: data.xp ?? 0,
+      beltRank: data.beltRank ?? "white",
+      profilePhoto: data.profilePhoto ?? "1",
+      name: data.name ?? "",
+      firstName: data.firstName ?? "",
+    };
+  });
+
+  return topUsers;
 };

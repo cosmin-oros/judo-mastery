@@ -68,6 +68,11 @@
     "dailyQuote": "今日の名言",
     "defaultQuote": "前向きに、トレーニングを続けよう！"
   },
+  "leaderboard": {
+    "title": "ランキング",
+    "level": "レベル",
+    "xp": "XP"
+  },
   "language-selection": {
     "title": "言語を選択",
     "next-step": "次のステップ"

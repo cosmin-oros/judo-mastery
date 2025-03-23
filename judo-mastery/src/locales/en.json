@@ -68,6 +68,11 @@
     "dailyQuote": "Daily Quote",
     "defaultQuote": "Stay positive and keep training!"
   },
+  "leaderboard": {
+    "title": "Leaderboard",
+    "level": "Level",
+    "xp": "XP"
+  },
   "language-selection": {
     "title": "Select Language",
     "next-step": "Next Step"

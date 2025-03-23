@@ -68,6 +68,11 @@
     "dailyQuote": "Cita Diaria",
     "defaultQuote": "¡Mantente positivo y sigue entrenando!"
   },
+  "leaderboard": {
+    "title": "Clasificación",
+    "level": "Nivel",
+    "xp": "XP"
+  },
   "language-selection": {
     "title": "Selecciona idioma",
     "next-step": "Siguiente Paso"

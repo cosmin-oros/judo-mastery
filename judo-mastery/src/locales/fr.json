@@ -68,6 +68,11 @@
     "dailyQuote": "Citation du Jour",
     "defaultQuote": "Restez positif et continuez à vous entraîner !"
   },
+  "leaderboard": {
+    "title": "Classement",
+    "level": "Niveau",
+    "xp": "XP"
+  },
   "language-selection": {
     "title": "Sélectionner la langue",
     "next-step": "Étape Suivante"

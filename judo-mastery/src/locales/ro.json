@@ -68,6 +68,11 @@
     "dailyQuote": "Citat zilnic",
     "defaultQuote": "Rămâi pozitiv și continuă să te antrenezi!"
   },
+  "leaderboard": {
+    "title": "Clasament",
+    "level": "Nivel",
+    "xp": "XP"
+  },
   "language-selection": {
     "title": "Selectează limba",
     "next-step": "Pasul Următor"
