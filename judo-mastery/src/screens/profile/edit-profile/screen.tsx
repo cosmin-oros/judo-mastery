@@ -140,24 +140,7 @@ const EditProfileScreen: React.FC = () => {
   }, [user]);
 
   const validateInputs = () => {
-    if (
-      !firstName ||
-      !lastName ||
-      experience === undefined ||
-      experience === null ||
-      competitionsParticipated === undefined ||
-      competitionsParticipated === null ||
-      trainingFrequency === undefined ||
-      trainingFrequency === null ||
-      !goals ||
-      !favoriteTechniques
-    ) {
-      Alert.alert(
-        t("extra-user-data.validationTitle"),
-        t("extra-user-data.validationMessage")
-      );
-      return false;
-    }
+    // If every field is optional, you may simply return true.
     return true;
   };
 
